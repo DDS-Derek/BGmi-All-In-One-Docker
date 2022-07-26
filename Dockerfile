@@ -8,5 +8,4 @@ RUN mkdir -p /cartoon && \
     mkdir -p /downloads && \
     chmod 755 /home/bgmi-docker/entrypoint.sh
 
-VOLUME [ "/cartoon" ]
-VOLUME [ "/downloads" ]
+VOLUME [ "/media" ]

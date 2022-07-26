@@ -38,6 +38,7 @@ function init_proc {
 	mkdir -p /bgmi/conf/bgmi
 	mkdir -p /bgmi/conf/transmission
 	mkdir -p /bgmi/conf/nginx
+	mkdir -p /bgmi/bgmi_hardlink_helper
 	mkdir -p /bgmi/log
 	mkdir -p /bgmi/bangumi
 	mkdir -p /etc/supervisor.d
@@ -67,14 +68,14 @@ function init_proc {
 	if [ ! -f $bgmi_hardlink_helper_config ]; then
 		cp /home/bgmi-docker/bgmi_hardlink_helper/config.py $bgmi_hardlink_helper_config
 	fi
+
+	cd /bgmi/bgmi_hardlink_helper
+	python3 bgmi_hardlink_helper.py install_cron
+	cd /
 }
 
 if [ ! -f $first_lock ]; then
 	init_proc
 fi
-
-cd /bgmi/bgmi_hardlink_helper
-python3 bgmi_hardlink_helper.py install_cron
-cd /
 
 exec /usr/bin/supervisord -n

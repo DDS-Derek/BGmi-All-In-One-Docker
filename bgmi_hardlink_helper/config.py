@@ -3,7 +3,7 @@
 #######
 
 # 硬链接目标目录
-HARDLINK_DEST = '/bgmi/cartoon'
+HARDLINK_DEST = '/media/cartoon'
 
 # 硬链接特殊规则
 MAP_RULE = {

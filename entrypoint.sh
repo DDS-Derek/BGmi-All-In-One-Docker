@@ -27,7 +27,7 @@ function init_proc {
 		bgmi install
 		bgmi source $data_source
 		bgmi config ADMIN_TOKEN $admin_token
-		bgmi config SAVE_PATH /bgmi/bangumi
+		bgmi config SAVE_PATH /media/downloads
 		bgmi config DOWNLOAD_DELEGATE transmission-rpc
 	else
 		bgmi upgrade

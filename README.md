@@ -1,5 +1,6 @@
 # bgmi-docker-all-in-one
 由https://github.com/codysk/bgmi-docker-all-in-one 镜像改编
+硬链接工具由[kaaass](https://github.com/kaaass/bgmi_hardlink_helper)大佬提供
 ```
 version: '3.3'
 services:

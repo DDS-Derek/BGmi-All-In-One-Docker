@@ -40,9 +40,10 @@ function init_proc {
 	mkdir -p /bgmi/conf/nginx
 	mkdir -p /bgmi/bgmi_hardlink_helper
 	mkdir -p /bgmi/log
-	mkdir -p /bgmi/downloads
 	mkdir -p /etc/supervisor.d
-	mkdir -p /bgmi/cartoon
+	
+	ln -s /downloads /bgmi 
+	ln -s /cartoon /bgmi
 
 	rm -rf /etc/nginx/conf.d
 	ln -s /bgmi/conf/nginx /etc/nginx/conf.d

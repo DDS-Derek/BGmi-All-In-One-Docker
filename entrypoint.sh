@@ -27,7 +27,7 @@ function init_proc {
 		bgmi install
 		bgmi source $data_source
 		bgmi config ADMIN_TOKEN $admin_token
-		bgmi config SAVE_PATH /bgmi/downloads
+		bgmi config SAVE_PATH /media/downloads
 		bgmi config DOWNLOAD_DELEGATE transmission-rpc
 	else
 		bgmi upgrade
@@ -41,9 +41,6 @@ function init_proc {
 	mkdir -p /bgmi/bgmi_hardlink_helper
 	mkdir -p /bgmi/log
 	mkdir -p /etc/supervisor.d
-	
-	ln -s /downloads /bgmi 
-	ln -s /cartoon /bgmi
 
 	rm -rf /etc/nginx/conf.d
 	ln -s /bgmi/conf/nginx /etc/nginx/conf.d

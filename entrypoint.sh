@@ -42,7 +42,7 @@ function init_proc {
 	mkdir -p /bgmi/log
 	mkdir -p /bgmi/downloads
 	mkdir -p /etc/supervisor.d
-	
+	mkdir -p /bgmi/cartoon
 
 	rm -rf /etc/nginx/conf.d
 	ln -s /bgmi/conf/nginx /etc/nginx/conf.d
@@ -73,6 +73,7 @@ function init_proc {
 	cd /bgmi/bgmi_hardlink_helper
 	python3 bgmi_hardlink_helper.py install_cron
 	cd /
+	
 }
 
 if [ ! -f $first_lock ]; then

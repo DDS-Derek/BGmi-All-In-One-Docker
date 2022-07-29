@@ -14,6 +14,9 @@ def run_hardlink(preview=False):
 
     # 获取番剧数据
     data = Followed.get_all_followed(STATUS_DELETED, STATUS_UPDATING)
+    # 屏蔽文件夹用的文件的名字
+    Ignore_files = '.ignore'
+    Ignore_state = False 
     print("共订阅", len(data), "番剧，开始扫描...")
 
     # 创建硬链接
@@ -30,6 +33,10 @@ def run_hardlink(preview=False):
             oname = bangumi['bangumi_name']
             info['name'] = MAP_RULE[oname]['name']
             info['season'] = MAP_RULE[oname]['season']
+            #特殊番剧硬链后文件夹屏蔽文件
+            Ignore_originally = SAVE_PATH + "/" + bangumi['bangumi_name'] + "/" + SAVE_PATH
+            #给原番剧目录添加忽略文件为True 
+            Ignore_state == True 
         # 获得播放数据
         player_data = get_player(bangumi['bangumi_name'])
         for episode, ep in player_data.items():
@@ -52,12 +59,31 @@ def run_hardlink(preview=False):
                 os.makedirs(dst_dir)
             if os.path.exists(dst_path):
                 # 已经链接过
+                Ignore_state == False
                 continue
             # 硬链接
             if preview:
-                print(src_path, "-->", dst_path)
+                print(str(os.path.dirname(src_path) + "/" + Ignore_files))
+                
             else:
                 os.link(src_path, dst_path)
+                #判断是否需要给原番剧目录添加忽略文件
+                if Ignore_state == True:
+                    Ignore_1 = open(Ignore_originally, mode='w+')
+                    Ignore_1.seek(0)
+                    Ignore_1.write('*')
+                    Ignore_1.close
+                    Ignore_state == False
+	        	#判断执行目录是否跳出集数目录外，防止创建文件屏蔽整个目录
+                superior=str(os.path.abspath(os.path.dirname(os.path.dirname(src_path))))
+                if superior == SAVE_PATH:
+                	print("跑到外面来了")
+                else:
+                	Ignore = open(os.path.dirname(src_path) + "/" + Ignore_files, mode='w+')
+                	Ignore.seek(0)
+                	Ignore.write('*')
+                	Ignore.close
+
             link_count += 1
 
     print("共链接", link_count, "个文件")

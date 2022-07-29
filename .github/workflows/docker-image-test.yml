@@ -1,4 +1,4 @@
-name: 构建bgmi-docker-all-in-one镜像
+name: 构建bgmi-docker-all-in-one-test镜像
 on:
   workflow_dispatch:
 jobs:

@@ -20,6 +20,8 @@ services:
           - BGMI_SOURCE=mikan_project
           - BGMI_ADMIN_TOKEN=password
           - TZ=Asia/Shanghai
+          - PGID=1000
+          - PUID=1000
 ```
 如果你使用外置下载器，可以使用下面这个版本，默认关闭了transmission，但是transmission配置文件还是会正常生成的
 ```
@@ -41,4 +43,6 @@ services:
           - BGMI_SOURCE=mikan_project
           - BGMI_ADMIN_TOKEN=password
           - TZ=Asia/Shanghai
+          - PGID=1000
+          - PUID=1000
 ```

@@ -1,6 +1,8 @@
 # bgmi-docker-all-in-one
 由https://github.com/codysk/bgmi-docker-all-in-one 镜像改编
+
 硬链接工具由[kaaass](https://github.com/kaaass/bgmi_hardlink_helper)大佬提供
+
 因为默认bgmi是没有用户设置的，所以文件夹默认都是root用户的，所以我增加了PUID和PUID的设置，是通过定时设置容器内```/media/cartoon```文件的权限和用户组来实现的，这样既不影响bgmi和transmission，也可以解决文件权限不足的问题
 ```
 version: '3.3'

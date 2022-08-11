@@ -6,6 +6,7 @@ transmission_setting="/bgmi/conf/transmission/settings.json"
 bgmi_nginx_conf="/bgmi/conf/nginx/bgmi.conf"
 bgmi_hardlink_helper="/bgmi/bgmi_hardlink_helper/bgmi_hardlink_helper.py"
 bgmi_hardlink_helper_config="/bgmi/bgmi_hardlink_helper/config.py"
+userid="/bgmi/bgmi_hardlink_helper/userid.sh"
 
 data_source="bangumi_moe"	#default data source set to bangumi.moe
 admin_token="bgmi_token" #default admin token
@@ -70,10 +71,14 @@ function init_proc {
 		cp /home/bgmi-docker/bgmi_hardlink_helper/config.py $bgmi_hardlink_helper_config
 	fi
 
+	if [ ! -f $userid ]; then
+		cp /home/bgmi-docker/bgmi_hardlink_helper/userid.sh $userid
+	fi
+
 	cd /bgmi/bgmi_hardlink_helper
 	python3 bgmi_hardlink_helper.py install_cron
 	cd /
-	
+	(crontab -l ; echo "0 */3 * * * bash /bgmi/bgmi_hardlink_helper/userid.sh") | crontab -
 }
 
 if [ ! -f $first_lock ]; then

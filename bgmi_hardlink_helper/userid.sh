@@ -1,4 +1,4 @@
 #!/bin/bash
 
-chown -R PGID:PUID /media/cartoon
+chown -R PUID:PGID /media/cartoon
 chmod -R 755 /media/cartoon

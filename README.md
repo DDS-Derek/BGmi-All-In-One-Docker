@@ -53,7 +53,7 @@ services:
           - PUID=1000
 ```
 UI加强版，在默认版本的基础上增加了transmission-web-control UI，效果如图
-[]()
+[](https://github.com/DDS-Derek/bgmi-docker-all-in-one/raw/main/48F411B9-A6EB-4859-972A-D0A4406DEE9B.jpeg)
 ```
 version: '3.3'
 services:

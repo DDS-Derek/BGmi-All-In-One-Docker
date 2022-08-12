@@ -99,7 +99,7 @@ jobs:
           tags: |
             ddsderek/bgmi-docker-all-in-one:latest-notransmission
 
-     -
+      -
         name: Buildx-web-control-latest
         uses: docker/build-push-action@v3
         with:

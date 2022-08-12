@@ -78,7 +78,8 @@ function init_proc {
 	cd /bgmi/bgmi_hardlink_helper
 	python3 bgmi_hardlink_helper.py install_cron
 	cd /
-	sed -i "//c\    \"\": \"$PUID\"," /config/settings.json
+	sed -i "/PUID/c\    \"PUID\": \"$PUID\"," /bgmi/bgmi_hardlink_helper/userid.sh
+	sed -i "/PGID/c\    \"PGID\": \"$PGID\"," /bgmi/bgmi_hardlink_helper/userid.sh
 	(crontab -l ; echo "0 */2 * * * bash /bgmi/bgmi_hardlink_helper/userid.sh") | crontab -
 }
 

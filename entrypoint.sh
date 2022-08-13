@@ -46,8 +46,15 @@ function init_proc {
     mkdir -p /media/downloads
 
 	rm -rf /etc/nginx/conf.d
+
 	ln -s /bgmi/conf/nginx /etc/nginx/conf.d
-	cp /home/bgmi-docker/config/bgmi_supervisord.ini /etc/supervisor.d/bgmi_supervisord.ini
+
+    if [[ ${TRANSMISSION} = 'true' ]]; then
+		cp /opt/config/bgmi_supervisord.ini /etc/supervisor.d/bgmi_supervisord.ini
+	else
+		cp /opt/config/bgmi_supervisord-notransmission.ini /etc/supervisor.d/bgmi_supervisord.ini
+    fi
+
 	cp /home/bgmi-docker/config/transmission-daemon /etc/conf.d/transmission-daemon
 
 	if [ ! -f $transmission_setting ]; then

@@ -38,21 +38,6 @@ jobs:
           push: true
           tags: |
             ddsderek/bgmi-docker-all-in-one:${{ secrets.VERSION }}
-            
-      - 
-        name: Buildx-web-control-tag
-        uses: docker/build-push-action@v3
-        with:
-          context: .
-          file: Dockerfile-web-control
-          platforms: |
-            linux/amd64
-            linux/arm64/v8
-            linux/arm/v7
-            linux/arm/v6
-          push: true
-          tags: |
-            ddsderek/bgmi-docker-all-in-one:${{ secrets.VERSION }}-web-control
 
       - 
         name: Buildx-latest
@@ -68,18 +53,3 @@ jobs:
           push: true
           tags: |
             ddsderek/bgmi-docker-all-in-one:latest
-
-      -
-        name: Buildx-web-control-latest
-        uses: docker/build-push-action@v3
-        with:
-          context: .
-          file: Dockerfile-web-control
-          platforms: |
-            linux/amd64
-            linux/arm64/v8
-            linux/arm/v7
-            linux/arm/v6
-          push: true
-          tags: |
-            ddsderek/bgmi-docker-all-in-one:latest-web-control

@@ -84,10 +84,16 @@ function init_proc {
 
 	cd /bgmi/bgmi_hardlink_helper
 	python3 bgmi_hardlink_helper.py install_cron
+
 	cd /
 	sed -i "s/PUID/$PUID/g" /bgmi/bgmi_hardlink_helper/userid.sh
 	sed -i "s/PGID/$PGID/g" /bgmi/bgmi_hardlink_helper/userid.sh
 	(crontab -l ; echo "0 */2 * * * bash /bgmi/bgmi_hardlink_helper/userid.sh") | crontab -
+
+	if [[ ${TRANSMISSION_WEB_CONTROL} = 'false' ]]; then
+		cd /opt
+		echo 3 | bash install-tr-control-cn.sh > /dev/null
+    fi
 }
 
 if [ ! -f $first_lock ]; then

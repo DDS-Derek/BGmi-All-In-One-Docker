@@ -32,6 +32,8 @@ RUN mkdir -p /home/bgmi-docker && \
     rm -rf /var/cache/apk/* && \
     rm -rf /root/.cache && \
     rm -rf /tmp/*
+    
+COPY root/ /
 
 VOLUME ["/bgmi"]
 VOLUME [ "/media" ]

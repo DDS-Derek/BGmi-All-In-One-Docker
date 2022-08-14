@@ -35,10 +35,15 @@ RUN mkdir -p /home/bgmi-docker && \
 
 RUN mkdir -p /bgmi && \
     mkdir -p /media && \
+    mkdir -p /etc/supervisor.d && \
+    mkdir -p /etc/nginx && \
+    mkdir -p /etc/conf.d && \
+    mkdir -p /var/run && \
     chown -R ${PUID}:${PGID} /home/bgmi-docker && \
     chown -R ${PUID}:${PGID} /bgmi && \
     chown -R ${PUID}:${PGID} /media && \
     chown -R ${PUID}:${PGID} /etc/supervisor.d && \
+    chown -R ${PUID}:${PGID} /etc/nginx && \
     chown -R ${PUID}:${PGID} /etc/conf.d && \
     chown -R ${PUID}:${PGID} /var/run
 

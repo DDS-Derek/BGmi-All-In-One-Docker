@@ -12,6 +12,8 @@ RUN USER=docker && \
     mkdir -p /etc/fixuid && \
     printf "user: $USER\ngroup: $GROUP\n" > /etc/fixuid/config.yml
 
+USER docker:docker
+
 ENTRYPOINT ["fixuid"]
 
 ENV LANG=C.UTF-8 BGMI_PATH="/bgmi/conf/bgmi"
@@ -54,5 +56,3 @@ EXPOSE 80 9091 51413/tcp 51413/udp
 
 
 CMD ["/home/bgmi-docker/entrypoint.sh"]
-
-USER docker:docker

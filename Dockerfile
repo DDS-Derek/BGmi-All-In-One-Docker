@@ -33,7 +33,9 @@ RUN mkdir -p /home/bgmi-docker && \
     rm -rf /root/.cache && \
     rm -rf /tmp/*
 
-RUN chown -R ${PUID}:${PGID} /home/bgmi-docker \
+RUN mkdir -p /bgmi && \
+    mkdir -p /media && \
+    chown -R ${PUID}:${PGID} /home/bgmi-docker \
     chown -R ${PUID}:${PGID} /bgmi \
     chown -R ${PUID}:${PGID} /media
 

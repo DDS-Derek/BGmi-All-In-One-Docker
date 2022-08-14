@@ -32,6 +32,7 @@ RUN apk add --update \
     unzip \
     tzdata && \
 	curl https://bootstrap.pypa.io/get-pip.py | python3 && \
+    python -m pip install --upgrade pip && \
 	pip install cryptography && \
 	pip install 'transmissionrpc'
 

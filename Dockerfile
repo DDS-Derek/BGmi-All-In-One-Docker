@@ -11,7 +11,7 @@ ENV TRANSMISSION_WEB_CONTROL=true
 ADD ./ /home/bgmi-docker
 
 RUN { \
-	apk add --update linux-headers gcc python3-dev libffi-dev openssl-dev cargo libxslt-dev zlib-dev libxml2-dev musl-dev nginx bash supervisor transmission-daemon python3 cargo curl tzdata; \
+	apk add --update linux-headers gcc python3-dev libffi-dev openssl-dev cargo libxslt-dev zlib-dev libxml2-dev musl-dev nginx bash supervisor transmission-daemon python3 cargo curl tzdata wget zip; \
 	curl https://bootstrap.pypa.io/get-pip.py | python3; \
 	pip install cryptography; \
 	pip install 'transmissionrpc'; \

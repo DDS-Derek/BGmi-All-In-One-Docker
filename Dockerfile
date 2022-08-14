@@ -38,4 +38,6 @@ VOLUME [ "/media" ]
 
 EXPOSE 80 9091 51413/tcp 51413/udp
 
+USER 1000:1000
+
 ENTRYPOINT ["/home/bgmi-docker/entrypoint.sh"]

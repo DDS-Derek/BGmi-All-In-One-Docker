@@ -33,9 +33,20 @@ RUN mkdir -p /home/bgmi-docker && \
     rm -rf /root/.cache && \
     rm -rf /tmp/*
 
+RUN mkdir -p /bgmi && \
+    mkdir -p /media && \
+    chown -R ${PUID}:${PGID} /home/bgmi-docker && \
+    chown -R ${PUID}:${PGID} /bgmi && \
+    chown -R ${PUID}:${PGID} /media && \
+    chown -R ${PUID}:${PGID} /etc/supervisor.d && \
+    chown -R ${PUID}:${PGID} /etc/conf.d && \
+    chown -R ${PUID}:${PGID} /var/run
+
 VOLUME ["/bgmi"]
 VOLUME [ "/media" ]
 
 EXPOSE 80 9091 51413/tcp 51413/udp
+
+USER 1000:1000
 
 ENTRYPOINT ["/home/bgmi-docker/entrypoint.sh"]

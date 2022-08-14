@@ -1,4 +1,4 @@
 #!/usr/bin/with-contenv bash
 
 exec \
-  crond -f > /bgmi/log/crond.log
+  crond -f

@@ -1,0 +1,4 @@
+#!/usr/bin/with-contenv bash
+
+exec \
+  nginx -g "daemon off;" > /bgmi/log/nginx_out.log

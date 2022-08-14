@@ -1,26 +1,4 @@
-FROM alpine:3.12
-
-RUN addgroup -g 1000 docker && \
-    adduser -u 1000 -G docker -h /home/docker -s /bin/sh -D docker
-    
-RUN { \
-	apk add --update linux-headers gcc python3-dev libffi-dev openssl-dev cargo libxslt-dev zlib-dev libxml2-dev musl-dev nginx bash supervisor transmission-daemon python3 cargo curl tzdata wget zip; \
-	curl https://bootstrap.pypa.io/get-pip.py | python3; \
-	pip install cryptography; \
-	pip install 'transmissionrpc'; \
-}
-
-RUN USER=docker && \
-    GROUP=docker && \
-    curl -SsL https://github.com/boxboat/fixuid/releases/download/v0.5.1/fixuid-0.5.1-linux-amd64.tar.gz | tar -C /usr/local/bin -xzf - && \
-    chown root:root /usr/local/bin/fixuid && \
-    chmod 4755 /usr/local/bin/fixuid && \
-    mkdir -p /etc/fixuid && \
-    printf "user: $USER\ngroup: $GROUP\n" > /etc/fixuid/config.yml
-
-USER docker:docker
-
-ENTRYPOINT ["fixuid"]
+FROM ghcr.io/linuxserver/baseimage-alpine:3.15
 
 ENV LANG=C.UTF-8 BGMI_PATH="/bgmi/conf/bgmi"
 ENV PUID=1000
@@ -31,6 +9,13 @@ ENV TRANSMISSION=true
 ENV TRANSMISSION_WEB_CONTROL=true
 
 ADD ./ /home/bgmi-docker
+
+RUN { \
+	apk add --update linux-headers gcc python3-dev libffi-dev openssl-dev cargo libxslt-dev zlib-dev libxml2-dev musl-dev nginx bash supervisor transmission-daemon python3 cargo curl tzdata wget zip; \
+	curl https://bootstrap.pypa.io/get-pip.py | python3; \
+	pip install cryptography; \
+	pip install 'transmissionrpc'; \
+}
 
 RUN mkdir -p /home/bgmi-docker && \
     cd /home/bgmi-docker && \
@@ -52,6 +37,3 @@ VOLUME ["/bgmi"]
 VOLUME [ "/media" ]
 
 EXPOSE 80 9091 51413/tcp 51413/udp
-
-
-CMD ["/home/bgmi-docker/entrypoint.sh"]

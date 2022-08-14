@@ -1,4 +1,3 @@
 #!/usr/bin/with-contenv bash
 
-exec \
-  nginx -g "daemon off;"
+s6-setuidgid abc nginx -g "daemon off;"

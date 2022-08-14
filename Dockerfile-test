@@ -7,6 +7,8 @@ ENV PGID=1000
 ENV TRANSMISSION=true
 ## true 和 false
 ENV TRANSMISSION_WEB_CONTROL=true
+ENV BGMI_ADMIN_TOKEN=password
+ENV BGMI_SOURCE=mikan_project
 
 ADD ./ /home/bgmi-docker
 

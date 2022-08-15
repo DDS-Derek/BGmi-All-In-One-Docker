@@ -12,7 +12,7 @@ ENV BGMI_ADMIN_TOKEN=password
 ## BGMI默认数据源
 ENV BGMI_SOURCE=mikan_project
 
-ADD ./ /home/bgmi-docker
+ADD ./data /home/bgmi-docker
 
 RUN { \
 	apk add --update linux-headers gcc python3-dev libffi-dev openssl-dev cargo libxslt-dev zlib-dev libxml2-dev musl-dev nginx bash supervisor transmission-daemon python3 cargo curl tzdata wget zip; \
@@ -28,6 +28,7 @@ RUN mkdir -p /home/bgmi-docker && \
     mv /home/bgmi-docker/BGmi-master /home/bgmi-docker/BGmi && \
     pip install /home/bgmi-docker/BGmi && \
     mkdir -p /home/bgmi-docker/transmission-web-control && \
+    cd /home/bgmi-docker/transmission-web-control && \
     wget https://github.com/ronggang/transmission-web-control/raw/master/release/install-tr-control-cn.sh --no-check-certificate && \
     echo 1 | bash install-tr-control-cn.sh && \
     mkdir -p /video && \
@@ -41,4 +42,4 @@ COPY ./root /
 VOLUME ["/bgmi"]
 VOLUME [ "/video" ]
 
-EXPOSE 80 9091 51413/tcp 51413/udp
+EXPOSE 88 9091 51413/tcp 51413/udp

@@ -28,7 +28,7 @@ jobs:
         name: Buildx-tag
         uses: docker/build-push-action@v3
         with:
-          context: .
+          context: ./Test
           file: Dockerfile-test
           platforms: |
             linux/amd64

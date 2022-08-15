@@ -1,5 +1,6 @@
 FROM alpine:3.12
 
+ENV TZ=Asia/Shanghai
 ENV LANG=C.UTF-8 BGMI_PATH="/bgmi/conf/bgmi"
 ENV PUID=1000
 ENV PGID=1000
@@ -7,6 +8,8 @@ ENV PGID=1000
 ENV TRANSMISSION=true
 ## true 和 false
 ENV TRANSMISSION_WEB_CONTROL=true
+ENV BGMI_SOURCE=mikan_project
+ENV BGMI_ADMIN_TOKEN=password
 
 ADD ./ /home/bgmi-docker
 

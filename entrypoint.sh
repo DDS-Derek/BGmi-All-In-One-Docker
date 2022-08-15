@@ -8,9 +8,6 @@ bgmi_hardlink_helper="/bgmi/bgmi_hardlink_helper/bgmi_hardlink_helper.py"
 bgmi_hardlink_helper_config="/bgmi/bgmi_hardlink_helper/config.py"
 userid="/bgmi/bgmi_hardlink_helper/userid.sh"
 
-data_source="bangumi_moe"	#default data source set to bangumi.moe
-admin_token="bgmi_token" #default admin token
-
 pid=0
 
 function init_proc {
@@ -35,6 +32,7 @@ function init_proc {
 		bash /home/bgmi-docker/BGmi/bgmi/others/crontab.sh
 	fi
 
+	## 创建文件夹
 	mkdir -p /var/run/nginx
 	mkdir -p /bgmi/conf/bgmi
 	mkdir -p /bgmi/conf/transmission
@@ -45,10 +43,7 @@ function init_proc {
     mkdir -p /media/cartoon
     mkdir -p /media/downloads
 
-	rm -rf /etc/nginx/conf.d
-
-	ln -s /bgmi/conf/nginx /etc/nginx/conf.d
-
+    ## transmission
     if [[ ${TRANSMISSION} = 'true' ]]; then
 		cp /home/bgmi-docker/config/bgmi_supervisord.ini /etc/supervisor.d/bgmi_supervisord.ini
 	else
@@ -61,15 +56,19 @@ function init_proc {
 		cp /home/bgmi-docker/config/transmission_settings.json $transmission_setting
 	fi
 
+	if [[ ${TRANSMISSION_WEB_CONTROL} = 'false' ]]; then
+		echo 3 | bash /home/bgmi-docker/transmission-web-control/install-tr-control-cn.sh > /dev/null
+    fi
+
+	## nginx
+	rm -rf /etc/nginx/conf.d
+	ln -s /bgmi/conf/nginx /etc/nginx/conf.d
+
 	if [ ! -f $bgmi_nginx_conf ]; then
 		cp /home/bgmi-docker/config/bgmi_nginx.conf $bgmi_nginx_conf
 	fi
 
-	if [ ! -z $NO_TRANSMISSION ]; then
-		sed -i '/\[program:tran.*$/,/stderr=true/d' /etc/supervisor.d/bgmi_supervisord.ini
-		sed -i '/^programs/s/transmission,//g' /etc/supervisor.d/bgmi_supervisord.ini
-	fi
-
+	## bgmi_hardlink_helper
 	if [ ! -f $bgmi_hardlink_helper ]; then
 		cp /home/bgmi-docker/bgmi_hardlink_helper/bgmi_hardlink_helper.py $bgmi_hardlink_helper
 	fi
@@ -78,22 +77,17 @@ function init_proc {
 		cp /home/bgmi-docker/bgmi_hardlink_helper/config.py $bgmi_hardlink_helper_config
 	fi
 
+	cd /bgmi/bgmi_hardlink_helper
+	python3 bgmi_hardlink_helper.py install_cron
+
+	## userid
 	if [ ! -f $userid ]; then
 		cp /home/bgmi-docker/bgmi_hardlink_helper/userid.sh $userid
 	fi
 
-	cd /bgmi/bgmi_hardlink_helper
-	python3 bgmi_hardlink_helper.py install_cron
-
-	cd /
 	sed -i "s/PUID/$PUID/g" /bgmi/bgmi_hardlink_helper/userid.sh
 	sed -i "s/PGID/$PGID/g" /bgmi/bgmi_hardlink_helper/userid.sh
 	(crontab -l ; echo "0 */2 * * * bash /bgmi/bgmi_hardlink_helper/userid.sh") | crontab -
-
-	if [[ ${TRANSMISSION_WEB_CONTROL} = 'false' ]]; then
-		cd /opt
-		echo 3 | bash install-tr-control-cn.sh > /dev/null
-    fi
 }
 
 if [ ! -f $first_lock ]; then

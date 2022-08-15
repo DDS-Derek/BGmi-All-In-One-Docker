@@ -1,3 +1,0 @@
-#!/usr/bin/with-contenv bash
-
-s6-setuidgid abc bgmi_http --port=88 --address=0.0.0.0

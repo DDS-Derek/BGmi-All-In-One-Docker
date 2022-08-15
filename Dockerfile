@@ -17,17 +17,22 @@ RUN { \
 	pip install 'transmissionrpc'; \
 }
 
-RUN mkdir -p /home/bgmi-docker && \
+RUN \
+    ## Bgmi程序主体下载安装
+    mkdir -p /home/bgmi-docker && \
     cd /home/bgmi-docker && \
     wget https://github.com/BGmi/BGmi/archive/refs/heads/master.zip && \
     unzip /home/bgmi-docker/master.zip && \
     mv /home/bgmi-docker/BGmi-master /home/bgmi-docker/BGmi && \
     pip install /home/bgmi-docker/BGmi && \
-    cd /opt && \
+    ## transmission-web-control安装
+    mkdir -p /home/bgmi-docker/transmission-web-control && \
+    cd /home/bgmi-docker/transmission-web-control && \
     wget https://github.com/ronggang/transmission-web-control/raw/master/release/install-tr-control-cn.sh --no-check-certificate && \
     echo 1 | bash install-tr-control-cn.sh && \
-    mkdir -p /media && \
+    ## 给予启动脚本权限
     chmod 755 /home/bgmi-docker/entrypoint.sh && \
+    ## 清理
     rm -rf /home/bgmi-docker/master.zip && \
     rm -rf /var/cache/apk/* && \
     rm -rf /root/.cache && \

@@ -1,3 +1,0 @@
-#!/usr/bin/with-contenv bash
-
-s6-setuidgid abc transmission-daemon -f -g /bgmi/conf/transmission/

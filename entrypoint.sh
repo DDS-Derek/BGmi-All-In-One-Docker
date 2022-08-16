@@ -67,6 +67,7 @@ function init_proc {
 	if [ ! -f $bgmi_nginx_conf ]; then
 		cp /home/bgmi-docker/config/bgmi_nginx.conf $bgmi_nginx_conf
 	fi
+	sed -i "s/user nginx;/user abc;/g" /etc/nginx/nginx.conf
 
 	## bgmi_hardlink_helper
 	if [ ! -f $bgmi_hardlink_helper ]; then
@@ -79,19 +80,12 @@ function init_proc {
 
 	cd /bgmi/bgmi_hardlink_helper
 	python3 bgmi_hardlink_helper.py install_cron
-
-	## userid
-	if [ ! -f $userid ]; then
-		cp /home/bgmi-docker/bgmi_hardlink_helper/userid.sh $userid
-	fi
-
-	sed -i "s/PUID/$PUID/g" /bgmi/bgmi_hardlink_helper/userid.sh
-	sed -i "s/PGID/$PGID/g" /bgmi/bgmi_hardlink_helper/userid.sh
-	(crontab -l ; echo "0 */2 * * * bash /bgmi/bgmi_hardlink_helper/userid.sh") | crontab -
 }
 
 if [ ! -f $first_lock ]; then
 	init_proc
 fi
+
+bash /home/bgmi-docker/utils/permission.sh
 
 exec /usr/bin/supervisord -n

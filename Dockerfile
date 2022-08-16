@@ -14,19 +14,24 @@ ENV BGMI_ADMIN_TOKEN=password
 ADD ./ /home/bgmi-docker
 
 RUN { \
-	apk add --update linux-headers gcc python3-dev libffi-dev openssl-dev cargo libxslt-dev zlib-dev libxml2-dev musl-dev nginx bash supervisor transmission-daemon python3 cargo curl tzdata wget zip; \
+	apk add --update linux-headers gcc python3-dev libffi-dev openssl-dev cargo libxslt-dev zlib-dev libxml2-dev musl-dev nginx bash supervisor transmission-daemon python3 cargo curl tzdata wget zip shadow; \
 	curl https://bootstrap.pypa.io/get-pip.py | python3; \
 	pip install cryptography; \
 	pip install 'transmissionrpc'; \
 }
 
 RUN \
+    ## 创建用户
+    addgroup -S abc && \
+    adduser -S abc -G abc -h /home/abc && \
+    usermod -s /bin/bash abc && \
     ## Bgmi程序主体下载安装
     mkdir -p /home/bgmi-docker && \
     cd /home/bgmi-docker && \
     wget https://github.com/BGmi/BGmi/archive/refs/heads/master.zip && \
     unzip /home/bgmi-docker/master.zip && \
     mv /home/bgmi-docker/BGmi-master /home/bgmi-docker/BGmi && \
+    mv /home/bgmi-docker/utils/crontab.sh /home/bgmi-docker/BGmi/bgmi/others/crontab.sh && \
     pip install /home/bgmi-docker/BGmi && \
     ## transmission-web-control安装
     mkdir -p /home/bgmi-docker/transmission-web-control && \

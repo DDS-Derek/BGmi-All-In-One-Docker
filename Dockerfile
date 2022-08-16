@@ -1,7 +1,6 @@
 FROM codysk/bgmi-all-in-one-base:1.2
 
-LABEL maintainer="DDSRem"
-LABEL email="ddsrem@163.com"
+LABEL maintainer="ddsrem@163.com"
 
 ENV LANG=C.UTF-8 BGMI_PATH="/bgmi/conf/bgmi"
 

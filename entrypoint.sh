@@ -78,8 +78,7 @@ function init_proc {
 		cp /home/bgmi-docker/bgmi_hardlink_helper/config.py $bgmi_hardlink_helper_config
 	fi
 
-	cd /bgmi/bgmi_hardlink_helper
-	python3 bgmi_hardlink_helper.py install_cron
+	(crontab -l ; echo "0 */2 * * * su abc -c 'python3 /bgmi/bgmi_hardlink_helper/bgmi_hardlink_helper.py run'") | crontab -
 }
 
 if [ ! -f $first_lock ]; then

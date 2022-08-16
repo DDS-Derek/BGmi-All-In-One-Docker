@@ -95,7 +95,7 @@ def install_cron():
     """
     script_path = os.path.realpath(__file__)
     cmd = '(crontab -l ; echo "0 */2 * * * ' \
-          'su abc -c "LC_ALL=en_US.UTF-8 python3 ' + script_path + ' run"") | crontab -'
+          'LC_ALL=en_US.UTF-8 python3 ' + script_path + ' run") | crontab -'
     os.system(cmd)
     print("安装成功")
 

@@ -2,7 +2,7 @@ FROM codysk/bgmi-all-in-one-base:1.2
 
 LABEL maintainer="ddsrem@163.com"
 
-ENV LANG=C.UTF-8 BGMI_PATH="/bgmi/conf/bgmi"
+ENV LANG=C.UTF-8 BGMI_PATH="/bgmi/conf/bgmi" TRANSMISSION=true TRANSMISSION_WEB_CONTROL=true BGMI_SOURCE=mikan_project BGMI_ADMIN_TOKEN=password PUID=1000 PGID=1000
 
 ADD ./ /home/bgmi-docker
 

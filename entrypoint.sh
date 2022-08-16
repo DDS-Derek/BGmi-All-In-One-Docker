@@ -6,14 +6,6 @@ transmission_setting="/bgmi/conf/transmission/settings.json"
 bgmi_nginx_conf="/bgmi/conf/nginx/bgmi.conf"
 bgmi_hardlink_helper="/bgmi/bgmi_hardlink_helper/bgmi_hardlink_helper.py"
 bgmi_hardlink_helper_config="/bgmi/bgmi_hardlink_helper/config.py"
-PUID=1000
-PGID=1000
-## true 和 false
-TRANSMISSION=true
-## true 和 false
-TRANSMISSION_WEB_CONTROL=true
-BGMI_SOURCE=mikan_project
-BGMI_ADMIN_TOKEN=password
 
 pid=0
 
@@ -86,6 +78,10 @@ function init_proc {
 	fi
 
 	(crontab -l ; echo "0 */2 * * * su abc -c 'python3 /bgmi/bgmi_hardlink_helper/bgmi_hardlink_helper.py run'") | crontab -
+
+	## permission
+	groupmod -o -g "$PGID" abc
+	usermod -o -u "$PUID" abc
 }
 
 if [ ! -f $first_lock ]; then

@@ -6,7 +6,6 @@ transmission_setting="/bgmi/conf/transmission/settings.json"
 bgmi_nginx_conf="/bgmi/conf/nginx/bgmi.conf"
 bgmi_hardlink_helper="/bgmi/bgmi_hardlink_helper/bgmi_hardlink_helper.py"
 bgmi_hardlink_helper_config="/bgmi/bgmi_hardlink_helper/config.py"
-userid="/bgmi/bgmi_hardlink_helper/userid.sh"
 
 pid=0
 
@@ -40,8 +39,8 @@ function init_proc {
 	mkdir -p /bgmi/bgmi_hardlink_helper
 	mkdir -p /bgmi/log
 	mkdir -p /etc/supervisor.d
-    mkdir -p /media/cartoon
-    mkdir -p /media/downloads
+	mkdir -p /media/cartoon
+	mkdir -p /media/downloads
 
     ## transmission
     if [[ ${TRANSMISSION} = 'true' ]]; then

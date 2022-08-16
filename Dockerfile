@@ -35,9 +35,9 @@ RUN apk add --update \
     wget \
     zip \
     shadow && \
-	curl https://bootstrap.pypa.io/get-pip.py | python3 && \
-	pip install cryptography && \
-	pip install 'transmissionrpc'
+    curl https://bootstrap.pypa.io/get-pip.py | python3 && \
+    pip install cryptography==2.8 && \
+    pip install 'transmissionrpc'
 
 RUN \
     ## 创建用户

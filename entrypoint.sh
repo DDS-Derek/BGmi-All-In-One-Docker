@@ -42,7 +42,7 @@ function init_proc {
 	mkdir -p /media/cartoon
 	mkdir -p /media/downloads
 
-    ## transmission
+	## transmission
 	if [[ ${TRANSMISSION} = 'true' ]]; then
 		cp /home/bgmi-docker/config/bgmi_supervisord.ini /etc/supervisor.d/bgmi_supervisord.ini
 	else
@@ -57,7 +57,7 @@ function init_proc {
 
 	if [[ ${TRANSMISSION_WEB_CONTROL} = 'false' ]]; then
 		echo 3 | bash /home/bgmi-docker/transmission-web-control/install-tr-control-cn.sh > /dev/null
-    fi
+	fi
 
 	## nginx
 	rm -rf /etc/nginx/conf.d

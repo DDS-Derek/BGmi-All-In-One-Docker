@@ -1,13 +1,14 @@
 # bgmi-docker-all-in-one
 由https://github.com/codysk/bgmi-docker-all-in-one 镜像改编
 
-支持硬链接，硬链接工具由[kaaass](https://github.com/kaaass/bgmi_hardlink_helper)大佬提供
+## 新增功能
+1. 支持硬链接，硬链接工具由[kaaass](https://github.com/kaaass/bgmi_hardlink_helper)大佬提供
 
-支持PUID和PGID设置
+2. 支持PUID和PGID设置
 
-支持是否开启内部transmission，可以在环境变量内设置是否启用
+3. 支持是否开启内部transmission，可以在环境变量内设置是否启用
 
-支持transmission增强版UI，可以在环境变量内设置是否启用
+4. 支持transmission增强版UI，可以在环境变量内设置是否启用
 
 ```
 version: '3.3'

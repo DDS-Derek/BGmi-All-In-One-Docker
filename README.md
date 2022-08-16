@@ -2,7 +2,7 @@
 由https://github.com/codysk/bgmi-docker-all-in-one 镜像改编
 
 ## 新增功能
-1. 支持硬链接，硬链接工具由[kaaass](https://github.com/kaaass/bgmi_hardlink_helper)大佬提供
+1. 支持硬链接，硬链接工具由[kaaass](https://github.com/kaaass/bgmi_hardlink_helper)大佬提供 (具体说明请看下方硬链接介绍)
 
 2. 支持PUID和PGID设置
 
@@ -84,3 +84,17 @@ services:
   $ id username
     uid=1000(dockeruser) gid=1000(dockergroup) groups=1000(dockergroup)
 ```
+
+## 硬链接说明
+
+硬链接 BGmi 下载的新番资源，改善文件格式以便于自动化刮削，并且不会影响保种。
+
+硬链接后的目录格式用于刮削器的自动识别，配置正确的话可以完全避免刮削。目前的配置适用于 Jellyfin 的刮削器，
+理论上也可适用于绝大多数刮削器。
+
+- 番剧默认下载目录为```/meida/downloads```，下载目录的番剧格式为BGMI官方的原格式
+- 番剧硬链接后存储于文件夹 `/media/cartoon` 下。默认格式是 `{name}`，如“小林家的龙女仆”。
+  也可以设置为嵌套，如 `{name}/Season {season}`，即“小林家的龙女仆/Season 2”。
+- 番剧的命名格式为 `BANGUMI_FILE_FORMAT`，默认是 `S{season:0>2d}E{episode:0>2d}.{format}`。
+  如“S01E01.mp4”。
+

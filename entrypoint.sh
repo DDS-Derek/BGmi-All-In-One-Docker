@@ -43,11 +43,11 @@ function init_proc {
 	mkdir -p /media/downloads
 
     ## transmission
-    if [[ ${TRANSMISSION} = 'true' ]]; then
+	if [[ ${TRANSMISSION} = 'true' ]]; then
 		cp /home/bgmi-docker/config/bgmi_supervisord.ini /etc/supervisor.d/bgmi_supervisord.ini
 	else
 		cp /home/bgmi-docker/config/bgmi_supervisord-notransmission.ini /etc/supervisor.d/bgmi_supervisord.ini
-    fi
+	fi
 
 	cp /home/bgmi-docker/config/transmission-daemon /etc/conf.d/transmission-daemon
 

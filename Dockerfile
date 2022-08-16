@@ -1,45 +1,18 @@
-FROM alpine:3.12
+FROM codysk/bgmi-all-in-one-base:1.2
 
-ENV TZ=Asia/Shanghai
+LABEL maintainer="DDSRem"
+LABEL email="ddsrem@163.com"
+
 ENV LANG=C.UTF-8 BGMI_PATH="/bgmi/conf/bgmi"
-ENV PUID=1000
-ENV PGID=1000
-## true 和 false
-ENV TRANSMISSION=true
-## true 和 false
-ENV TRANSMISSION_WEB_CONTROL=true
-ENV BGMI_SOURCE=mikan_project
-ENV BGMI_ADMIN_TOKEN=password
 
 ADD ./ /home/bgmi-docker
 
-RUN apk add --update \
-    linux-headers \
-    gcc \
-    python3-dev \
-    libffi-dev \
-    openssl-dev \
-    cargo \
-    libxslt-dev \
-    zlib-dev \
-    libxml2-dev \
-    musl-dev \
-    nginx \
-    bash \
-    supervisor \
-    transmission-daemon \
-    python3 \
-    cargo \
-    curl \
-    tzdata \
+RUN \
+    ## 安装软件包
+    apk add --update \
     wget \
     zip \
     shadow && \
-    curl https://bootstrap.pypa.io/get-pip.py | python3 && \
-    pip install cryptography==2.8 && \
-    pip install 'transmissionrpc'
-
-RUN \
     ## 创建用户
     addgroup -S abc && \
     adduser -S abc -G abc -h /home/abc && \

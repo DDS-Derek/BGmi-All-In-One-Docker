@@ -28,7 +28,8 @@ docker run -itd \
   -e PUID=1000 \
   -e DOWNLOADER=transmission \
   -e BGMI_SOURCE=mikan_project \
-  -e BGMI_ADMIN_TOKEN=password
+  -e BGMI_ADMIN_TOKEN=password \
+  ddsderek/bgmi-docker-all-in-one:latest
 ```
 ### docker-compose
 

@@ -3,13 +3,14 @@
 
 ## 新增功能
 1. 支持硬链接，硬链接工具由[kaaass](https://github.com/kaaass/bgmi_hardlink_helper)大佬提供 (具体说明请看下方[硬链接介绍](https://github.com/DDS-Derek/bgmi-docker-all-in-one#%E7%A1%AC%E9%93%BE%E6%8E%A5%E8%AF%B4%E6%98%8E))
-
 2. 支持PUID和PGID设置
-3. 支持是否开启内部transmission，可以在环境变量内设置是否启用
+3. 支持内部aria2，transmission下载器，可以在环境变量内设置是否启用
 4. 支持transmission增强版UI，可以在环境变量内设置是否启用
+4. 添加ariang管理界面
 
 ## 部署
-docker-cli
+### docker-cli
+
 ```bash
 docker run -itd \
   --name=bgmi \
@@ -18,17 +19,19 @@ docker run -itd \
   -v /home/video2/NEW:/media \
   -p 80:80 \
   -p 9091:9091 \
+  -p 6800:6800 \
+  -p 6880:6880 \
   -p 51413:51413/tcp \
   -p 51413:51413/udp \
   -e TZ=Asia/Shanghai \
   -e PGID=1000 \
   -e PUID=1000 \
-  -e TRANSMISSION=true \
-  -e TRANSMISSION_WEB_CONTROL=true \
+  -e DOWNLOADER=transmission \
   -e BGMI_SOURCE=mikan_project \
   -e BGMI_ADMIN_TOKEN=password
 ```
-docker-compose
+### docker-compose
+
 ```bash
 version: '3.3'
 services:
@@ -42,33 +45,37 @@ services:
         ports:
             - '80:80'
             - '9091:9091'
+            - '6800:6800'
+            - '6880:6880'
             - '51413:51413/tcp'
             - '51413:51413/udp'
         environment:
           - TZ=Asia/Shanghai
           - PGID=1000
           - PUID=1000
-          - TRANSMISSION=true
-          - TRANSMISSION_WEB_CONTROL=true
+          - DOWNLOADER=transmission
           - BGMI_SOURCE=mikan_project
           - BGMI_ADMIN_TOKEN=password
 ```
 
-|            Parameter             | Function                                                     |
-| :------------------------------: | ------------------------------------------------------------ |
-|             -p 80:80             | BGMI Web端口                                                 |
-|           -p 9091:9091           | transmission web端口                                         |
-|        -p 51413:51413/tcp        | Torrent 端口 TCP                                             |
-|        -p 51413:51413/udp        | Torrent 端口 UDP                                             |
-|       -e TZ=Asia/Shanghai        | 时区                                                         |
-|           -e PGID=1000           | 对于 GroupID - 请参阅下面的[说明](https://github.com/DDS-Derek/bgmi-docker-all-in-one#puid-guid-%E8%AF%B4%E6%98%8E) |
-|           -e PUID=1000           | 对于UserID - 请参阅下面的说明[说明](https://github.com/DDS-Derek/bgmi-docker-all-in-one#puid-guid-%E8%AF%B4%E6%98%8E) |
-|       -e TRANSMISSION=true       | 内部transmission，true为开启，false为关闭，如果使用外部transmission，可以选择false关闭内部transmission |
-| -e TRANSMISSION_WEB_CONTROL=true | transmission增强版UI，true为启用，false为使用默认UI          |
-|   -e BGMI_SOURCE=mikan_project   | BGMI 默认数据源（bangumi_moe、mikan_project 或 dmhy）        |
-|   -e BGMI_ADMIN_TOKEN=password   | 设置 BGMI Web 界面身份验证令牌                               |
-|          -v /bgmi:/bgmi          | BGMI 配置文件目录                                            |
-|    -v /home/video2/NEW:/media    | 媒体文件目录，包含下载文件和硬链接后的文件                   |
+## 参数说明
+
+|                     Parameter                     | Function                                                     |
+| :-----------------------------------------------: | ------------------------------------------------------------ |
+|                     -p 80:80                      | BGMI Web端口                                                 |
+|                   -p 9091:9091                    | transmission web端口 当下载器设置为```-e DOWNLOADER=transmission```时，需要映射```9091```端口，```6800```和```6880```端口无需映射 |
+|                   -p 6800:6800                    | aria2 端口 当下载器设置为```-e DOWNLOADER=aria2```时，需要映射```6800```和```6880```端口，```9091```端口无需映射 |
+|                   -p 6880:6880                    | ariang Web端口                                               |
+|                -p 51413:51413/tcp                 | Torrent 端口 TCP                                             |
+|                -p 51413:51413/udp                 | Torrent 端口 UDP                                             |
+|                   -e PGID=1000                    | 对于 GroupID - 请参阅下面的[说明](https://github.com/DDS-Derek/bgmi-docker-all-in-one#puid-guid-%E8%AF%B4%E6%98%8E) |
+|                   -e PUID=1000                    | 对于 UserID - 请参阅下面的说明[说明](https://github.com/DDS-Derek/bgmi-docker-all-in-one#puid-guid-%E8%AF%B4%E6%98%8E) |
+|                -e TZ=Asia/Shanghai                | 时区                                                         |
+| -e DOWNLOADER=transmission \| -e DOWNLOADER=aria2 | 内部下载器，内置aria2和transmission，可以自行选择            |
+|           -e BGMI_SOURCE=mikan_project            | BGMI 默认数据源（bangumi_moe、mikan_project 或 dmhy）        |
+|           -e BGMI_ADMIN_TOKEN=password            | 设置 BGMI Web 界面身份验证令牌                               |
+|                  -v /bgmi:/bgmi                   | BGMI 配置文件目录                                            |
+|            -v /home/video2/NEW:/media             | 媒体文件目录，包含下载文件和硬链接后的文件                   |
 
 ## PUID GUID 说明
 

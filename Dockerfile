@@ -2,16 +2,17 @@ FROM codysk/bgmi-all-in-one-base:1.2
 
 LABEL maintainer="ddsrem@163.com"
 
-ENV LANG=C.UTF-8 BGMI_PATH="/bgmi/conf/bgmi" TRANSMISSION=true TRANSMISSION_WEB_CONTROL=true BGMI_SOURCE=mikan_project BGMI_ADMIN_TOKEN=password PUID=1000 PGID=1000
+ENV LANG=C.UTF-8 BGMI_PATH="/bgmi/conf/bgmi" DOWNLOADER=transmission BGMI_SOURCE=mikan_project BGMI_ADMIN_TOKEN=password PUID=1000 PGID=1000
 
 ADD ./ /home/bgmi-docker
 
 RUN \
     ## 安装软件包
-    apk add --update \
+    apk add --update --no-cache \
     wget \
     zip \
-    shadow && \
+    shadow \
+    aria2 && \
     ## 创建用户
     addgroup -S abc && \
     adduser -S abc -G abc -h /home/abc && \
@@ -25,9 +26,7 @@ RUN \
     mv /home/bgmi-docker/utils/crontab.sh /home/bgmi-docker/BGmi/bgmi/others/crontab.sh && \
     pip install /home/bgmi-docker/BGmi && \
     ## transmission-web-control安装
-    mkdir -p /home/bgmi-docker/transmission-web-control && \
-    cd /home/bgmi-docker/transmission-web-control && \
-    wget https://github.com/ronggang/transmission-web-control/raw/master/release/install-tr-control-cn.sh --no-check-certificate && \
+    cd /home/bgmi-docker/web/transmission && \
     echo 1 | bash install-tr-control-cn.sh && \
     ## 给予启动脚本权限
     chmod 755 /home/bgmi-docker/entrypoint.sh && \

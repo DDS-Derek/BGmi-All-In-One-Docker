@@ -81,7 +81,7 @@ services:
 |                   -e PGID=1000                    | 对于 GroupID - 请参阅下面的[说明](https://github.com/DDS-Derek/bgmi-docker-all-in-one#puid-guid-%E8%AF%B4%E6%98%8E) |
 |                   -e PUID=1000                    | 对于 UserID - 请参阅下面的说明[说明](https://github.com/DDS-Derek/bgmi-docker-all-in-one#puid-guid-%E8%AF%B4%E6%98%8E) |
 |                -e TZ=Asia/Shanghai                | 时区                                                         |
-| -e DOWNLOADER=transmission \| -e DOWNLOADER=aria2 | 内部下载器，内置aria2和transmission，可以自行选择            |
+| -e DOWNLOADER=transmission \| -e DOWNLOADER=aria2 | 内部下载器，内置aria2，transmission和false(关闭)，可以自行选择            |
 |           -e BGMI_SOURCE=mikan_project            | BGMI 默认数据源（bangumi_moe、mikan_project 或 dmhy）        |
 |           -e BGMI_ADMIN_TOKEN=password            | 设置 BGMI Web 界面身份验证令牌                               |
 |                  -v /bgmi:/bgmi                   | BGMI 配置文件目录                                            |

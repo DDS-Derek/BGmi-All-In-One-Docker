@@ -71,6 +71,10 @@ function init_proc {
 	if [[ ${DOWNLOADER} = 'aria2' ]]; then
 		bash /home/bgmi-docker/utils/aria2.sh
 	fi
+
+	if [[ ${DOWNLOADER} = 'false' ]]; then
+		cp /home/bgmi-docker/config/bgmi_supervisord.ini /etc/supervisor.d/bgmi_supervisord.ini
+	fi
 }
 
 if [ ! -f $first_lock ]; then

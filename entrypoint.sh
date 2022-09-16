@@ -169,4 +169,4 @@ chown bgmi:bgmi \
 	/media/cartoon \
 	/media/downloads
 
-exec /usr/bin/supervisord -n -c /etc/supervisor.d/bgmi_supervisord.ini
+exec /usr/bin/supervisord -n

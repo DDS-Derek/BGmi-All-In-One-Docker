@@ -128,7 +128,7 @@ function downloader {
 	fi
 
 	if [[ ${DOWNLOADER} = 'aria2' ]]; then
-		bash $dl_tools_dir/aria2.sh
+		bash $dl_tools_dir/aria2/start.sh
 	fi
 
 	if [[ ${DOWNLOADER} = 'false' ]]; then

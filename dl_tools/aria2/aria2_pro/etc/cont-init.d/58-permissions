@@ -12,7 +12,7 @@
 # This is free software, licensed under the MIT License.
 # See /LICENSE for more information.
 
-. /home/tools/aria2/aria2_pro/etc/init-base
+. /home/bgmi-docker/dl_tools/aria2/aria2_pro/etc/init-base
 chown -R p3terx:p3terx ${DOWNLOAD_DIR}
 chown -R p3terx:p3terx ${ARIA2_CONF_DIR}
 if [[ -z ${PUID} && -z ${PGID} ]] || [[ ${PUID} = 65534 && ${PGID} = 65534 ]]; then

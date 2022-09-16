@@ -3,6 +3,17 @@ FROM codysk/bgmi-all-in-one-base:1.2
 LABEL maintainer="ddsrem@163.com"
 
 ENV LANG=C.UTF-8 \
+    DOWNLOAD_DIR=/media/downloads \
+    RCLONE_CONFIG=/bgmi/conf/rclone/rclone.conf \
+    UPDATE_TRACKERS=true \
+    CUSTOM_TRACKER_URL= \
+    LISTEN_PORT=6888 \
+    RPC_PORT=6800 \
+    RPC_SECRET= \
+    DISK_CACHE= \
+    IPV6_MODE= \
+    UMASK_SET= \
+    SPECIAL_MODE= \
     BGMI_PATH="/bgmi/conf/bgmi" \
     DOWNLOADER=transmission \
     BGMI_SOURCE=mikan_project \

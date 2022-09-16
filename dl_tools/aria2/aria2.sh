@@ -2,16 +2,8 @@
 
 bgmi config DOWNLOAD_DELEGATE aria2-rpc
 
-mkdir -p /bgmi/conf/aria2
+cp /home/bgmi-docker/dl_tools/aria2/bgmi_nginx_ariang.conf /bgmi/conf/nginx/bgmi_nginx_ariang.conf
 
-if [ ! -f /bgmi/conf/aria2/aria2.session ]; then
-	touch /bgmi/conf/aria2/aria2.session
-fi
+cp /home/bgmi-docker/dl_tools/aria2/bgmi_supervisord-aria2.ini /etc/supervisor.d/bgmi_supervisord.ini
 
-cp /home/bgmi-docker/config/bgmi_nginx_ariang.conf /bgmi/conf/nginx/bgmi_nginx_ariang.conf
-
-cp /home/bgmi-docker/config/bgmi_supervisord-aria2.ini /etc/supervisor.d/bgmi_supervisord.ini
-
-if [ ! -f /bgmi/conf/aria2/aria2.conf ]; then
-	cp /home/bgmi-docker/config/aria2.conf /bgmi/conf/aria2/aria2.conf
-fi
+bash /home/bgmi-docker/dl_tools/aria2/aria2_pro/install.sh

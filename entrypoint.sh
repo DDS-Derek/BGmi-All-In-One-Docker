@@ -1,15 +1,59 @@
 #!/bin/bash
 
-first_lock="/bgmi_install.lock"
-bangumi_db="$BGMI_PATH/bangumi.db"
-bgmi_nginx_conf="/bgmi/conf/nginx/bgmi.conf"
-bgmi_hardlink_helper="/bgmi/bgmi_hardlink_helper/bgmi_hardlink_helper.py"
-bgmi_hardlink_helper_config="/bgmi/bgmi_hardlink_helper/config.py"
-
 pid=0
 
-function init_proc {
-	touch $first_lock
+first_lock="/bgmi_install.lock"
+
+## 创建文件夹
+function mkdir_dir {
+
+    nginx_run="/var/run/nginx"
+    bgmi_conf="/bgmi/conf/bgmi"
+    bgmi_nginx="/bgmi/conf/nginx"
+    bgmi_hardlink_helper_dir="/bgmi/bgmi_hardlink_helper"
+    bgmi_log="/bgmi/log"
+    supervisor_dir="/etc/supervisor.d"
+    media_cartoon="/media/cartoon"
+    meida_downloads="/media/downloads"
+
+	if [ ! -d $nginx_run ]; then
+		mkdir -p $nginx_run
+	fi
+
+	if [ ! -d $bgmi_conf ]; then
+		mkdir -p $bgmi_conf
+	fi
+
+	if [ ! -d $bgmi_nginx ]; then
+		mkdir -p $bgmi_nginx
+	fi
+
+	if [ ! -d $bgmi_hardlink_helper_dir ]; then
+		mkdir -p $bgmi_hardlink_helper_dir
+	fi
+
+	if [ ! -d $bgmi_log ]; then
+		mkdir -p $bgmi_log
+	fi
+
+	if [ ! -d $supervisor_dir ]; then
+		mkdir -p $supervisor_dir
+	fi
+
+	if [ ! -d $media_cartoon ]; then
+		mkdir -p $media_cartoon
+	fi
+
+	if [ ! -d $meida_downloads ]; then
+		mkdir -p $meida_downloads
+	fi
+
+}
+
+# 设置BGMI
+function config_bgmi {
+
+    bangumi_db="$BGMI_PATH/bangumi.db"
 
 	if [ ! -z $BGMI_ADMIN_TOKEN ]; then
 		admin_token=$BGMI_ADMIN_TOKEN
@@ -29,26 +73,31 @@ function init_proc {
 		bash /home/bgmi-docker/BGmi/bgmi/others/crontab.sh
 	fi
 
-	## 创建文件夹
-	mkdir -p /var/run/nginx
-	mkdir -p /bgmi/conf/bgmi
-	mkdir -p /bgmi/conf/nginx
-	mkdir -p /bgmi/bgmi_hardlink_helper
-	mkdir -p /bgmi/log
-	mkdir -p /etc/supervisor.d
-	mkdir -p /media/cartoon
-	mkdir -p /media/downloads
+}
 
-	## nginx
-	rm -rf /etc/nginx/conf.d
-	ln -s /bgmi/conf/nginx /etc/nginx/conf.d
+# 设置Nginx
+function config_nginx {
+
+    bgmi_nginx_conf="/bgmi/conf/nginx/bgmi.conf"
+    nginx_conf_dir="/etc/nginx/conf.d"
+    bgmi_nginx="/bgmi/conf/nginx"
+
+	rm -rf $nginx_conf_dir
+	ln -s $bgmi_nginx $nginx_conf_dir
 
 	if [ ! -f $bgmi_nginx_conf ]; then
 		cp /home/bgmi-docker/config/bgmi_nginx.conf $bgmi_nginx_conf
 	fi
-	sed -i "s/user nginx;/user abc;/g" /etc/nginx/nginx.conf
+	sed -i "s/user nginx;/user bgmi;/g" /etc/nginx/nginx.conf
 
-	## bgmi_hardlink_helper
+}
+
+# 设置bgmi_hardlink_helper
+function config_bgmi_hardlink_helper {
+
+    bgmi_hardlink_helper="/bgmi/bgmi_hardlink_helper/bgmi_hardlink_helper.py"
+    bgmi_hardlink_helper_config="/bgmi/bgmi_hardlink_helper/config.py"
+
 	if [ ! -f $bgmi_hardlink_helper ]; then
 		cp /home/bgmi-docker/bgmi_hardlink_helper/bgmi_hardlink_helper.py $bgmi_hardlink_helper
 	fi
@@ -57,30 +106,67 @@ function init_proc {
 		cp /home/bgmi-docker/bgmi_hardlink_helper/config.py $bgmi_hardlink_helper_config
 	fi
 
-	(crontab -l ; echo "0 */2 * * * su abc -c 'python3 /bgmi/bgmi_hardlink_helper/bgmi_hardlink_helper.py run'") | crontab -
+	(crontab -l ; echo "0 */2 * * * su bgmi -c 'python3 /bgmi/bgmi_hardlink_helper/bgmi_hardlink_helper.py run'") | crontab -
 
-	## permission
-	groupmod -o -g "$PGID" abc
-	usermod -o -u "$PUID" abc
+}
 
-	## downloader
+# 设置permission
+function permission {
+
+	groupmod -o -g "$PGID" bgmi
+	usermod -o -u "$PUID" bgmi
+
+}
+
+# 设置downloader
+function downloader {
+
+    dl_tools_dir="/home/bgmi-docker/dl_tools"
+
 	if [[ ${DOWNLOADER} = 'transmission' ]]; then
-		bash /home/bgmi-docker/utils/transmission.sh
+		bash $dl_tools_dir/transmission/start.sh
 	fi
 
-	if [[ ${DOWNLOADER} = 'aria2' ]]; then
-		bash /home/bgmi-docker/utils/aria2.sh
-	fi
+#	if [[ ${DOWNLOADER} = 'aria2' ]]; then
+#		bash $dl_tools_dir/aria2.sh
+#	fi
 
 	if [[ ${DOWNLOADER} = 'false' ]]; then
-		cp /home/bgmi-docker/config/bgmi_supervisord.ini /etc/supervisor.d/bgmi_supervisord.ini
+		cp $dl_tools_dir/default/bgmi_supervisord.ini /etc/supervisor.d/bgmi_supervisord.ini
 	fi
+
+}
+
+function init_proc {
+
+	touch $first_lock
+
 }
 
 if [ ! -f $first_lock ]; then
+
 	init_proc
+
+    mkdir_dir
+
+    config_bgmi
+
+    config_nginx
+
+    config_bgmi_hardlink_helper
+
+    permission
+
+    downloader
+
 fi
 
-bash /home/bgmi-docker/utils/permission.sh
+chown -R bgmi:bgmi \
+	/bgmi
+
+chown bgmi:bgmi \
+	/media \
+	/media/cartoon \
+	/media/downloads
 
 exec /usr/bin/supervisord -n

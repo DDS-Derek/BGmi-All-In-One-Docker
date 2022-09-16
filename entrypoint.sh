@@ -127,9 +127,9 @@ function downloader {
 		bash $dl_tools_dir/transmission/start.sh
 	fi
 
-#	if [[ ${DOWNLOADER} = 'aria2' ]]; then
-#		bash $dl_tools_dir/aria2.sh
-#	fi
+	if [[ ${DOWNLOADER} = 'aria2' ]]; then
+		bash $dl_tools_dir/aria2.sh
+	fi
 
 	if [[ ${DOWNLOADER} = 'false' ]]; then
 		cp $dl_tools_dir/default/bgmi_supervisord.ini /etc/supervisor.d/bgmi_supervisord.ini

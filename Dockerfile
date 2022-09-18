@@ -59,6 +59,6 @@ RUN \
 VOLUME ["/bgmi"]
 VOLUME [ "/media" ]
 
-EXPOSE 80 9091
+EXPOSE 80
 
 ENTRYPOINT ["/home/bgmi-docker/entrypoint.sh"]

@@ -118,21 +118,65 @@ function permission {
 
 }
 
+# transmission设置
+function transmission_install {
+
+	bgmi config DOWNLOAD_DELEGATE transmission-rpc
+
+	if [ ! -f /bgmi/conf/transmission ]; then
+		mkdir -p /bgmi/conf/transmission
+	fi
+
+	cp /home/bgmi-docker/dl_tools/transmission/bgmi_supervisord-transmission.ini /etc/supervisor.d/bgmi_supervisord.ini
+
+	cp /home/bgmi-docker/dl_tools/transmission/transmission-daemon /etc/conf.d/transmission-daemon
+
+	if [ ! -f /bgmi/conf/transmission/settings.json ]; then
+		cp /home/bgmi-docker/dl_tools/transmission/transmission_settings.json /bgmi/conf/transmission/settings.json
+	fi
+
+}
+
+# aria2设置
+function aria2_install {
+
+	aria2_settings_dir=/home/bgmi-docker/dl_tools/aria2
+
+	bgmi config DOWNLOAD_DELEGATE aria2-rpc
+	bgmi config ARIA2_RPC_TOKEN $RPC_SECRET
+
+	cp $aria2_settings_dir/bgmi_nginx_ariang.conf /bgmi/conf/nginx/bgmi_nginx_ariang.conf
+
+	cp $aria2_settings_dir/bgmi_supervisord-aria2.ini /etc/supervisor.d/bgmi_supervisord.ini
+
+	bash $aria2_settings_dir/aria2_pro/etc/cont-init.d/08-config
+	bash $aria2_settings_dir/aria2_pro/etc/cont-init.d/18-mode
+	bash $aria2_settings_dir/aria2_pro/etc/cont-init.d/28-fix
+	bash $aria2_settings_dir/aria2_pro/etc/cont-init.d/88-done
+
+}
+
+function default_install {
+
+	default_install_dir="/home/bgmi-docker/dl_tools"
+
+	cp $default_install_dir/default/bgmi_supervisord.ini /etc/supervisor.d/bgmi_supervisord.ini
+
+}
+
 # 设置downloader
 function downloader {
 
-    dl_tools_dir="/home/bgmi-docker/dl_tools"
-
 	if [[ ${DOWNLOADER} = 'transmission' ]]; then
-		bash $dl_tools_dir/transmission/start.sh
+		transmission_install
 	fi
 
 	if [[ ${DOWNLOADER} = 'aria2' ]]; then
-		bash $dl_tools_dir/aria2/start.sh
+		aria2_install
 	fi
 
 	if [[ ${DOWNLOADER} = 'false' ]]; then
-		cp $dl_tools_dir/default/bgmi_supervisord.ini /etc/supervisor.d/bgmi_supervisord.ini
+		default_install
 	fi
 
 }

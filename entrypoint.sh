@@ -213,4 +213,6 @@ chown bgmi:bgmi \
 	/media/cartoon \
 	/media/downloads
 
+umask ${UMASK}
+
 exec /usr/bin/supervisord -n

@@ -13,12 +13,37 @@
 ## 新增功能
 1. 支持硬链接，硬链接工具由[kaaass](https://github.com/kaaass/bgmi_hardlink_helper)大佬提供 (具体说明请看下方[硬链接介绍](https://github.com/DDS-Derek/bgmi-docker-all-in-one#%E7%A1%AC%E9%93%BE%E6%8E%A5%E8%AF%B4%E6%98%8E))
 2. 支持PUID和PGID设置
-3. 支持内部aria2，transmission下载器，可以在环境变量内设置是否启用
-4. 支持transmission增强版UI，可以在环境变量内设置是否启用
-4. 添加ariang管理界面
+3. 支持Umask设置
+4. 支持内部aria2-pro，transmission下载器，可以在环境变量内设置是否启用
+5. 支持transmission增强版UI，可以在环境变量内设置是否启用
+6. 添加ariang管理界面
 
 ## 部署
 ### docker-cli
+
+**Transmission**
+
+```bash
+docker run -itd \
+  --name=bgmi \
+  --restart always \
+  -v /bgmi:/bgmi \
+  -v /home/video2/NEW:/media \
+  -p 80:80 \
+  -p 9091:9091 \
+  -p 51413:51413/tcp \
+  -p 51413:51413/udp \
+  -e TZ=Asia/Shanghai \
+  -e PGID=1000 \
+  -e PUID=1000 \
+  -e UMASK=022 \
+  -e DOWNLOADER=transmission \
+  -e BGMI_SOURCE=mikan_project \
+  -e BGMI_ADMIN_TOKEN=password \
+  ddsderek/bgmi-docker-all-in-one:latest
+```
+
+**Aria2**
 
 ```bash
 docker run -itd \
@@ -30,17 +55,21 @@ docker run -itd \
   -p 9091:9091 \
   -p 6800:6800 \
   -p 6880:6880 \
-  -p 51413:51413/tcp \
-  -p 51413:51413/udp \
+  -p 6888:6888/tcp \
+  -p 6888:6888/udp \
   -e TZ=Asia/Shanghai \
   -e PGID=1000 \
   -e PUID=1000 \
-  -e DOWNLOADER=transmission \
+  -e UMASK=022 \
+  -e DOWNLOADER=aria2 \
   -e BGMI_SOURCE=mikan_project \
   -e BGMI_ADMIN_TOKEN=password \
   ddsderek/bgmi-docker-all-in-one:latest
 ```
+
 ### docker-compose
+
+**transmission**
 
 ```bash
 version: '3.3'
@@ -55,17 +84,45 @@ services:
         ports:
             - '80:80'
             - '9091:9091'
-            - '6800:6800'
-            - '6880:6880'
             - '51413:51413/tcp'
             - '51413:51413/udp'
         environment:
           - TZ=Asia/Shanghai
           - PGID=1000
           - PUID=1000
+          - UMASK=022
           - DOWNLOADER=transmission
           - BGMI_SOURCE=mikan_project
           - BGMI_ADMIN_TOKEN=password
+```
+
+**Aria2**
+
+```bash
+version: '3.3'
+services:
+    bgmi-docker-all-in-one:
+        container_name: bgmi
+        restart: always
+        volumes:
+            - '/bgmi:/bgmi'
+            - '/home/video2/NEW:/media'
+        ports:
+            - '80:80'
+            - '9091:9091'
+            - '6800:6800'
+            - '6880:6880'
+            - '6888:6888/tcp'
+            - '6888:6888/udp'
+        environment:
+            - TZ=Asia/Shanghai
+            - PGID=1000
+            - PUID=1000
+            - UMASK=022
+            - DOWNLOADER=aria2
+            - BGMI_SOURCE=mikan_project
+            - BGMI_ADMIN_TOKEN=password
+        image: 'ddsderek/bgmi-docker-all-in-one:latest'
 ```
 
 ## 参数说明

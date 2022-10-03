@@ -2,7 +2,10 @@ FROM codysk/bgmi-all-in-one-base:1.2
 
 LABEL maintainer="ddsrem@163.com"
 
-ENV LANG=C.UTF-8 \
+ENV BGMI_TAG=v2.2.13
+
+ENV BGMI_PATH="/bgmi/conf/bgmi" \
+    LANG=C.UTF-8 \
     DOWNLOAD_DIR=/media/downloads \
     RCLONE_CONFIG=/bgmi/conf/rclone/rclone.conf \
     UPDATE_TRACKERS=true \
@@ -14,7 +17,6 @@ ENV LANG=C.UTF-8 \
     IPV6_MODE= \
     UMASK=022 \
     SPECIAL_MODE= \
-    BGMI_PATH="/bgmi/conf/bgmi" \
     DOWNLOADER=transmission \
     BGMI_SOURCE=mikan_project \
     BGMI_ADMIN_TOKEN=password \
@@ -26,34 +28,43 @@ COPY --chmod=755 ./ /home/bgmi-docker
 RUN \
     ## 安装软件包
     apk add --update --no-cache \
-    wget \
-    zip \
     shadow \
     jq \
     findutils \
     && \
     ## 创建用户
     addgroup -S bgmi && \
-    adduser -S bgmi -G bgmi -h /home/bgmi && \
+    adduser -S bgmi -G bgmi -h /home/bgmi-docker && \
     usermod -s /bin/bash bgmi && \
     ## Bgmi程序主体下载安装
-    mkdir -p /home/bgmi-docker && \
-    cd /home/bgmi-docker && \
-    wget https://github.com/BGmi/BGmi/archive/refs/heads/master.zip && \
-    unzip /home/bgmi-docker/master.zip && \
-    mv /home/bgmi-docker/BGmi-master /home/bgmi-docker/BGmi && \
-    mv /home/bgmi-docker/config/crontab.sh /home/bgmi-docker/BGmi/bgmi/others/crontab.sh && \
-    pip install /home/bgmi-docker/BGmi && \
+    mkdir -p \
+        /home/bgmi-docker/BGmi && \
+    wget \
+        https://github.com/BGmi/BGmi/archive/refs/tags/${BGMI_TAG}.tar.gz \
+        -O /home/bgmi-docker/bgmi.tar.gz \
+    && \
+    tar \
+        -zxvf /home/bgmi-docker/bgmi.tar.gz \
+        -C /home/bgmi-docker/BGmi \
+        --strip-components 1 \
+    && \
+    mv \
+        /home/bgmi-docker/config/crontab.sh \
+        /home/bgmi-docker/BGmi/bgmi/others/crontab.sh \
+    && \
+    pip install \
+        /home/bgmi-docker/BGmi \
+    && \
     ## transmission-web-control安装
-    cd /home/bgmi-docker/dl_tools/transmission && \
-    echo 1 | bash install-tr-control-cn.sh && \
+    echo 1 | bash /home/bgmi-docker/dl_tools/transmission/install-tr-control-cn.sh && \
     ## Aria2-Pro安装
     curl -fsSL git.io/aria2c.sh | bash && \
     ## 清理
-    rm -rf /home/bgmi-docker/master.zip && \
-    rm -rf /var/cache/apk/* && \
-    rm -rf /root/.cache && \
-    rm -rf /tmp/*
+    rm -rf \
+        /home/bgmi-docker/bgmi.tar.gz \
+        /var/cache/apk/* \
+        /root/.cache \
+        /tmp/*
 
 
 VOLUME ["/bgmi"]

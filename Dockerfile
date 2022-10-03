@@ -1,4 +1,4 @@
-FROM codysk/bgmi-all-in-one-base:1.2
+FROM ddsderek/bgmi-docker-all-in-one:base
 
 LABEL maintainer="ddsrem@163.com"
 
@@ -26,12 +26,6 @@ ENV BGMI_PATH="/bgmi/conf/bgmi" \
 COPY --chmod=755 ./ /home/bgmi-docker
 
 RUN \
-    ## 安装软件包
-    apk add --update --no-cache \
-    shadow \
-    jq \
-    findutils \
-    && \
     ## 创建用户
     addgroup -S bgmi && \
     adduser -S bgmi -G bgmi -h /home/bgmi-docker && \

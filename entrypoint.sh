@@ -106,7 +106,7 @@ function config_bgmi_hardlink_helper {
 		cp /home/bgmi-docker/bgmi_hardlink_helper/config.py $bgmi_hardlink_helper_config
 	fi
 
-	(crontab -l ; echo "0 */2 * * * su bgmi -c 'python3 /bgmi/bgmi_hardlink_helper/bgmi_hardlink_helper.py run'") | crontab -
+	(crontab -l ; echo "30 */2 * * * su bgmi -c 'python3 /bgmi/bgmi_hardlink_helper/bgmi_hardlink_helper.py run'") | crontab -
 
 }
 

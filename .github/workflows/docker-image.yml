@@ -50,4 +50,13 @@ jobs:
           tags: |
             ${{ secrets.DOCKER_USERNAME }}/bgmi-docker-all-in-one:${{ steps.set-version.outputs.version }}
             ${{ secrets.DOCKER_USERNAME }}/bgmi-docker-all-in-one:latest
-            
+
+      -
+        name: Docker Hub Description
+        uses: peter-evans/dockerhub-description@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+          repository: ${{ secrets.DOCKER_USERNAME }}/bgmi-docker-all-in-one
+          short-description: BGmi Docker镜像，内置Transmission，Aria2-Pro下载器
+          readme-filepath: ./README.md

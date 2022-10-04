@@ -1,4 +1,4 @@
-name: 构建bgmi-docker-all-in-one镜像
+name: 构建BGmi-All-In-One镜像
 
 on:
     release:

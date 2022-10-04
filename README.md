@@ -1,15 +1,6 @@
 # bgmi-docker-all-in-one
 由https://github.com/codysk/bgmi-docker-all-in-one 镜像改编
 
-- [bgmi-docker-all-in-one](#bgmi-docker-all-in-one)
-  - [新增功能](#新增功能)
-  - [部署](#部署)
-    - [docker-cli](#docker-cli)
-    - [docker-compose](#docker-compose)
-  - [参数说明](#参数说明)
-  - [PUID GUID 说明](#puid-guid-说明)
-  - [硬链接说明](#硬链接说明)
-
 ## 新增功能
 1. 支持硬链接，硬链接工具由[kaaass](https://github.com/kaaass/bgmi_hardlink_helper)大佬提供 (具体说明请看下方[硬链接介绍](https://github.com/DDS-Derek/bgmi-docker-all-in-one#%E7%A1%AC%E9%93%BE%E6%8E%A5%E8%AF%B4%E6%98%8E))
 2. 支持PUID和PGID设置

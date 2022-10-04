@@ -3,5 +3,6 @@
 .git
 
 # Ignore useless files
+example/
 README.md
 LICENSE

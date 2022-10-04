@@ -1,0 +1,22 @@
+version: '3.3'
+services:
+    bgmi:
+        image: ddsderek/bgmi-docker-all-in-one:latest
+        container_name: "bgmi"
+        restart: "always"
+        volumes:
+          - /bgmi:/bgmi
+          - /media:/media
+        ports:
+            - '80:80'
+            - '9091:9091'
+            - '51413:51413/tcp'
+            - '51413:51413/udp'
+        environment:
+          - TZ=Asia/Shanghai
+          - PGID=1000
+          - PUID=1000
+          - UMASK=022
+          - DOWNLOADER=transmission
+          - BGMI_SOURCE=mikan_project
+          - BGMI_ADMIN_TOKEN=password

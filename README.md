@@ -62,59 +62,11 @@ docker run -itd \
 
 **transmission**
 
-```bash
-version: '3.3'
-services:
-    bgmi:
-        image: ddsderek/bgmi-docker-all-in-one:latest
-        container_name: "bgmi"
-        restart: "always"
-        volumes:
-          - /bgmi:/bgmi
-          - /home/video2/NEW:/media
-        ports:
-            - '80:80'
-            - '9091:9091'
-            - '51413:51413/tcp'
-            - '51413:51413/udp'
-        environment:
-          - TZ=Asia/Shanghai
-          - PGID=1000
-          - PUID=1000
-          - UMASK=022
-          - DOWNLOADER=transmission
-          - BGMI_SOURCE=mikan_project
-          - BGMI_ADMIN_TOKEN=password
-```
+[docker-compose]()
 
 **Aria2**
 
-```bash
-version: '3.3'
-services:
-    bgmi-docker-all-in-one:
-        container_name: bgmi
-        restart: always
-        volumes:
-            - '/bgmi:/bgmi'
-            - '/home/video2/NEW:/media'
-        ports:
-            - '80:80'
-            - '9091:9091'
-            - '6800:6800'
-            - '6880:6880'
-            - '6888:6888/tcp'
-            - '6888:6888/udp'
-        environment:
-            - TZ=Asia/Shanghai
-            - PGID=1000
-            - PUID=1000
-            - UMASK=022
-            - DOWNLOADER=aria2
-            - BGMI_SOURCE=mikan_project
-            - BGMI_ADMIN_TOKEN=password
-        image: 'ddsderek/bgmi-docker-all-in-one:latest'
-```
+[docker-compose]()
 
 ## 参数说明
 

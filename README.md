@@ -1,6 +1,7 @@
 # bgmi-docker-all-in-one
 
 [![Build](https://github.com/DDS-Derek/bgmi-docker-all-in-one/actions/workflows/docker-image.yml/badge.svg)](https://github.com/DDS-Derek/bgmi-docker-all-in-one/actions/workflows/docker-image.yml)
+[![Build](https://github.com/DDS-Derek/bgmi-docker-all-in-one/actions/workflows/docker-base-image.yml/badge.svg)](https://github.com/DDS-Derek/bgmi-docker-all-in-one/actions/workflows/docker-base-image.yml)
 
 由https://github.com/codysk/bgmi-docker-all-in-one 镜像改编
 

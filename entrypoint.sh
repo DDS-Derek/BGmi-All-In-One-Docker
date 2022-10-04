@@ -12,9 +12,9 @@ function mkdir_dir {
     bgmi_nginx="/bgmi/conf/nginx"
     bgmi_hardlink_helper_dir="/bgmi/bgmi_hardlink_helper"
     bgmi_log="/bgmi/log"
-    supervisor_dir="/etc/supervisor.d"
     media_cartoon="/media/cartoon"
     meida_downloads="/media/downloads"
+	supervisor_logs="/bgmi/log/supervisor"
 
 	if [ ! -d $nginx_run ]; then
 		mkdir -p $nginx_run
@@ -36,16 +36,16 @@ function mkdir_dir {
 		mkdir -p $bgmi_log
 	fi
 
-	if [ ! -d $supervisor_dir ]; then
-		mkdir -p $supervisor_dir
-	fi
-
 	if [ ! -d $media_cartoon ]; then
 		mkdir -p $media_cartoon
 	fi
 
 	if [ ! -d $meida_downloads ]; then
 		mkdir -p $meida_downloads
+	fi
+
+	if [ ! -d $supervisor_logs ]; then
+		mkdir -p $supervisor_logs
 	fi
 
 }
@@ -127,7 +127,7 @@ function transmission_install {
 		mkdir -p /bgmi/conf/transmission
 	fi
 
-	cp /home/bgmi-docker/dl_tools/transmission/bgmi_supervisord-transmission.ini /etc/supervisor.d/bgmi_supervisord.ini
+	cp /home/bgmi-docker/dl_tools/transmission/bgmi_supervisord-transmission.ini ${BGMI_HOME}/bgmi_supervisord.ini
 
 	cp /home/bgmi-docker/dl_tools/transmission/transmission-daemon /etc/conf.d/transmission-daemon
 
@@ -147,7 +147,7 @@ function aria2_install {
 
 	cp $aria2_settings_dir/bgmi_nginx_ariang.conf /bgmi/conf/nginx/bgmi_nginx_ariang.conf
 
-	cp $aria2_settings_dir/bgmi_supervisord-aria2.ini /etc/supervisor.d/bgmi_supervisord.ini
+	cp $aria2_settings_dir/bgmi_supervisord-aria2.ini ${BGMI_HOME}/bgmi_supervisord.ini
 
 	bash $aria2_settings_dir/aria2_pro/etc/cont-init.d/08-config
 	bash $aria2_settings_dir/aria2_pro/etc/cont-init.d/18-mode
@@ -160,7 +160,7 @@ function default_install {
 
 	default_install_dir="/home/bgmi-docker/dl_tools"
 
-	cp $default_install_dir/default/bgmi_supervisord.ini /etc/supervisor.d/bgmi_supervisord.ini
+	cp $default_install_dir/default/bgmi_supervisord.ini ${BGMI_HOME}/bgmi_supervisord.ini
 
 }
 
@@ -215,4 +215,4 @@ chown bgmi:bgmi \
 
 umask ${UMASK}
 
-exec /usr/bin/supervisord -n
+exec /usr/bin/supervisord -n -c ${BGMI_HOME}/bgmi_supervisord.ini

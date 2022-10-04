@@ -2,7 +2,7 @@
 
 pid=0
 
-first_lock="/bgmi_install.lock"
+first_lock="${BGMI_HOME}/bgmi_install.lock"
 
 ## 创建文件夹
 function mkdir_dir {

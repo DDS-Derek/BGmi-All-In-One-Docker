@@ -9,6 +9,10 @@
 5. 支持transmission增强版UI，可以在环境变量内设置是否启用
 6. 添加ariang管理界面
 
+## BGmi介绍
+
+[官方介绍和使用方法](https://github.com/BGmi/BGmi/blob/master/README.cn.md)
+
 ## 部署
 ### docker-cli
 

@@ -19,7 +19,7 @@ docker run -itd \
   --name=bgmi \
   --restart always \
   -v /bgmi:/bgmi \
-  -v /home/video2/NEW:/media \
+  -v /media:/media \
   -p 80:80 \
   -p 9091:9091 \
   -p 51413:51413/tcp \
@@ -41,9 +41,8 @@ docker run -itd \
   --name=bgmi \
   --restart always \
   -v /bgmi:/bgmi \
-  -v /home/video2/NEW:/media \
+  -v /media:/media \
   -p 80:80 \
-  -p 9091:9091 \
   -p 6800:6800 \
   -p 6880:6880 \
   -p 6888:6888/tcp \
@@ -55,6 +54,14 @@ docker run -itd \
   -e DOWNLOADER=aria2 \
   -e BGMI_SOURCE=mikan_project \
   -e BGMI_ADMIN_TOKEN=password \
+  -e UPDATE_TRACKERS=true \
+  -e CUSTOM_TRACKER_URL= \
+  -e LISTEN_PORT=6888 \
+  -e RPC_PORT=6800 \
+  -e RPC_SECRET= \
+  -e DISK_CACHE= \
+  -e IPV6_MODE= \
+  -e SPECIAL_MODE= \
   ddsderek/bgmi-docker-all-in-one:latest
 ```
 
@@ -62,11 +69,11 @@ docker run -itd \
 
 **transmission**
 
-[docker-compose]()
+[docker-compose](https://github.com/DDS-Derek/bgmi-docker-all-in-one/blob/master/example/transmission/docker-compose.yml)
 
 **Aria2**
 
-[docker-compose]()
+[docker-compose](https://github.com/DDS-Derek/bgmi-docker-all-in-one/blob/master/example/aria2-pro/docker-compose.yml)
 
 ## 参数说明
 

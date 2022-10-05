@@ -4,6 +4,8 @@ LABEL maintainer="ddsrem@163.com"
 
 # BGmi版本
 ENV BGMI_TAG=v2.2.13
+# Ariang版本
+ENV ARIANG_TAG=1.2.5
 
 ENV LANG=C.UTF-8
 
@@ -38,9 +40,17 @@ COPY --chmod=755 ./ /home/bgmi-docker
 
 RUN \
     ## 创建用户
-    addgroup -S bgmi && \
-    adduser -S bgmi -G bgmi -h /home/bgmi-docker && \
-    usermod -s /bin/bash bgmi && \
+    addgroup \
+        -S bgmi \
+    && \
+    adduser \
+        -S bgmi \
+        -G bgmi \
+        -h /home/bgmi-docker \
+    && \
+    usermod \
+        -s /bin/bash bgmi \
+    && \
     ## Bgmi程序主体下载安装
     mkdir -p \
         ${BGMI_HOME}/BGmi && \
@@ -61,12 +71,32 @@ RUN \
         ${BGMI_HOME}/BGmi \
     && \
     ## transmission-web-control安装
+    wget \
+        https://github.com/ronggang/transmission-web-control/raw/master/release/install-tr-control-cn.sh \
+        -O ${BGMI_HOME}/dl_tools/transmission/install-tr-control-cn.sh \
+    && \
+    chmod \
+        +x ${BGMI_HOME}/dl_tools/transmission/install-tr-control-cn.sh \
+    && \
     echo 1 | bash ${BGMI_HOME}/dl_tools/transmission/install-tr-control-cn.sh && \
     ## Aria2-Pro安装
     curl -fsSL git.io/aria2c.sh | bash && \
+    ## AriaNg安装
+    mkdir -p \
+        ${BGMI_HOME}/dl_tools/aria2/ariang \
+    && \
+    wget \
+        https://github.com/mayswind/AriaNg/releases/download/${ARIANG_TAG}/AriaNg-${ARIANG_TAG}.zip \
+        -O ${BGMI_HOME}/dl_tools/aria2/ariang/ariang.zip \
+    && \
+    unzip \
+        -d ${BGMI_HOME}/dl_tools/aria2/ariang \
+        ${BGMI_HOME}/dl_tools/aria2/ariang/ariang.zip \
+    && \
     ## 清理
     rm -rf \
         ${BGMI_HOME}/bgmi.tar.gz \
+        ${BGMI_HOME}/dl_tools/aria2/ariang/ariang.zip \
         /var/cache/apk/* \
         /root/.cache \
         /tmp/*

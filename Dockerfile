@@ -12,7 +12,6 @@ ENV LANG=C.UTF-8
 # 程序默认变量，不能修改
 ENV BGMI_PATH="/bgmi/conf/bgmi" \
     BGMI_HOME="/home/bgmi-docker" \
-    DOWNLOAD_DIR=/media/downloads \
     RCLONE_CONFIG=/bgmi/conf/rclone/rclone.conf
 
 # BGmi 设置
@@ -28,7 +27,8 @@ ENV UPDATE_TRACKERS=true \
     RPC_SECRET=password \
     DISK_CACHE= \
     IPV6_MODE= \
-    SPECIAL_MODE=
+    SPECIAL_MODE= \
+    DOWNLOAD_DIR=/media/downloads
 
 # 权限设置
 ENV PUID=1000 \

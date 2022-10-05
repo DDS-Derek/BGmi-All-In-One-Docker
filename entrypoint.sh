@@ -67,7 +67,7 @@ function config_bgmi {
 		bgmi install
 		bgmi source $data_source
 		bgmi config ADMIN_TOKEN $admin_token
-		bgmi config SAVE_PATH $DOWNLOAD_DIR
+		bash /home/bgmi-docker/BGmi/bgmi/others/crontab.sh
 	else
 		bgmi upgrade
 		bash /home/bgmi-docker/BGmi/bgmi/others/crontab.sh
@@ -105,6 +105,10 @@ function config_bgmi_hardlink_helper {
 	if [ ! -f $bgmi_hardlink_helper_config ]; then
 		cp /home/bgmi-docker/bgmi_hardlink_helper/config.py $bgmi_hardlink_helper_config
 	fi
+
+	echo "[+] bgmi_hardlink_helper install successfully"
+
+	echo "[+] crontab bgmi_hardlink_helper added"
 
 	(crontab -l ; echo "30 */2 * * * su bgmi -c 'python3 /bgmi/bgmi_hardlink_helper/bgmi_hardlink_helper.py run'") | crontab -
 

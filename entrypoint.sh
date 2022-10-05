@@ -167,15 +167,15 @@ function default_install {
 # 设置downloader
 function downloader {
 
-	if [[ ${DOWNLOADER} = 'transmission' ]]; then
+	if [[ ${BGMI_DOWNLOADER} = 'transmission' || ${BGMI_DOWNLOADER} = 'TR' || ${BGMI_DOWNLOADER} = 'tr' ]]; then
 		transmission_install
 	fi
 
-	if [[ ${DOWNLOADER} = 'aria2' ]]; then
+	if [[ ${BGMI_DOWNLOADER} = 'aria2' || ${BGMI_DOWNLOADER} = 'Aria2' ]]; then
 		aria2_install
 	fi
 
-	if [[ ${DOWNLOADER} = 'false' ]]; then
+	if [[ ${BGMI_DOWNLOADER} = 'false' || ${BGMI_DOWNLOADER} = 'disable' || ${BGMI_DOWNLOADER} = 'no' ]]; then
 		default_install
 	fi
 

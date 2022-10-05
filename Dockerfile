@@ -16,7 +16,7 @@ ENV BGMI_PATH="/bgmi/conf/bgmi" \
 # BGmi 设置
 ENV BGMI_SOURCE=mikan_project \
     BGMI_ADMIN_TOKEN=password \
-    DOWNLOADER=transmission
+    BGMI_DOWNLOADER=transmission
 
 # Aria2-Pro 设置
 ENV UPDATE_TRACKERS=true \

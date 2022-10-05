@@ -17,7 +17,7 @@ services:
             - PGID=1000
             - PUID=1000
             - UMASK=022
-            - DOWNLOADER=aria2
+            - BGMI_DOWNLOADER=aria2
             - BGMI_SOURCE=mikan_project
             - BGMI_ADMIN_TOKEN=password
             - UPDATE_TRACKERS=true

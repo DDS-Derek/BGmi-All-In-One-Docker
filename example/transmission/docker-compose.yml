@@ -17,6 +17,6 @@ services:
           - PGID=1000
           - PUID=1000
           - UMASK=022
-          - DOWNLOADER=transmission
+          - BGMI_DOWNLOADER=transmission
           - BGMI_SOURCE=mikan_project
           - BGMI_ADMIN_TOKEN=password

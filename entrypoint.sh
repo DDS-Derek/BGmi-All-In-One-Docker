@@ -67,7 +67,7 @@ function config_bgmi {
 		bgmi install
 		bgmi source $data_source
 		bgmi config ADMIN_TOKEN $admin_token
-		bgmi config SAVE_PATH /media/downloads
+		bgmi config SAVE_PATH $DOWNLOAD_DIR
 	else
 		bgmi upgrade
 		bash /home/bgmi-docker/BGmi/bgmi/others/crontab.sh
@@ -133,6 +133,11 @@ function transmission_install {
 
 	if [ ! -f /bgmi/conf/transmission/settings.json ]; then
 		cp /home/bgmi-docker/dl_tools/transmission/transmission_settings.json /bgmi/conf/transmission/settings.json
+	fi
+
+	if [ ! -z "${DOWNLOAD_DIR}" ]; then
+		sed -i "/\"download-dir\"/c\    \"download-dir\": \"$DOWNLOAD_DIR\"," /bgmi/conf/transmission/settings.json
+		sed -i "/\"incomplete-dir\"/c\    \"incomplete-dir\": \"$DOWNLOAD_DIR\"," /bgmi/conf/transmission/settings.json
 	fi
 
 }

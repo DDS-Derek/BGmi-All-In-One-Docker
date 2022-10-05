@@ -122,6 +122,7 @@ function permission {
 function transmission_install {
 
 	bgmi config DOWNLOAD_DELEGATE transmission-rpc
+	bgmi config SAVE_PATH $DOWNLOAD_DIR
 
 	if [ ! -f /bgmi/conf/transmission ]; then
 		mkdir -p /bgmi/conf/transmission
@@ -149,6 +150,7 @@ function aria2_install {
 
 	bgmi config DOWNLOAD_DELEGATE aria2-rpc
 	bgmi config ARIA2_RPC_TOKEN $RPC_SECRET
+	bgmi config SAVE_PATH $DOWNLOAD_DIR
 
 	cp $aria2_settings_dir/bgmi_nginx_ariang.conf /bgmi/conf/nginx/bgmi_nginx_ariang.conf
 

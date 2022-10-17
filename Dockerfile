@@ -3,7 +3,7 @@ FROM ddsderek/bgmi-docker-all-in-one:base
 LABEL maintainer="ddsrem@163.com"
 
 # BGmi版本
-ENV BGMI_TAG=v2.2.13
+ENV BGMI_TAG=v2.2.14
 # Ariang版本
 ENV ARIANG_TAG=1.2.5
 

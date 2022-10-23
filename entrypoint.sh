@@ -70,6 +70,8 @@ function config_bgmi {
 		bash /home/bgmi-docker/BGmi/bgmi/others/crontab.sh
 	else
 		bgmi upgrade
+		bgmi source $data_source
+		bgmi config ADMIN_TOKEN $admin_token
 		bash /home/bgmi-docker/BGmi/bgmi/others/crontab.sh
 	fi
 

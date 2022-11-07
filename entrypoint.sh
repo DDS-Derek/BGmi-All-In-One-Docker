@@ -215,7 +215,8 @@ if [ ! -f $first_lock ]; then
 fi
 
 chown -R bgmi:bgmi \
-	/bgmi
+	/bgmi \
+        /home/bgmi-docker
 
 chown bgmi:bgmi \
 	/media \

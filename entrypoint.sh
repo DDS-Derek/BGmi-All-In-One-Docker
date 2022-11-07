@@ -161,10 +161,7 @@ function aria2_install {
 
 	cp $aria2_settings_dir/bgmi_supervisord-aria2.ini ${BGMI_HOME}/bgmi_supervisord.ini
 
-	bash $aria2_settings_dir/aria2_pro/etc/cont-init.d/08-config
-	bash $aria2_settings_dir/aria2_pro/etc/cont-init.d/18-mode
-	bash $aria2_settings_dir/aria2_pro/etc/cont-init.d/28-fix
-	bash $aria2_settings_dir/aria2_pro/etc/cont-init.d/88-done
+	bash $aria2_settings_dir/aria2_pro/settings.sh
 
 }
 

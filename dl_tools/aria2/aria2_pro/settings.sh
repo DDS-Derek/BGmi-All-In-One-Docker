@@ -41,17 +41,7 @@ if ! [[ "${UPDATE_TRACKERS}" = "false" || "${UPDATE_TRACKERS}" = "disable" ]]; t
     bash ${SCRIPT_DIR}/tracker.sh ${ARIA2_CONF}
 fi
 
-INSTALL_RCLONE() {
-    if [[ ! -f /usr/local/bin/rclone ]]; then
-        echo
-        echo -e "${INFO} Installing RCLONE ..."
-        [[ -L /usr/bin/unzip ]] && rm -f /usr/bin/unzip
-        curl -fsSL https://rclone.org/install.sh | bash
-    fi
-}
-
 if [[ "${SPECIAL_MODE}" = "rclone" ]]; then
-    INSTALL_RCLONE
     PROFILES="upload.sh rclone.env"
 elif [[ "${SPECIAL_MODE}" = "move" ]]; then
     PROFILES="move.sh"

@@ -93,6 +93,9 @@ RUN \
         -d ${BGMI_HOME}/dl_tools/aria2/ariang \
         ${BGMI_HOME}/dl_tools/aria2/ariang/ariang.zip \
     && \
+    ## rclone安装
+    curl -fsSL https://rclone.org/install.sh | bash \
+    && \
     ## 清理
     rm -rf \
         ${BGMI_HOME}/bgmi.tar.gz \

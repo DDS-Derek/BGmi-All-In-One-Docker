@@ -17,7 +17,7 @@ ENV BGMI_PATH="/bgmi/conf/bgmi" \
 # BGmi 设置
 ENV BGMI_SOURCE=mikan_project \
     BGMI_ADMIN_TOKEN=password \
-    BGMI_DOWNLOADER=transmission
+    BGMI_DOWNLOADER=aria2
 
 # Aria2-Pro 设置
 ENV UPDATE_TRACKERS=true \
@@ -98,11 +98,11 @@ RUN \
     && \
     git clone \
         https://github.com/album-GitHub/bgmi_hardlink_helper.git \
-        /home/bgmi-docker/bgmi_hardlink_helper \
+        ${BGMI_HOME}/bgmi_hardlink_helper \
     && \
     git clone \
         https://github.com/kaaass/bgmi_hardlink_helper.git \
-        /home/bgmi-docker/bgmi_hardlink_helper_old_1 \
+        ${BGMI_HOME}/bgmi_hardlink_helper_old_1 \
     && \
     ## 清理
     rm -rf \

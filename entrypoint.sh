@@ -118,8 +118,13 @@ function config_bgmi_hardlink_helper {
 # 设置permission
 function permission {
 
-	groupmod -o -g "$PGID" bgmi
-	usermod -o -u "$PUID" bgmi
+	if [[ -z ${PUID} && -z ${PGID} ]] || [[ ${PUID} = 65534 && ${PGID} = 65534 ]]; then
+    	echo -e "\033[31mIgnore permission settings.\033[0m"
+		exit 1
+	else
+		groupmod -o -g "$PGID" bgmi
+		usermod -o -u "$PUID" bgmi
+	fi
 
 }
 
@@ -222,6 +227,9 @@ chown bgmi:bgmi \
 	/media \
 	/media/cartoon \
 	/media/downloads
+
+cat /home/bgmi-docker/dl_tools/BGmi-Docker
+echo
 
 umask ${UMASK}
 

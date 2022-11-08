@@ -96,6 +96,14 @@ RUN \
     ## rclone安装
     curl -fsSL https://rclone.org/install.sh | bash \
     && \
+    git clone \
+        https://github.com/album-GitHub/bgmi_hardlink_helper.git \
+        /home/bgmi-docker/bgmi_hardlink_helper \
+    && \
+    git clone 
+        https://github.com/kaaass/bgmi_hardlink_helper.git \
+        /home/bgmi-docker/bgmi_hardlink_helper_old_1 \
+    && \
     ## 清理
     rm -rf \
         ${BGMI_HOME}/bgmi.tar.gz \

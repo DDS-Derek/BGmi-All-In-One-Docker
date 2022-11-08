@@ -100,7 +100,7 @@ RUN \
         https://github.com/album-GitHub/bgmi_hardlink_helper.git \
         /home/bgmi-docker/bgmi_hardlink_helper \
     && \
-    git clone 
+    git clone \
         https://github.com/kaaass/bgmi_hardlink_helper.git \
         /home/bgmi-docker/bgmi_hardlink_helper_old_1 \
     && \

@@ -35,7 +35,8 @@ DOWNLOAD_PROFILE
 }
 
 if ! [[ "${UPDATE_TRACKERS}" = "false" || "${UPDATE_TRACKERS}" = "disable" ]]; then
-    (crontab -l ; echo "0 7 * * * su bgmi -c 'sleep $((RANDOM % 1800)); bash /config/aria2/script/tracker.sh /config/aria2/aria2.conf RPC 2>&1 | tee /config/logs/tracker.log'") | crontab -
+    (crontab -l ; echo "0 7 * * * su bgmi -c 'sleep $((RANDOM % 1800)); bash /bgmi/conf/aria2/script/tracker.sh /bgmi/conf/aria2/aria2.conf RPC 2>&1 | tee /bgmi/log/tracker.log'") | crontab -
+    touch /bgmi/log/tracker.log
     PROFILES="tracker.sh"
     DOWNLOAD_PROFILE
     bash ${SCRIPT_DIR}/tracker.sh ${ARIA2_CONF}

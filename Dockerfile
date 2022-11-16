@@ -5,7 +5,7 @@ LABEL maintainer="ddsrem@163.com"
 # BGmi版本
 ENV BGMI_TAG=v2.2.15
 # Ariang版本
-ENV ARIANG_TAG=1.3.1
+ENV ARIANG_TAG=1.3.2
 
 ENV LANG=C.UTF-8
 

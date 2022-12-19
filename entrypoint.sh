@@ -2,8 +2,6 @@
 
 pid=0
 
-first_lock="${BGMI_HOME}/bgmi_install.lock"
-
 ## 创建文件夹
 function mkdir_dir {
 
@@ -195,6 +193,8 @@ function downloader {
 
 }
 
+first_lock="${BGMI_HOME}/bgmi_install.lock"
+
 function init_proc {
 
 	touch $first_lock
@@ -221,12 +221,20 @@ fi
 
 chown -R bgmi:bgmi \
 	/bgmi \
-        /home/bgmi-docker
+    /home/bgmi-docker
 
-chown bgmi:bgmi \
-	/media \
-	/media/cartoon \
-	/media/downloads
+if [[ "$(stat -c '%U' /media)" != "bgmi" ]] || [[ "$(stat -c '%G' /media)" != "bgmi" ]]; then
+    chown bgmi:bgmi \
+        /media
+fi
+if [[ "$(stat -c '%U' /media/cartoon)" != "bgmi" ]] || [[ "$(stat -c '%G' /media/cartoon)" != "bgmi" ]]; then
+    chown bgmi:bgmi \
+        /media/cartoon
+fi
+if [[ "$(stat -c '%U' /media/downloads)" != "bgmi" ]] || [[ "$(stat -c '%G' /media/downloads)" != "bgmi" ]]; then
+    chown bgmi:bgmi \
+        /media/downloads
+fi
 
 cat /home/bgmi-docker/dl_tools/BGmi-Docker
 echo

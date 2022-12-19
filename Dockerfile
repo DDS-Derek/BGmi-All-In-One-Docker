@@ -14,10 +14,18 @@ ENV BGMI_PATH="/bgmi/conf/bgmi" \
     BGMI_HOME="/home/bgmi-docker" \
     RCLONE_CONFIG=/bgmi/conf/rclone/rclone.conf
 
+# 权限设置
+ENV PUID=1000 \
+    PGID=1000 \
+    UMASK=022
+
 # BGmi 设置
 ENV BGMI_SOURCE=mikan_project \
     BGMI_ADMIN_TOKEN=password \
     BGMI_DOWNLOADER=aria2
+
+# Downloader 设置
+ENV DOWNLOAD_DIR=/media/downloads
 
 # Aria2-Pro 设置
 ENV UPDATE_TRACKERS=true \
@@ -27,14 +35,7 @@ ENV UPDATE_TRACKERS=true \
     RPC_SECRET=password \
     DISK_CACHE= \
     IPV6_MODE= \
-    SPECIAL_MODE= \
-    DOWNLOAD_DIR=/media/downloads
-
-# 权限设置
-ENV PUID=1000 \
-    PGID=1000 \
-    UMASK=022
-
+    SPECIAL_MODE=
 
 COPY --chmod=755 ./ /home/bgmi-docker
 
@@ -72,7 +73,7 @@ RUN \
     pip install \
         ${BGMI_HOME}/BGmi \
     && \
-    ## transmission-web-control安装
+    ## transmission-web-control 安装
     wget \
         https://github.com/ronggang/transmission-web-control/raw/master/release/install-tr-control-cn.sh \
         -O ${BGMI_HOME}/dl_tools/transmission/install-tr-control-cn.sh \
@@ -80,10 +81,12 @@ RUN \
     chmod \
         +x ${BGMI_HOME}/dl_tools/transmission/install-tr-control-cn.sh \
     && \
-    echo 1 | bash ${BGMI_HOME}/dl_tools/transmission/install-tr-control-cn.sh && \
-    ## Aria2-Pro安装
-    curl -fsSL git.io/aria2c.sh | bash && \
-    ## AriaNg安装
+    echo 1 | bash ${BGMI_HOME}/dl_tools/transmission/install-tr-control-cn.sh \
+    && \
+    ## Aria2-Pro 安装
+    curl -fsSL git.io/aria2c.sh | bash \
+    && \
+    ## AriaNg 安装
     mkdir -p \
         ${BGMI_HOME}/dl_tools/aria2/ariang \
     && \
@@ -95,9 +98,10 @@ RUN \
         -d ${BGMI_HOME}/dl_tools/aria2/ariang \
         ${BGMI_HOME}/dl_tools/aria2/ariang/ariang.zip \
     && \
-    ## rclone安装
+    ## rclone 安装
     curl -fsSL https://rclone.org/install.sh | bash \
     && \
+    ## Hardlink 安装
     git clone \
         https://github.com/album-GitHub/bgmi_hardlink_helper.git \
         ${BGMI_HOME}/bgmi_hardlink_helper \
@@ -113,7 +117,6 @@ RUN \
         /var/cache/apk/* \
         /root/.cache \
         /tmp/*
-
 
 VOLUME ["/bgmi"]
 VOLUME [ "/media" ]

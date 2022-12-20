@@ -97,19 +97,19 @@ function config_bgmi_hardlink_helper {
     bgmi_hardlink_helper="/bgmi/bgmi_hardlink_helper/bgmi_hardlink_helper.py"
     bgmi_hardlink_helper_config="/bgmi/bgmi_hardlink_helper/config.py"
 
-	if [ ! -f $bgmi_hardlink_helper ]; then
-		cp /home/bgmi-docker/bgmi_hardlink_helper/bgmi_hardlink_helper.py $bgmi_hardlink_helper
-	fi
+    if [ ! -f $bgmi_hardlink_helper ]; then
+    	cp /home/bgmi-docker/bgmi_hardlink_helper/bgmi_hardlink_helper.py $bgmi_hardlink_helper
+    fi
 
-	if [ ! -f $bgmi_hardlink_helper_config ]; then
-		cp /home/bgmi-docker/bgmi_hardlink_helper/config.py $bgmi_hardlink_helper_config
-	fi
+    if [ ! -f $bgmi_hardlink_helper_config ]; then
+    	cp /home/bgmi-docker/bgmi_hardlink_helper/config.py $bgmi_hardlink_helper_config
+    fi
 
-	echo "[+] bgmi_hardlink_helper install successfully"
+    echo "[+] bgmi_hardlink_helper install successfully"
 
-	echo "[+] crontab bgmi_hardlink_helper added"
+    echo "[+] crontab bgmi_hardlink_helper added"
 
-	(crontab -l ; echo "30 */2 * * * su bgmi -c 'python3 /bgmi/bgmi_hardlink_helper/bgmi_hardlink_helper.py run'") | crontab -
+    (crontab -l ; echo "30 */2 * * * su bgmi -c 'python3 /bgmi/bgmi_hardlink_helper/bgmi_hardlink_helper.py run'") | crontab -
 
 }
 
@@ -197,7 +197,7 @@ first_lock="${BGMI_HOME}/bgmi_install.lock"
 
 function init_proc {
 
-	touch $first_lock
+    touch $first_lock
 
 }
 

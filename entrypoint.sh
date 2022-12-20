@@ -10,8 +10,8 @@ function mkdir_dir {
     bgmi_nginx="/bgmi/conf/nginx"
     bgmi_hardlink_helper_dir="/bgmi/bgmi_hardlink_helper"
     bgmi_log="/bgmi/log"
-    media_cartoon="/media/cartoon"
-    meida_downloads="/media/downloads"
+    media_cartoon=${MEDIA_DIR}
+    meida_downloads=${DOWNLOAD_DIR}
     supervisor_logs="/bgmi/log/supervisor"
 
     if [ ! -d $nginx_run ]; then
@@ -84,9 +84,40 @@ function config_nginx {
     rm -rf $nginx_conf_dir
     ln -s $bgmi_nginx $nginx_conf_dir
 
+#    if [ ! -f $bgmi_nginx_conf ]; then
+#    	cp /home/bgmi-docker/config/bgmi_nginx.conf $bgmi_nginx_conf
+#    fi
+
     if [ ! -f $bgmi_nginx_conf ]; then
-    	cp /home/bgmi-docker/config/bgmi_nginx.conf $bgmi_nginx_conf
+    	touch $bgmi_nginx_conf
     fi
+    cat > $bgmi_nginx_conf << EOF
+server {
+    listen 80 default_server;
+    server_name _;
+    root /bgmi/;
+    autoindex on;
+    charset utf-8;
+
+    location /bangumi {
+        alias ${DOWNLOAD_DIR};
+    }
+
+    location /api {
+        proxy_pass http://127.0.0.1:8888;
+    }
+
+    location /resource {
+        proxy_pass http://127.0.0.1:8888;
+    }
+
+    location / {
+        alias /bgmi/conf/bgmi/front_static/;
+    }
+}
+
+EOF
+
     sed -i "s/user nginx;/user bgmi;/g" /etc/nginx/nginx.conf
 
 }
@@ -227,13 +258,13 @@ if [[ "$(stat -c '%U' /media)" != "bgmi" ]] || [[ "$(stat -c '%G' /media)" != "b
     chown bgmi:bgmi \
         /media
 fi
-if [[ "$(stat -c '%U' /media/cartoon)" != "bgmi" ]] || [[ "$(stat -c '%G' /media/cartoon)" != "bgmi" ]]; then
+if [[ "$(stat -c '%U' ${MEDIA_DIR})" != "bgmi" ]] || [[ "$(stat -c '%G' ${MEDIA_DIR})" != "bgmi" ]]; then
     chown bgmi:bgmi \
-        /media/cartoon
+        ${MEDIA_DIR}
 fi
-if [[ "$(stat -c '%U' /media/downloads)" != "bgmi" ]] || [[ "$(stat -c '%G' /media/downloads)" != "bgmi" ]]; then
+if [[ "$(stat -c '%U' ${DOWNLOAD_DIR})" != "bgmi" ]] || [[ "$(stat -c '%G' ${DOWNLOAD_DIR})" != "bgmi" ]]; then
     chown bgmi:bgmi \
-        /media/downloads
+        ${DOWNLOAD_DIR}
 fi
 
 cat /home/bgmi-docker/dl_tools/BGmi-Docker

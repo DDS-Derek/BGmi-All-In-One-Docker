@@ -24,8 +24,10 @@ ENV BGMI_SOURCE=mikan_project \
     BGMI_ADMIN_TOKEN=password \
     BGMI_DOWNLOADER=aria2
 
-# Downloader 设置
-ENV DOWNLOAD_DIR=/media/downloads
+# DIR 设置
+# 注意：这两个目录必须在 /media 下
+ENV DOWNLOAD_DIR=/media/downloads \
+    MEDIA_DIR=/media/cartoon
 
 # Aria2-Pro 设置
 ENV UPDATE_TRACKERS=true \

@@ -116,80 +116,80 @@ function config_bgmi_hardlink_helper {
 # 设置permission
 function permission {
 
-	if [[ -z ${PUID} && -z ${PGID} ]] || [[ ${PUID} = 65534 && ${PGID} = 65534 ]]; then
+    if [[ -z ${PUID} && -z ${PGID} ]] || [[ ${PUID} = 65534 && ${PGID} = 65534 ]]; then
     	echo -e "\033[31mIgnore permission settings.\033[0m"
-		exit 1
-	else
-		groupmod -o -g "$PGID" bgmi
-		usermod -o -u "$PUID" bgmi
-	fi
+    	exit 1
+    else
+    	groupmod -o -g "$PGID" bgmi
+    	usermod -o -u "$PUID" bgmi
+    fi
 
 }
 
 # transmission设置
 function transmission_install {
 
-	bgmi config DOWNLOAD_DELEGATE transmission-rpc
-	bgmi config SAVE_PATH $DOWNLOAD_DIR
+    bgmi config DOWNLOAD_DELEGATE transmission-rpc
+    bgmi config SAVE_PATH $DOWNLOAD_DIR
 
-	if [ ! -f /bgmi/conf/transmission ]; then
-		mkdir -p /bgmi/conf/transmission
-	fi
+    if [ ! -f /bgmi/conf/transmission ]; then
+        mkdir -p /bgmi/conf/transmission
+    fi
 
-	cp /home/bgmi-docker/dl_tools/transmission/bgmi_supervisord-transmission.ini ${BGMI_HOME}/bgmi_supervisord.ini
+    cp /home/bgmi-docker/dl_tools/transmission/bgmi_supervisord-transmission.ini ${BGMI_HOME}/bgmi_supervisord.ini
 
-	cp /home/bgmi-docker/dl_tools/transmission/transmission-daemon /etc/conf.d/transmission-daemon
+    cp /home/bgmi-docker/dl_tools/transmission/transmission-daemon /etc/conf.d/transmission-daemon
 
-	if [ ! -f /bgmi/conf/transmission/settings.json ]; then
-		cp /home/bgmi-docker/dl_tools/transmission/transmission_settings.json /bgmi/conf/transmission/settings.json
-	fi
+    if [ ! -f /bgmi/conf/transmission/settings.json ]; then
+    	cp /home/bgmi-docker/dl_tools/transmission/transmission_settings.json /bgmi/conf/transmission/settings.json
+    fi
 
-	if [ ! -z "${DOWNLOAD_DIR}" ]; then
-		sed -i "/\"download-dir\"/c\    \"download-dir\": \"$DOWNLOAD_DIR\"," /bgmi/conf/transmission/settings.json
-		sed -i "/\"incomplete-dir\"/c\    \"incomplete-dir\": \"$DOWNLOAD_DIR\"," /bgmi/conf/transmission/settings.json
-	fi
+    if [ ! -z "${DOWNLOAD_DIR}" ]; then
+    	sed -i "/\"download-dir\"/c\    \"download-dir\": \"$DOWNLOAD_DIR\"," /bgmi/conf/transmission/settings.json
+    	sed -i "/\"incomplete-dir\"/c\    \"incomplete-dir\": \"$DOWNLOAD_DIR\"," /bgmi/conf/transmission/settings.json
+    fi
 
 }
 
 # aria2设置
 function aria2_install {
 
-	aria2_settings_dir=/home/bgmi-docker/dl_tools/aria2
+    aria2_settings_dir=/home/bgmi-docker/dl_tools/aria2
 
-	bgmi config DOWNLOAD_DELEGATE aria2-rpc
-	bgmi config ARIA2_RPC_TOKEN $RPC_SECRET
-	bgmi config SAVE_PATH $DOWNLOAD_DIR
+    bgmi config DOWNLOAD_DELEGATE aria2-rpc
+    bgmi config ARIA2_RPC_TOKEN $RPC_SECRET
+    bgmi config SAVE_PATH $DOWNLOAD_DIR
 
-	cp $aria2_settings_dir/bgmi_nginx_ariang.conf /bgmi/conf/nginx/bgmi_nginx_ariang.conf
+    cp $aria2_settings_dir/bgmi_nginx_ariang.conf /bgmi/conf/nginx/bgmi_nginx_ariang.conf
 
-	cp $aria2_settings_dir/bgmi_supervisord-aria2.ini ${BGMI_HOME}/bgmi_supervisord.ini
+    cp $aria2_settings_dir/bgmi_supervisord-aria2.ini ${BGMI_HOME}/bgmi_supervisord.ini
 
-	bash $aria2_settings_dir/aria2_pro/settings.sh
+    bash $aria2_settings_dir/aria2_pro/settings.sh
 
 }
 
 function default_install {
 
-	default_install_dir="/home/bgmi-docker/dl_tools"
+    default_install_dir="/home/bgmi-docker/dl_tools"
 
-	cp $default_install_dir/default/bgmi_supervisord.ini ${BGMI_HOME}/bgmi_supervisord.ini
+    cp $default_install_dir/default/bgmi_supervisord.ini ${BGMI_HOME}/bgmi_supervisord.ini
 
 }
 
 # 设置downloader
 function downloader {
 
-	if [[ ${BGMI_DOWNLOADER} = 'transmission' || ${BGMI_DOWNLOADER} = 'TR' || ${BGMI_DOWNLOADER} = 'tr' ]]; then
-		transmission_install
-	fi
+    if [[ ${BGMI_DOWNLOADER} = 'transmission' || ${BGMI_DOWNLOADER} = 'TR' || ${BGMI_DOWNLOADER} = 'tr' ]]; then
+    	transmission_install
+    fi
 
-	if [[ ${BGMI_DOWNLOADER} = 'aria2' || ${BGMI_DOWNLOADER} = 'Aria2' ]]; then
-		aria2_install
-	fi
+    if [[ ${BGMI_DOWNLOADER} = 'aria2' || ${BGMI_DOWNLOADER} = 'Aria2' ]]; then
+    	aria2_install
+    fi
 
-	if [[ ${BGMI_DOWNLOADER} = 'false' || ${BGMI_DOWNLOADER} = 'disable' || ${BGMI_DOWNLOADER} = 'no' ]]; then
-		default_install
-	fi
+    if [[ ${BGMI_DOWNLOADER} = 'false' || ${BGMI_DOWNLOADER} = 'disable' || ${BGMI_DOWNLOADER} = 'no' ]]; then
+    	default_install
+    fi
 
 }
 
@@ -220,9 +220,9 @@ if [ ! -f $first_lock ]; then
 fi
 
 chown -R bgmi:bgmi \
-	/home/bgmi-docker
+    /home/bgmi-docker
 chown -R bgmi:bgmi \
-	/bgmi
+    /bgmi
 if [[ "$(stat -c '%U' /media)" != "bgmi" ]] || [[ "$(stat -c '%G' /media)" != "bgmi" ]]; then
     chown bgmi:bgmi \
         /media

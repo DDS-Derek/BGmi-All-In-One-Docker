@@ -39,8 +39,6 @@ ENV UPDATE_TRACKERS=true \
     IPV6_MODE= \
     SPECIAL_MODE=
 
-COPY --chmod=755 ./ /home/bgmi-docker
-
 RUN \
     ## 创建用户
     addgroup \
@@ -68,14 +66,13 @@ RUN \
         -C ${BGMI_HOME}/BGmi \
         --strip-components 1 \
     && \
-    mv \
-        ${BGMI_HOME}/config/crontab.sh \
-        ${BGMI_HOME}/BGmi/bgmi/others/crontab.sh \
-    && \
     pip install \
         ${BGMI_HOME}/BGmi \
     && \
-    ## transmission-web-control 安装
+    ## Transmission Web Control 安装
+    mkdir -p \
+        ${BGMI_HOME}/dl_tools/transmission \
+    && \
     wget \
         https://github.com/ronggang/transmission-web-control/raw/master/release/install-tr-control-cn.sh \
         -O ${BGMI_HOME}/dl_tools/transmission/install-tr-control-cn.sh \
@@ -119,6 +116,8 @@ RUN \
         /var/cache/apk/* \
         /root/.cache \
         /tmp/*
+
+COPY --chmod=755 . /home/bgmi-docker
 
 VOLUME ["/bgmi"]
 VOLUME [ "/media" ]

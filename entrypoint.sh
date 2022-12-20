@@ -72,6 +72,8 @@ function config_bgmi {
     	bash /home/bgmi-docker/BGmi/bgmi/others/crontab.sh
     fi
 
+    cp ${BGMI_HOME}/config/crontab.sh ${BGMI_HOME}/BGmi/bgmi/others/crontab.sh
+
 }
 
 # 设置Nginx

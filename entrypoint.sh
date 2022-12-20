@@ -203,7 +203,7 @@ function init_proc {
 
 if [ ! -f $first_lock ]; then
 
-	init_proc
+    init_proc
 
     mkdir_dir
 
@@ -220,9 +220,9 @@ if [ ! -f $first_lock ]; then
 fi
 
 chown -R bgmi:bgmi \
-	/bgmi \
-    /home/bgmi-docker
-
+	/home/bgmi-docker
+chown -R bgmi:bgmi \
+	/bgmi
 if [[ "$(stat -c '%U' /media)" != "bgmi" ]] || [[ "$(stat -c '%G' /media)" != "bgmi" ]]; then
     chown bgmi:bgmi \
         /media

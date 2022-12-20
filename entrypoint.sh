@@ -12,39 +12,39 @@ function mkdir_dir {
     bgmi_log="/bgmi/log"
     media_cartoon="/media/cartoon"
     meida_downloads="/media/downloads"
-	supervisor_logs="/bgmi/log/supervisor"
+    supervisor_logs="/bgmi/log/supervisor"
 
-	if [ ! -d $nginx_run ]; then
-		mkdir -p $nginx_run
-	fi
+    if [ ! -d $nginx_run ]; then
+    	mkdir -p $nginx_run
+    fi
 
-	if [ ! -d $bgmi_conf ]; then
-		mkdir -p $bgmi_conf
-	fi
+    if [ ! -d $bgmi_conf ]; then
+    	mkdir -p $bgmi_conf
+    fi
 
-	if [ ! -d $bgmi_nginx ]; then
-		mkdir -p $bgmi_nginx
-	fi
+    if [ ! -d $bgmi_nginx ]; then
+    	mkdir -p $bgmi_nginx
+    fi
 
-	if [ ! -d $bgmi_hardlink_helper_dir ]; then
-		mkdir -p $bgmi_hardlink_helper_dir
-	fi
+    if [ ! -d $bgmi_hardlink_helper_dir ]; then
+    	mkdir -p $bgmi_hardlink_helper_dir
+    fi
 
-	if [ ! -d $bgmi_log ]; then
-		mkdir -p $bgmi_log
-	fi
+    if [ ! -d $bgmi_log ]; then
+    	mkdir -p $bgmi_log
+    fi
 
-	if [ ! -d $media_cartoon ]; then
-		mkdir -p $media_cartoon
-	fi
+    if [ ! -d $media_cartoon ]; then
+    	mkdir -p $media_cartoon
+    fi
 
-	if [ ! -d $meida_downloads ]; then
-		mkdir -p $meida_downloads
-	fi
+    if [ ! -d $meida_downloads ]; then
+    	mkdir -p $meida_downloads
+    fi
 
-	if [ ! -d $supervisor_logs ]; then
-		mkdir -p $supervisor_logs
-	fi
+    if [ ! -d $supervisor_logs ]; then
+    	mkdir -p $supervisor_logs
+    fi
 
 }
 

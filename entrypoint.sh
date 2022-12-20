@@ -190,7 +190,6 @@ function downloader {
     if [[ ${BGMI_DOWNLOADER} = 'false' || ${BGMI_DOWNLOADER} = 'disable' || ${BGMI_DOWNLOADER} = 'no' ]]; then
     	default_install
     fi
-	test
 
 }
 

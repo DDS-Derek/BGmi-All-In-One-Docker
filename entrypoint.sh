@@ -53,24 +53,24 @@ function config_bgmi {
 
     bangumi_db="$BGMI_PATH/bangumi.db"
 
-	if [ ! -z $BGMI_ADMIN_TOKEN ]; then
-		admin_token=$BGMI_ADMIN_TOKEN
-	fi
+    if [ ! -z $BGMI_ADMIN_TOKEN ]; then
+    	admin_token=$BGMI_ADMIN_TOKEN
+    fi
 
-	if [ ! -z $BGMI_SOURCE ]; then
-		data_source=$BGMI_SOURCE
-	fi
+    if [ ! -z $BGMI_SOURCE ]; then
+    	data_source=$BGMI_SOURCE
+    fi
 
-	if [ ! -f $bangumi_db ]; then
-		bgmi install
-		bgmi source $data_source
-		bgmi config ADMIN_TOKEN $admin_token
-		bash /home/bgmi-docker/BGmi/bgmi/others/crontab.sh
-	else
-		bgmi upgrade
-		bgmi config ADMIN_TOKEN $admin_token
-		bash /home/bgmi-docker/BGmi/bgmi/others/crontab.sh
-	fi
+    if [ ! -f $bangumi_db ]; then
+    	bgmi install
+    	bgmi source $data_source
+    	bgmi config ADMIN_TOKEN $admin_token
+    	bash /home/bgmi-docker/BGmi/bgmi/others/crontab.sh
+    else
+    	bgmi upgrade
+    	bgmi config ADMIN_TOKEN $admin_token
+    	bash /home/bgmi-docker/BGmi/bgmi/others/crontab.sh
+    fi
 
 }
 
@@ -81,13 +81,13 @@ function config_nginx {
     nginx_conf_dir="/etc/nginx/conf.d"
     bgmi_nginx="/bgmi/conf/nginx"
 
-	rm -rf $nginx_conf_dir
-	ln -s $bgmi_nginx $nginx_conf_dir
+    rm -rf $nginx_conf_dir
+    ln -s $bgmi_nginx $nginx_conf_dir
 
-	if [ ! -f $bgmi_nginx_conf ]; then
-		cp /home/bgmi-docker/config/bgmi_nginx.conf $bgmi_nginx_conf
-	fi
-	sed -i "s/user nginx;/user bgmi;/g" /etc/nginx/nginx.conf
+    if [ ! -f $bgmi_nginx_conf ]; then
+    	cp /home/bgmi-docker/config/bgmi_nginx.conf $bgmi_nginx_conf
+    fi
+    sed -i "s/user nginx;/user bgmi;/g" /etc/nginx/nginx.conf
 
 }
 

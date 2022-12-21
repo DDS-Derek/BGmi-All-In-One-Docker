@@ -15,6 +15,8 @@ services:
             - PGID=1000
             - PUID=1000
             - UMASK=022
+            - MEDIA_DIR=/media/cartoon
+            - DOWNLOAD_DIR=/media/downloads
             - BGMI_DOWNLOADER=aria2
             - BGMI_SOURCE=mikan_project
             - BGMI_ADMIN_TOKEN=password

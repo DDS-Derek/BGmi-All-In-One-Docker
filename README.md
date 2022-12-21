@@ -36,6 +36,8 @@ docker run -itd \
   -e PGID=1000 \
   -e PUID=1000 \
   -e UMASK=022 \
+  -e MEDIA_DIR=/media/cartoon \
+  -e DOWNLOAD_DIR=/media/downloads \
   -e BGMI_DOWNLOADER=transmission \
   -e BGMI_SOURCE=mikan_project \
   -e BGMI_ADMIN_TOKEN=password \
@@ -59,6 +61,8 @@ docker run -itd \
   -e PGID=1000 \
   -e PUID=1000 \
   -e UMASK=022 \
+  -e MEDIA_DIR=/media/cartoon \
+  -e DOWNLOAD_DIR=/media/downloads \
   -e BGMI_DOWNLOADER=aria2 \
   -e BGMI_SOURCE=mikan_project \
   -e BGMI_ADMIN_TOKEN=password \

@@ -8,8 +8,6 @@ services:
             - '/home/video2/NEW:/media'
         ports:
             - '80:80'
-            - '6800:6800'
-            - '6880:6880'
             - '6888:6888/tcp'
             - '6888:6888/udp'
         environment:

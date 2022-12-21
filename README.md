@@ -44,6 +44,8 @@ docker run -itd \
 
 **Aria2**
 
+**注意：镜像内置Ariang管理界面，访问```IP:PORT/ariang```，此```PORT```与访问BGmi Web端口为同一端口**
+
 ```bash
 docker run -itd \
   --name=bgmi \
@@ -51,8 +53,6 @@ docker run -itd \
   -v /bgmi:/bgmi \
   -v /media:/media \
   -p 80:80 \
-  -p 6800:6800 \
-  -p 6880:6880 \
   -p 6888:6888/tcp \
   -p 6888:6888/udp \
   -e TZ=Asia/Shanghai \

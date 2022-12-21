@@ -74,7 +74,7 @@ RUN \
         ${BGMI_HOME}/dl_tools/transmission \
     && \
     wget \
-        https://github.com/ronggang/transmission-web-control/raw/master/release/install-tr-control-cn.sh \
+        https://raw.githubusercontent.com/ronggang/transmission-web-control/master/release/install-tr-control-cn.sh \
         -O ${BGMI_HOME}/dl_tools/transmission/install-tr-control-cn.sh \
     && \
     chmod \

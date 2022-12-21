@@ -86,10 +86,6 @@ function config_nginx {
     rm -rf $nginx_conf_dir
     ln -s $bgmi_nginx $nginx_conf_dir
 
-#    if [ ! -f $bgmi_nginx_conf ]; then
-#    	cp /home/bgmi-docker/config/bgmi_nginx.conf $bgmi_nginx_conf
-#    fi
-
     if [ ! -f $bgmi_nginx_conf ]; then
     	touch $bgmi_nginx_conf
     fi
@@ -188,12 +184,48 @@ function transmission_install {
 function aria2_install {
 
     aria2_settings_dir=/home/bgmi-docker/dl_tools/aria2
+    bgmi_nginx_conf="/bgmi/conf/nginx/bgmi.conf"
 
     bgmi config DOWNLOAD_DELEGATE aria2-rpc
     bgmi config ARIA2_RPC_TOKEN $RPC_SECRET
     bgmi config SAVE_PATH $DOWNLOAD_DIR
 
-    cp $aria2_settings_dir/bgmi_nginx_ariang.conf /bgmi/conf/nginx/bgmi_nginx_ariang.conf
+    if [ -f $bgmi_nginx_conf ]; then
+    	rm -rf $bgmi_nginx_conf
+        touch $bgmi_nginx_conf
+    else
+        touch $bgmi_nginx_conf
+    fi
+    cat > $bgmi_nginx_conf << EOF
+server {
+    listen 80 default_server;
+    server_name _;
+    root /bgmi/;
+    autoindex on;
+    charset utf-8;
+
+    location /bangumi {
+        alias ${DOWNLOAD_DIR};
+    }
+
+    location /api {
+        proxy_pass http://127.0.0.1:8888;
+    }
+
+    location /resource {
+        proxy_pass http://127.0.0.1:8888;
+    }
+
+    location /ariang {
+        alias /home/bgmi-docker/dl_tools/aria2/ariang;
+    }
+
+    location / {
+        alias /bgmi/conf/bgmi/front_static/;
+    }
+}
+
+EOF
 
     cp $aria2_settings_dir/bgmi_supervisord-aria2.ini ${BGMI_HOME}/bgmi_supervisord.ini
 

@@ -175,6 +175,23 @@ function transmission_install {
     	cp /home/bgmi-docker/dl_tools/transmission/transmission_settings.json /bgmi/conf/transmission/settings.json
     fi
 
+    if [[ -n "$TR_USER" ]] && [[ -n "$TR_PASS" ]]; then
+        sed -i '/rpc-authentication-required/c\    "rpc-authentication-required": true,' /bgmi/conf/transmission/settings.json
+        sed -i "/rpc-username/c\    \"rpc-username\": \"$TR_USER\"," /bgmi/conf/transmission/settings.json
+        sed -i "/rpc-password/c\    \"rpc-password\": \"$TR_PASS\"," /bgmi/conf/transmission/settings.json
+        bgmi config TRANSMISSION_RPC_USERNAME $TR_USER
+        bgmi config TRANSMISSION_RPC_PASSWORD $TR_PASS
+    else
+        sed -i '/rpc-authentication-required/c\    "rpc-authentication-required": false,' /bgmi/conf/transmission/settings.json
+        sed -i "/rpc-username/c\    \"rpc-username\": \"$TR_USER\"," /bgmi/conf/transmission/settings.json
+        sed -i "/rpc-password/c\    \"rpc-password\": \"$TR_PASS\"," /bgmi/conf/transmission/settings.json
+    fi
+
+    if [[ -n "${TR_PEERPORT}" ]]; then
+        sed -i "/\"peer-port\"/c\    \"peer-port\": ${TR_PEERPORT}," /bgmi/conf/transmission/settings.json
+        sed -i '/peer-port-random-on-start/c\     "peer-port-random-on-start": false,' /bgmi/conf/transmission/settings.json
+    fi
+
     if [ ! -z "${DOWNLOAD_DIR}" ]; then
     	sed -i "/\"download-dir\"/c\    \"download-dir\": \"$DOWNLOAD_DIR\"," /bgmi/conf/transmission/settings.json
     	sed -i "/\"incomplete-dir\"/c\    \"incomplete-dir\": \"$DOWNLOAD_DIR\"," /bgmi/conf/transmission/settings.json

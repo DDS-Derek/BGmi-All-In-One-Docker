@@ -22,7 +22,7 @@ ENV PUID=1000 \
 # BGmi 设置
 ENV BGMI_SOURCE=mikan_project \
     BGMI_ADMIN_TOKEN=password \
-    BGMI_DOWNLOADER=aria2
+    BGMI_DOWNLOADER=transmission
 
 # DIR 设置
 # 注意：这两个目录必须在 /media 下
@@ -38,6 +38,11 @@ ENV UPDATE_TRACKERS=true \
     DISK_CACHE= \
     IPV6_MODE= \
     SPECIAL_MODE=
+
+# Transmission 设置
+#ENV TR_USER=bgmi \
+#    TR_PASS=password \
+#    TR_PEERPORT=51413
 
 RUN \
     ## 创建用户

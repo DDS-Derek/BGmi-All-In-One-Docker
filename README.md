@@ -41,6 +41,9 @@ docker run -itd \
   -e BGMI_DOWNLOADER=transmission \
   -e BGMI_SOURCE=mikan_project \
   -e BGMI_ADMIN_TOKEN=password \
+  -e TR_USER=bgmi \
+  -e TR_PASS=password \
+  -e TR_PEERPORT=51413 \
   ddsderek/bgmi-docker-all-in-one:latest
 ```
 

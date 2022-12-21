@@ -134,6 +134,8 @@ function config_bgmi_hardlink_helper {
     	cp /home/bgmi-docker/bgmi_hardlink_helper/config.py $bgmi_hardlink_helper_config
     fi
 
+    sed -i "/HARDLINK_DEST/c\HARDLINK_DEST = '${MEDIA_DIR}'" $bgmi_hardlink_helper_config
+
     echo "[+] bgmi_hardlink_helper install successfully"
 
     echo "[+] crontab bgmi_hardlink_helper added"

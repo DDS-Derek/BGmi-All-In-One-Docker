@@ -53,6 +53,8 @@ function config_bgmi {
 
     bangumi_db="$BGMI_PATH/bangumi.db"
 
+    cp ${BGMI_HOME}/config/crontab.sh ${BGMI_HOME}/BGmi/bgmi/others/crontab.sh
+
     if [ ! -z $BGMI_ADMIN_TOKEN ]; then
     	admin_token=$BGMI_ADMIN_TOKEN
     fi
@@ -71,8 +73,6 @@ function config_bgmi {
     	bgmi config ADMIN_TOKEN $admin_token
     	bash /home/bgmi-docker/BGmi/bgmi/others/crontab.sh
     fi
-
-    cp ${BGMI_HOME}/config/crontab.sh ${BGMI_HOME}/BGmi/bgmi/others/crontab.sh
 
 }
 

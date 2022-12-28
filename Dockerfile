@@ -7,7 +7,8 @@ ENV BGMI_TAG=v2.2.17
 # Ariang版本
 ENV ARIANG_TAG=1.3.2
 
-ENV LANG=C.UTF-8
+ENV LANG=C.UTF-8 \
+    PS1="\u@\h:\w \$ "
 
 # 程序默认变量，不能修改
 ENV BGMI_PATH="/bgmi/conf/bgmi" \

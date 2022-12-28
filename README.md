@@ -12,6 +12,7 @@
 4. 内部aria2-pro，transmission下载器，可以在环境变量内设置是否启用
 5. Transmission增强版UI
 6. Ariang管理界面
+7. 常用脚本 `bgmi_hardlink` `bgmi_download`
 
 ## BGmi介绍
 

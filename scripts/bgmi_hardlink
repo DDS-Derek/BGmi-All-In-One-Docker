@@ -1,3 +1,5 @@
 #!/bin/bash
 
+echo "Hark Link start"
 su bgmi -c 'python3 /bgmi/bgmi_hardlink_helper/bgmi_hardlink_helper.py run'
+echo "done"

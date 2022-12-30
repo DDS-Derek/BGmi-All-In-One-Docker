@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo "Download start"
-su bgmi -c 'LC_ALL=en_US.UTF-8 TRAVIS_CI=1 /usr/bin/bgmi cal --force-update --download-cover'
-su bgmi -c 'LC_ALL=en_US.UTF-8 /usr/bin/bgmi update --download'
-echo "done"
+echo "[*] Download start"
+LC_ALL=en_US.UTF-8 TRAVIS_CI=1 su-exec bgmi /usr/bin/bgmi cal --force-update --download-cover
+LC_ALL=en_US.UTF-8 su-exec bgmi /usr/bin/bgmi update --download
+echo "[*] done"

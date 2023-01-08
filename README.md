@@ -16,7 +16,7 @@
 
 ## BGmi介绍
 
-[官方介绍和使用方法](https://github.com/BGmi/BGmi/blob/master/README.cn.md)。
+[官方介绍和使用方法](https://github.com/BGmi/BGmi/blob/master/README.cn.md)
 
 ## 部署
 ### docker-cli

@@ -320,7 +320,7 @@ if [[ "$(stat -c '%U' ${DOWNLOAD_DIR})" != "bgmi" ]] || [[ "$(stat -c '%G' ${DOW
         ${DOWNLOAD_DIR}
 fi
 
-cat /home/bgmi-docker/dl_tools/BGmi-Docker
+cat /home/bgmi-docker/BGmi-Docker.logo
 echo
 
 umask ${UMASK}

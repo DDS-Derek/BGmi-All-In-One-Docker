@@ -140,7 +140,7 @@ function config_bgmi_hardlink_helper {
 
     echo "[+] crontab bgmi_hardlink_helper added"
 
-    (crontab -l ; echo "20 */2 * * * LC_ALL=en_US.UTF-8 su-exec bgmi python3 /bgmi/bgmi_hardlink_helper/bgmi_hardlink_helper.py run") | crontab -
+    (crontab -l ; echo "20 */2 * * * LC_ALL=en_US.UTF-8 su-exec bgmi $(which python3) /bgmi/bgmi_hardlink_helper/bgmi_hardlink_helper.py run") | crontab -
 
 }
 

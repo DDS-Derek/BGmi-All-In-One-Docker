@@ -50,7 +50,7 @@ docker run -itd \
 
 **Aria2**
 
-**注意：镜像内置Ariang管理界面，访问```IP:PORT/ariang```，此```PORT```与访问BGmi Web端口为同一端口**
+> 注意：镜像内置Ariang管理界面，访问```IP:PORT/ariang```，此```PORT```与访问BGmi Web端口为同一端口
 
 ```bash
 docker run -itd \

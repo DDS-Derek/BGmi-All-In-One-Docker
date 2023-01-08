@@ -3,20 +3,20 @@
 [![Build](https://github.com/DDS-Derek/bgmi-docker-all-in-one/actions/workflows/docker-image.yml/badge.svg)](https://github.com/DDS-Derek/bgmi-docker-all-in-one/actions/workflows/docker-image.yml)
 [![Build-Base](https://github.com/DDS-Derek/bgmi-docker-all-in-one/actions/workflows/docker-base-image.yml/badge.svg)](https://github.com/DDS-Derek/bgmi-docker-all-in-one/actions/workflows/docker-base-image.yml)
 
-由 https://github.com/codysk/bgmi-docker-all-in-one 镜像改编
+参考 https://github.com/codysk/bgmi-docker-all-in-one 大佬的镜像制作而成。
 
 ## 新增功能
-1. 硬链接，硬链接工具由[kaaass](https://github.com/kaaass/bgmi_hardlink_helper)大佬提供 (具体说明请看下方[硬链接介绍](https://github.com/DDS-Derek/bgmi-docker-all-in-one#%E7%A1%AC%E9%93%BE%E6%8E%A5%E8%AF%B4%E6%98%8E))
-2. PUID和PGID设置
-3. Umask设置
-4. 内部aria2-pro，transmission下载器，可以在环境变量内设置是否启用
-5. Transmission增强版UI
-6. Ariang管理界面
-7. 常用脚本 `bgmi_hardlink` `bgmi_download`
+1. 硬链接，硬链接工具由[kaaass](https://github.com/kaaass/bgmi_hardlink_helper)大佬提供 (具体说明请看下方[硬链接介绍](https://github.com/DDS-Derek/bgmi-docker-all-in-one#%E7%A1%AC%E9%93%BE%E6%8E%A5%E8%AF%B4%E6%98%8E))。
+2. PUID和PGID设置。
+3. Umask设置。
+4. 内部aria2-pro，transmission下载器，可以在环境变量内设置是否启用。
+5. Transmission增强版UI。
+6. Ariang管理界面。
+7. 常用脚本 `bgmi_hardlink` `bgmi_download`。
 
 ## BGmi介绍
 
-[官方介绍和使用方法](https://github.com/BGmi/BGmi/blob/master/README.cn.md)
+[官方介绍和使用方法](https://github.com/BGmi/BGmi/blob/master/README.cn.md)。
 
 ## 部署
 ### docker-cli
@@ -81,6 +81,27 @@ docker run -itd \
   ddsderek/bgmi-docker-all-in-one:latest
 ```
 
+**不使用内置下载器**
+
+```bash
+docker run -itd \
+  --name=bgmi \
+  --restart always \
+  -v /bgmi:/bgmi \
+  -v /media:/media \
+  -p 80:80 \
+  -e TZ=Asia/Shanghai \
+  -e PGID=1000 \
+  -e PUID=1000 \
+  -e UMASK=022 \
+  -e MEDIA_DIR=/media/cartoon \
+  -e DOWNLOAD_DIR=/media/downloads \
+  -e BGMI_DOWNLOADER=false \
+  -e BGMI_SOURCE=mikan_project \
+  -e BGMI_ADMIN_TOKEN=password \
+  ddsderek/bgmi-docker-all-in-one:latest
+```
+
 ### docker-compose
 
 **transmission**
@@ -90,6 +111,10 @@ docker run -itd \
 **Aria2**
 
 [docker-compose](https://github.com/DDS-Derek/bgmi-docker-all-in-one/blob/master/example/aria2-pro/docker-compose.yml)
+
+**不使用内置下载器**
+
+[docker-compose](https://github.com/DDS-Derek/bgmi-docker-all-in-one/blob/master/example/default/docker-compose.yml)
 
 ## 参数说明
 

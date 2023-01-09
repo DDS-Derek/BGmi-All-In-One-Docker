@@ -49,13 +49,13 @@ RUN \
     ## 创建用户
     addgroup \
         -S bgmi \
-        -g 1000 \
+        -g ${PGID} \
     && \
     adduser \
         -S bgmi \
         -G bgmi \
         -h /home/bgmi-docker \
-        -u 1000 \
+        -u ${PUID} \
     && \
     usermod \
         -s /bin/bash bgmi \

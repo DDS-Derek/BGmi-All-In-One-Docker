@@ -321,7 +321,6 @@ if [[ "$(stat -c '%U' ${DOWNLOAD_DIR})" != "bgmi" ]] || [[ "$(stat -c '%G' ${DOW
 fi
 
 cat /home/bgmi-docker/BGmi-Docker.logo
-echo
 
 umask ${UMASK}
 

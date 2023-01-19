@@ -89,7 +89,17 @@ RUN \
     echo 1 | bash ${BGMI_HOME}/dl_tools/transmission/install-tr-control-cn.sh \
     && \
     ## Aria2-Pro 安装
-    curl -fsSL git.io/aria2c.sh | bash \
+    mkdir -p \
+        ${BGMI_HOME}/dl_tools/aria2 \
+    && \
+    wget \
+        https://raw.githubusercontent.com/P3TERX/aria2-builder/master/aria2-install.sh \
+        -O ${BGMI_HOME}/dl_tools/aria2/aria2-install.sh \
+    && \
+    chmod \
+        +x ${BGMI_HOME}/dl_tools/aria2/aria2-install.sh \
+    && \
+    bash ${BGMI_HOME}/dl_tools/aria2/aria2-install.sh \
     && \
     ## AriaNg 安装
     mkdir -p \

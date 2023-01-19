@@ -80,7 +80,7 @@ function config_bgmi {
 function config_nginx {
 
     bgmi_nginx_conf="/bgmi/conf/nginx/bgmi.conf"
-    nginx_conf_dir="/etc/nginx/conf.d"
+    nginx_conf_dir="/etc/nginx/http.d"
     bgmi_nginx="/bgmi/conf/nginx"
 
     rm -rf $nginx_conf_dir

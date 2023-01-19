@@ -64,7 +64,7 @@ RUN \
 		zlib-dev \
 		libxml2-dev \
 		libffi-dev \
-		cargo && \
+		cargo \
 	&& \
     ## 安装 pip
 	curl https://bootstrap.pypa.io/get-pip.py | python3 \
@@ -158,7 +158,8 @@ RUN \
 		zlib-dev \
 		libxml2-dev \
 		libffi-dev \
-		cargo && \
+		cargo \
+    && \
     ## 清理
     rm -rf \
         ${BGMI_HOME}/bgmi.tar.gz \

@@ -37,43 +37,43 @@ ENV LANG=C.UTF-8 \
 RUN \
     ## 安装软件
     apk add --no-cache \
-		linux-headers \
-		python3-dev \
+        linux-headers \
+        python3-dev \
         python3 \
-		openssl-dev \
-		nginx \
-		bash \
-		supervisor \
-		transmission-daemon \
-		curl \
-		tzdata \
-		shadow \
-		jq \
-		findutils \
-		su-exec \
+        nginx \
+        bash \
+        supervisor \
+        transmission-daemon \
+        curl \
+        tzdata \
+        shadow \
+        jq \
+        findutils \
+        su-exec \
     && \
     ## 安装编译软件
     apk add --no-cache \
-		zip \
-		unzip \
-		git \
-		tini \
-		gcc \
-		musl-dev \
-		libxslt-dev \
-		zlib-dev \
-		libxml2-dev \
-		libffi-dev \
-		cargo \
-	&& \
+        zip \
+        unzip \
+        git \
+        tini \
+        gcc \
+        musl-dev \
+        libxslt-dev \
+        zlib-dev \
+        libxml2-dev \
+        libffi-dev \
+        openssl-dev \
+        cargo \
+    && \
     ## 安装 pip
-	curl https://bootstrap.pypa.io/get-pip.py | python3 \
+    curl https://bootstrap.pypa.io/get-pip.py | python3 \
     && \
     ## 安装 cryptography
-	pip install cryptography \
+    pip install cryptography \
     && \
     ## 安装 transmissionrpc
-	pip install 'transmissionrpc' \
+    pip install 'transmissionrpc' \
     && \
     ## 创建用户
     addgroup \
@@ -148,17 +148,18 @@ RUN \
         ${BGMI_HOME}/bgmi_hardlink_helper \
     && \
     apk del --purge \
-		zip \
-		unzip \
-		git \
-		tini \
-		gcc \
-		musl-dev \
-		libxslt-dev \
-		zlib-dev \
-		libxml2-dev \
-		libffi-dev \
-		cargo \
+        zip \
+        unzip \
+        git \
+        tini \
+        gcc \
+        musl-dev \
+        libxslt-dev \
+        zlib-dev \
+        libxml2-dev \
+        libffi-dev \
+        openssl-dev \
+        cargo \
     && \
     ## 清理
     rm -rf \

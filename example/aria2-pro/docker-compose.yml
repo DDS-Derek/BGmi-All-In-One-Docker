@@ -28,4 +28,4 @@ services:
             - DISK_CACHE=
             - IPV6_MODE=
             - SPECIAL_MODE=
-        image: 'ddsderek/bgmi-docker-all-in-one:latest'
+        image: 'ddsderek/bgmi-all-in-one:latest'

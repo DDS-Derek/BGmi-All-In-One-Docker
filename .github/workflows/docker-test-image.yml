@@ -36,5 +36,5 @@ jobs:
             linux/amd64
           push: true
           tags: |
-            ${{ secrets.DOCKER_USERNAME }}/bgmi-docker-all-in-one:test
+            ${{ secrets.DOCKER_USERNAME }}/bgmi-all-in-one:test
                         

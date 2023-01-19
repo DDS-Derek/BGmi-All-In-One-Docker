@@ -1,7 +1,7 @@
 version: '3.3'
 services:
     bgmi:
-        image: ddsderek/bgmi-docker-all-in-one:latest
+        image: ddsderek/bgmi-all-in-one:latest
         container_name: "bgmi"
         restart: "always"
         volumes:

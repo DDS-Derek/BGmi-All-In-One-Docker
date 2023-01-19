@@ -1,7 +1,7 @@
-# bgmi-docker-all-in-one
+# BGmi All In One Docker
 
-[![Build](https://github.com/DDS-Derek/bgmi-docker-all-in-one/actions/workflows/docker-image.yml/badge.svg)](https://github.com/DDS-Derek/bgmi-docker-all-in-one/actions/workflows/docker-image.yml)
-[![Build-Base](https://github.com/DDS-Derek/bgmi-docker-all-in-one/actions/workflows/docker-base-image.yml/badge.svg)](https://github.com/DDS-Derek/bgmi-docker-all-in-one/actions/workflows/docker-base-image.yml)
+[![Build](https://github.com/DDS-Derek/BGmi-All-In-One-Docker/actions/workflows/docker-image.yml/badge.svg)](https://github.com/DDS-Derek/BGmi-All-In-One-Docker/actions/workflows/docker-image.yml)
+[![Build-Base](https://github.com/DDS-Derek/BGmi-All-In-One-Docker/actions/workflows/docker-base-image.yml/badge.svg)](https://github.com/DDS-Derek/BGmi-All-In-One-Docker/actions/workflows/docker-base-image.yml)
 
 参考 https://github.com/codysk/bgmi-docker-all-in-one 大佬的镜像制作而成。
 
@@ -45,7 +45,7 @@ docker run -itd \
   -e TR_USER=bgmi \
   -e TR_PASS=password \
   -e TR_PEERPORT=51413 \
-  ddsderek/bgmi-docker-all-in-one:latest
+  ddsderek/bgmi-all-in-one:latest
 ```
 
 **Aria2**
@@ -78,7 +78,7 @@ docker run -itd \
   -e DISK_CACHE= \
   -e IPV6_MODE= \
   -e SPECIAL_MODE= \
-  ddsderek/bgmi-docker-all-in-one:latest
+  ddsderek/bgmi-all-in-one:latest
 ```
 
 **不使用内置下载器**
@@ -99,22 +99,22 @@ docker run -itd \
   -e BGMI_DOWNLOADER=false \
   -e BGMI_SOURCE=mikan_project \
   -e BGMI_ADMIN_TOKEN=password \
-  ddsderek/bgmi-docker-all-in-one:latest
+  ddsderek/bgmi-all-in-one:latest
 ```
 
 ### docker-compose
 
 **transmission**
 
-[docker-compose](https://github.com/DDS-Derek/bgmi-docker-all-in-one/blob/master/example/transmission/docker-compose.yml)
+[docker-compose](https://github.com/DDS-Derek/BGmi-All-In-One-Docker/blob/master/example/transmission/docker-compose.yml)
 
 **Aria2**
 
-[docker-compose](https://github.com/DDS-Derek/bgmi-docker-all-in-one/blob/master/example/aria2-pro/docker-compose.yml)
+[docker-compose](https://github.com/DDS-Derek/BGmi-All-In-One-Docker/blob/master/example/aria2-pro/docker-compose.yml)
 
 **不使用内置下载器**
 
-[docker-compose](https://github.com/DDS-Derek/bgmi-docker-all-in-one/blob/master/example/default/docker-compose.yml)
+[docker-compose](https://github.com/DDS-Derek/BGmi-All-In-One-Docker/blob/master/example/default/docker-compose.yml)
 
 ## 参数说明
 

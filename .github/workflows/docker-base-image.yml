@@ -39,5 +39,5 @@ jobs:
             linux/arm/v6
           push: true
           tags: |
-            ${{ secrets.DOCKER_USERNAME }}/bgmi-docker-all-in-one:base
+            ${{ secrets.DOCKER_USERNAME }}/bgmi-all-in-one:base
                         

@@ -27,7 +27,7 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - 
-        name: Buildx-test
+        name: Build Test
         uses: docker/build-push-action@v3
         with:
           context: .

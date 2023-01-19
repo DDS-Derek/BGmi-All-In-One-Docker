@@ -27,11 +27,11 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - 
-        name: Buildx-base
+        name: Build Base
         uses: docker/build-push-action@v3
         with:
           context: .
-          file: Dockerfile.base
+          file: base.Dockerfile
           platforms: |
             linux/amd64
             linux/arm64/v8

@@ -1,4 +1,4 @@
-FROM ddsderek/bgmi-docker-all-in-one:base
+FROM ddsderek/bgmi-all-in-one:base
 
 LABEL maintainer="ddsrem@163.com"
 

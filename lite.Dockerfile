@@ -46,35 +46,40 @@ ENV UPDATE_TRACKERS=true \
 #    TR_PEERPORT=51413
 
 RUN apk add --no-cache \
-		zip \
-		unzip \
-		git \
-		tini \
 		linux-headers \
-		gcc \
 		python3-dev \
-		libffi-dev \
+        python3 \
 		openssl-dev \
-		cargo \
-		libxslt-dev \
-		zlib-dev \
-		libxml2-dev \
-		musl-dev \
 		nginx \
 		bash \
 		supervisor \
 		transmission-daemon \
-		python3 \
 		curl \
 		tzdata \
 		shadow \
 		jq \
 		findutils \
 		su-exec \
+    && \
+    apk add --no-cache \
+		zip \
+		unzip \
+		git \
+		tini \
+		gcc \
+		musl-dev \
+		libxslt-dev \
+		zlib-dev \
+		libxml2-dev \
+		libffi-dev \
+		cargo && \
 	&& \
-	curl https://bootstrap.pypa.io/get-pip.py | python3 && \
-	pip install cryptography && \
-	pip install 'transmissionrpc' && \
+	curl https://bootstrap.pypa.io/get-pip.py | python3 \
+    && \
+	pip install cryptography \
+    && \
+	pip install 'transmissionrpc' \
+    && \
     ## 创建用户
     addgroup \
         -S bgmi \

@@ -1,7 +1,9 @@
 name: 构建BGmi-Lite镜像  
 
 on:
-  workflow_dispatch:
+    workflow_dispatch:
+    release:
+        types: [published]
 
 jobs:
   push:
@@ -10,6 +12,12 @@ jobs:
       - 
         name: Checkout
         uses: actions/checkout@master
+
+      - name: Set Version
+        id: set-version
+        run: |
+          echo "::set-output name=version::${GITHUB_REF:10}"
+          echo "ReleaseTag=${GITHUB_REF:10}"
 
       - 
         name: Set Up QEMU
@@ -36,6 +44,9 @@ jobs:
             linux/amd64
             linux/arm64/v8
           push: true
+          build-args: |
+            VERSION=${{ steps.set-version.outputs.version }}
           tags: |
-            ${{ secrets.DOCKER_USERNAME }}/bgmi-all-in-one:lite
+            ${{ secrets.DOCKER_USERNAME }}/bgmi-all-in-one:${{ steps.set-version.outputs.version }}-lite
+            ${{ secrets.DOCKER_USERNAME }}/bgmi-all-in-one:latest-lite
                         

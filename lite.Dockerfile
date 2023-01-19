@@ -8,30 +8,24 @@ ENV BGMI_TAG=v2.2.17
 ENV ARIANG_TAG=1.3.2
 
 ENV LANG=C.UTF-8 \
-    PS1="\[\e[32m\][\[\e[m\]\[\e[36m\]\u \[\e[m\]\[\e[37m\]@ \[\e[m\]\[\e[34m\]\h\[\e[m\]\[\e[32m\]]\[\e[m\] \[\e[37;35m\]in\[\e[m\] \[\e[33m\]\w\[\e[m\] \[\e[32m\][\[\e[m\]\[\e[37m\]\d\[\e[m\] \[\e[m\]\[\e[37m\]\t\[\e[m\]\[\e[32m\]]\[\e[m\] \n\[\e[1;31m\]$ \[\e[0m\]"
-
-# 程序默认变量，不能修改
-ENV BGMI_PATH="/bgmi/conf/bgmi" \
+    PS1="\[\e[32m\][\[\e[m\]\[\e[36m\]\u \[\e[m\]\[\e[37m\]@ \[\e[m\]\[\e[34m\]\h\[\e[m\]\[\e[32m\]]\[\e[m\] \[\e[37;35m\]in\[\e[m\] \[\e[33m\]\w\[\e[m\] \[\e[32m\][\[\e[m\]\[\e[37m\]\d\[\e[m\] \[\e[m\]\[\e[37m\]\t\[\e[m\]\[\e[32m\]]\[\e[m\] \n\[\e[1;31m\]$ \[\e[0m\]" \
+    BGMI_PATH="/bgmi/conf/bgmi" \
     BGMI_HOME="/home/bgmi-docker" \
-    RCLONE_CONFIG=/bgmi/conf/rclone/rclone.conf
-
-# 权限设置
-ENV PUID=1000 \
+    RCLONE_CONFIG=/bgmi/conf/rclone/rclone.conf \
+    # 权限设置
+    PUID=1000 \
     PGID=1000 \
-    UMASK=022
-
-# BGmi 设置
-ENV BGMI_SOURCE=mikan_project \
+    UMASK=022 \
+    # BGmi 设置
+    BGMI_SOURCE=mikan_project \
     BGMI_ADMIN_TOKEN=password \
-    BGMI_DOWNLOADER=transmission
-
-# DIR 设置
-# 注意：这两个目录必须在 /media 下
-ENV DOWNLOAD_DIR=/media/downloads \
-    MEDIA_DIR=/media/cartoon
-
-# Aria2-Pro 设置
-ENV UPDATE_TRACKERS=true \
+    BGMI_DOWNLOADER=transmission \
+    # DIR 设置
+    # 注意：这两个目录必须在 /media 下
+    DOWNLOAD_DIR=/media/downloads \
+    MEDIA_DIR=/media/cartoon \
+    # Aria2-Pro 设置
+    UPDATE_TRACKERS=true \
     CUSTOM_TRACKER_URL= \
     LISTEN_PORT=6888 \
     RPC_PORT=6800 \
@@ -40,12 +34,9 @@ ENV UPDATE_TRACKERS=true \
     IPV6_MODE= \
     SPECIAL_MODE=
 
-# Transmission 设置
-#ENV TR_USER=bgmi \
-#    TR_PASS=password \
-#    TR_PEERPORT=51413
-
-RUN apk add --no-cache \
+RUN \
+    ## 安装软件
+    apk add --no-cache \
 		linux-headers \
 		python3-dev \
         python3 \
@@ -61,6 +52,7 @@ RUN apk add --no-cache \
 		findutils \
 		su-exec \
     && \
+    ## 安装编译软件
     apk add --no-cache \
 		zip \
 		unzip \
@@ -74,10 +66,13 @@ RUN apk add --no-cache \
 		libffi-dev \
 		cargo && \
 	&& \
+    ## 安装 pip
 	curl https://bootstrap.pypa.io/get-pip.py | python3 \
     && \
+    ## 安装 cryptography
 	pip install cryptography \
     && \
+    ## 安装 transmissionrpc
 	pip install 'transmissionrpc' \
     && \
     ## 创建用户

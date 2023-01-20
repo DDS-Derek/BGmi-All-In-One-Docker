@@ -25,6 +25,8 @@
 
 **Transmission**
 
+> 注意：镜像内置Transmission Web Control管理界面，访问```IP:PORT/tr```，此```PORT```与访问BGmi Web端口为同一端口
+
 ```bash
 docker run -itd \
   --name=bgmi \
@@ -32,7 +34,6 @@ docker run -itd \
   -v /bgmi:/bgmi \
   -v /media:/media \
   -p 80:80 \
-  -p 9091:9091 \
   -p 51413:51413/tcp \
   -p 51413:51413/udp \
   -e TZ=Asia/Shanghai \

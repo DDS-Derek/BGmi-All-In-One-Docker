@@ -9,7 +9,6 @@ services:
           - /media:/media
         ports:
             - '80:80'
-            - '9091:9091'
             - '51413:51413/tcp'
             - '51413:51413/udp'
         environment:

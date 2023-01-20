@@ -86,10 +86,10 @@ function config_nginx {
     rm -rf $nginx_conf_dir
     ln -s $bgmi_nginx $nginx_conf_dir
 
-    if [ ! -f $bgmi_nginx_conf ]; then
-    	touch $bgmi_nginx_conf
+    if [ ! -f "${bgmi_nginx_conf}" ]; then
+    	touch "${bgmi_nginx_conf}"
     fi
-    cat > $bgmi_nginx_conf << EOF
+    cat > "${bgmi_nginx_conf}" << EOF
 server {
     listen 80 default_server;
     server_name _;
@@ -160,6 +160,9 @@ function permission {
 # transmission设置
 function transmission_install {
 
+    bgmi_nginx_conf="/bgmi/conf/nginx/bgmi.conf"
+    transmission_config_file="/bgmi/conf/transmission/settings.json"
+
     bgmi config DOWNLOAD_DELEGATE transmission-rpc
     bgmi config SAVE_PATH $DOWNLOAD_DIR
 
@@ -171,31 +174,70 @@ function transmission_install {
 
     cp /home/bgmi-docker/dl_tools/transmission/transmission-daemon /etc/conf.d/transmission-daemon
 
-    if [ ! -f /bgmi/conf/transmission/settings.json ]; then
-    	cp /home/bgmi-docker/dl_tools/transmission/transmission_settings.json /bgmi/conf/transmission/settings.json
+    if [ ! -f ${transmission_config_file} ]; then
+    	cp /home/bgmi-docker/dl_tools/transmission/transmission_settings.json ${transmission_config_file}
     fi
 
     if [[ -n "$TR_USER" ]] && [[ -n "$TR_PASS" ]]; then
-        sed -i '/rpc-authentication-required/c\    "rpc-authentication-required": true,' /bgmi/conf/transmission/settings.json
-        sed -i "/rpc-username/c\    \"rpc-username\": \"$TR_USER\"," /bgmi/conf/transmission/settings.json
-        sed -i "/rpc-password/c\    \"rpc-password\": \"$TR_PASS\"," /bgmi/conf/transmission/settings.json
+        sed -i '/rpc-authentication-required/c\    "rpc-authentication-required": true,' ${transmission_config_file}
+        sed -i "/rpc-username/c\    \"rpc-username\": \"$TR_USER\"," ${transmission_config_file}
+        sed -i "/rpc-password/c\    \"rpc-password\": \"$TR_PASS\"," ${transmission_config_file}
         bgmi config TRANSMISSION_RPC_USERNAME $TR_USER
         bgmi config TRANSMISSION_RPC_PASSWORD $TR_PASS
     else
-        sed -i '/rpc-authentication-required/c\    "rpc-authentication-required": false,' /bgmi/conf/transmission/settings.json
-        sed -i "/rpc-username/c\    \"rpc-username\": \"$TR_USER\"," /bgmi/conf/transmission/settings.json
-        sed -i "/rpc-password/c\    \"rpc-password\": \"$TR_PASS\"," /bgmi/conf/transmission/settings.json
+        sed -i '/rpc-authentication-required/c\    "rpc-authentication-required": false,' ${transmission_config_file}
+        sed -i "/rpc-username/c\    \"rpc-username\": \"$TR_USER\"," ${transmission_config_file}
+        sed -i "/rpc-password/c\    \"rpc-password\": \"$TR_PASS\"," ${transmission_config_file}
     fi
 
     if [[ -n "${TR_PEERPORT}" ]]; then
-        sed -i "/\"peer-port\"/c\    \"peer-port\": ${TR_PEERPORT}," /bgmi/conf/transmission/settings.json
-        sed -i '/peer-port-random-on-start/c\     "peer-port-random-on-start": false,' /bgmi/conf/transmission/settings.json
+        sed -i "/\"peer-port\"/c\    \"peer-port\": ${TR_PEERPORT}," ${transmission_config_file}
+        sed -i '/peer-port-random-on-start/c\     "peer-port-random-on-start": false,' ${transmission_config_file}
     fi
 
     if [ ! -z "${DOWNLOAD_DIR}" ]; then
-    	sed -i "/\"download-dir\"/c\    \"download-dir\": \"$DOWNLOAD_DIR\"," /bgmi/conf/transmission/settings.json
-    	sed -i "/\"incomplete-dir\"/c\    \"incomplete-dir\": \"$DOWNLOAD_DIR\"," /bgmi/conf/transmission/settings.json
+    	sed -i "/\"download-dir\"/c\    \"download-dir\": \"$DOWNLOAD_DIR\"," ${transmission_config_file}
+    	sed -i "/\"incomplete-dir\"/c\    \"incomplete-dir\": \"$DOWNLOAD_DIR\"," ${transmission_config_file}
     fi
+
+    sed -i "/\"rpc-url\"/c\    \"rpc-url\": \"/tr/\"," ${transmission_config_file}
+
+    if [ -f "${bgmi_nginx_conf}" ]; then
+    	rm -rf "${bgmi_nginx_conf}"
+        touch "${bgmi_nginx_conf}"
+    else
+        touch "${bgmi_nginx_conf}"
+    fi
+    cat > "${bgmi_nginx_conf}" << EOF
+server {
+    listen 80 default_server;
+    server_name _;
+    root /bgmi/;
+    autoindex on;
+    charset utf-8;
+
+    location /bangumi {
+        alias ${DOWNLOAD_DIR};
+    }
+
+    location /api {
+        proxy_pass http://127.0.0.1:8888;
+    }
+
+    location /resource {
+        proxy_pass http://127.0.0.1:8888;
+    }
+
+    location /tr {
+        proxy_pass http://127.0.0.1:9091;
+    }
+
+    location / {
+        alias /bgmi/conf/bgmi/front_static/;
+    }
+}
+
+EOF
 
 }
 
@@ -206,16 +248,16 @@ function aria2_install {
     bgmi_nginx_conf="/bgmi/conf/nginx/bgmi.conf"
 
     bgmi config DOWNLOAD_DELEGATE aria2-rpc
-    bgmi config ARIA2_RPC_TOKEN $RPC_SECRET
-    bgmi config SAVE_PATH $DOWNLOAD_DIR
+    bgmi config ARIA2_RPC_TOKEN "${RPC_SECRET}"
+    bgmi config SAVE_PATH "${DOWNLOAD_DIR}"
 
-    if [ -f $bgmi_nginx_conf ]; then
-    	rm -rf $bgmi_nginx_conf
-        touch $bgmi_nginx_conf
+    if [ -f "${bgmi_nginx_conf}" ]; then
+    	rm -rf "${bgmi_nginx_conf}"
+        touch "${bgmi_nginx_conf}"
     else
-        touch $bgmi_nginx_conf
+        touch "${bgmi_nginx_conf}"
     fi
-    cat > $bgmi_nginx_conf << EOF
+    cat > "${bgmi_nginx_conf}" << EOF
 server {
     listen 80 default_server;
     server_name _;
@@ -246,9 +288,9 @@ server {
 
 EOF
 
-    cp $aria2_settings_dir/bgmi_supervisord-aria2.ini ${BGMI_HOME}/bgmi_supervisord.ini
+    cp "${aria2_settings_dir}"/bgmi_supervisord-aria2.ini "${BGMI_HOME}"/bgmi_supervisord.ini
 
-    bash $aria2_settings_dir/aria2_pro/settings.sh
+    bash "${aria2_settings_dir}"/aria2_pro/settings.sh
 
 }
 
@@ -256,22 +298,22 @@ function default_install {
 
     default_install_dir="/home/bgmi-docker/dl_tools"
 
-    cp $default_install_dir/default/bgmi_supervisord.ini ${BGMI_HOME}/bgmi_supervisord.ini
+    cp "${default_install_dir}"/default/bgmi_supervisord.ini "${BGMI_HOME}"/bgmi_supervisord.ini
 
 }
 
 # 设置downloader
 function downloader {
 
-    if [[ ${BGMI_DOWNLOADER} = 'transmission' || ${BGMI_DOWNLOADER} = 'TR' || ${BGMI_DOWNLOADER} = 'tr' ]]; then
+    if [[ "${BGMI_DOWNLOADER}" = 'transmission' || "${BGMI_DOWNLOADER}" = 'TR' || "${BGMI_DOWNLOADER}" = 'tr' ]]; then
     	transmission_install
     fi
 
-    if [[ ${BGMI_DOWNLOADER} = 'aria2' || ${BGMI_DOWNLOADER} = 'Aria2' ]]; then
+    if [[ "${BGMI_DOWNLOADER}" = 'aria2' || "${BGMI_DOWNLOADER}" = 'Aria2' ]]; then
     	aria2_install
     fi
 
-    if [[ ${BGMI_DOWNLOADER} = 'false' || ${BGMI_DOWNLOADER} = 'disable' || ${BGMI_DOWNLOADER} = 'no' ]]; then
+    if [[ "${BGMI_DOWNLOADER}" = 'false' || "${BGMI_DOWNLOADER}" = 'disable' || "${BGMI_DOWNLOADER}" = 'no' ]]; then
     	default_install
     fi
 
@@ -281,11 +323,11 @@ first_lock="${BGMI_HOME}/bgmi_install.lock"
 
 function init_proc {
 
-    touch $first_lock
+    touch "${first_lock}"
 
 }
 
-if [ ! -f $first_lock ]; then
+if [ ! -f "${first_lock}" ]; then
 
     init_proc
 
@@ -322,6 +364,6 @@ fi
 
 cat /home/bgmi-docker/BGmi-Docker.logo
 
-umask ${UMASK}
+umask "${UMASK}"
 
-exec /usr/bin/supervisord -n -c ${BGMI_HOME}/bgmi_supervisord.ini
+exec /usr/bin/supervisord -n -c "${BGMI_HOME}"/bgmi_supervisord.ini

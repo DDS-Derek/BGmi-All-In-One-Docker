@@ -25,7 +25,7 @@
 
 **Transmission**
 
-> 注意：镜像内置Transmission Web Control管理界面，访问```IP:PORT/tr```，此```PORT```与访问BGmi Web端口为同一端口
+> 注意：镜像内置Transmission Web Control管理界面，访问```IP:PORT/transmission```，此```PORT```与访问BGmi Web端口为同一端口
 
 ```bash
 docker run -itd \

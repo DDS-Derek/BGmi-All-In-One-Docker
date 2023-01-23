@@ -10,7 +10,7 @@
 参考 https://github.com/codysk/bgmi-docker-all-in-one 大佬的镜像制作而成。
 
 ## 新增功能
-1. 硬链接，硬链接工具由[kaaass](https://github.com/kaaass/bgmi_hardlink_helper)大佬提供 (具体说明请看下方[硬链接介绍](https://github.com/DDS-Derek/bgmi-docker-all-in-one#%E7%A1%AC%E9%93%BE%E6%8E%A5%E8%AF%B4%E6%98%8E))。
+1. 硬链接，硬链接工具由[kaaass](https://github.com/kaaass/bgmi_hardlink_helper)大佬提供
 2. PUID和PGID设置。
 3. Umask设置。
 4. 内部aria2-pro，transmission下载器，可以在环境变量内设置是否启用。

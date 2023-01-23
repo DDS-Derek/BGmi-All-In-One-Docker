@@ -3,11 +3,13 @@
 [![Build](https://github.com/DDS-Derek/BGmi-All-In-One-Docker/actions/workflows/docker-image.yml/badge.svg)](https://github.com/DDS-Derek/BGmi-All-In-One-Docker/actions/workflows/docker-image.yml)
 [![Build-Base](https://github.com/DDS-Derek/BGmi-All-In-One-Docker/actions/workflows/docker-base-image.yml/badge.svg)](https://github.com/DDS-Derek/BGmi-All-In-One-Docker/actions/workflows/docker-base-image.yml)
 
+> English | [中文](https://github.com/DDS-Derek/BGmi-All-In-One-Docker/blob/master/README.cn.md)
+
 **Note that the Dockerhub repository was changed from `ddsderek/bgmi-docker-all-in-one` to `ddsderek/bgmi-all-in-one`**
 
 Made from a image of https://github.com/codysk/bgmi-docker-all-in-one.
 
-## 新增功能
+## New features
 1. Hard linking, hard linking tool provided by [kaaass](https://github.com/kaaass/bgmi_hardlink_helper)
 2. PUID and PGID settings.
 3. Umask settings.

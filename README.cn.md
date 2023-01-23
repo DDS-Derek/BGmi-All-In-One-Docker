@@ -3,6 +3,8 @@
 [![Build](https://github.com/DDS-Derek/BGmi-All-In-One-Docker/actions/workflows/docker-image.yml/badge.svg)](https://github.com/DDS-Derek/BGmi-All-In-One-Docker/actions/workflows/docker-image.yml)
 [![Build-Base](https://github.com/DDS-Derek/BGmi-All-In-One-Docker/actions/workflows/docker-base-image.yml/badge.svg)](https://github.com/DDS-Derek/BGmi-All-In-One-Docker/actions/workflows/docker-base-image.yml)
 
+> [English](https://github.com/DDS-Derek/BGmi-All-In-One-Docker/blob/master/README.md) | 中文
+
 **注意，Dockerhub仓库从`ddsderek/bgmi-docker-all-in-one`换为`ddsderek/bgmi-all-in-one`**
 
 参考 https://github.com/codysk/bgmi-docker-all-in-one 大佬的镜像制作而成。

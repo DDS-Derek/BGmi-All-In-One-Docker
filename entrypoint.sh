@@ -201,6 +201,7 @@ function transmission_install {
     fi
 
     sed -i "/\"rpc-url\"/c\    \"rpc-url\": \"/tr/\"," ${transmission_config_file}
+    bgmi config TRANSMISSION_RPC_PATH /tr/
 
     if [ -f "${bgmi_nginx_conf}" ]; then
     	rm -rf "${bgmi_nginx_conf}"

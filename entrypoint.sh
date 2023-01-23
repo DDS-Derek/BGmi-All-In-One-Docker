@@ -200,7 +200,7 @@ function transmission_install {
     	sed -i "/\"incomplete-dir\"/c\    \"incomplete-dir\": \"$DOWNLOAD_DIR\"," ${transmission_config_file}
     fi
 
-    sed -i "/\"rpc-url\"/c\    \"rpc-url\": \"/transmission/\"," ${transmission_config_file}
+    sed -i "/\"rpc-url\"/c\    \"rpc-url\": \"/tr/\"," ${transmission_config_file}
 
     if [ -f "${bgmi_nginx_conf}" ]; then
     	rm -rf "${bgmi_nginx_conf}"
@@ -228,7 +228,7 @@ server {
         proxy_pass http://127.0.0.1:8888;
     }
 
-    location /transmission {
+    location /tr {
         proxy_pass http://127.0.0.1:9091;
     }
 

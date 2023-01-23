@@ -3,29 +3,29 @@
 [![Build](https://github.com/DDS-Derek/BGmi-All-In-One-Docker/actions/workflows/docker-image.yml/badge.svg)](https://github.com/DDS-Derek/BGmi-All-In-One-Docker/actions/workflows/docker-image.yml)
 [![Build-Base](https://github.com/DDS-Derek/BGmi-All-In-One-Docker/actions/workflows/docker-base-image.yml/badge.svg)](https://github.com/DDS-Derek/BGmi-All-In-One-Docker/actions/workflows/docker-base-image.yml)
 
-**Note that the Dockerhub repository was changed from `ddsderek/bgmi-docker-all-in-one` to `ddsderek/bgmi-all-in-one`**
+**注意，Dockerhub仓库从`ddsderek/bgmi-docker-all-in-one`换为`ddsderek/bgmi-all-in-one`**
 
-Made from a image of https://github.com/codysk/bgmi-docker-all-in-one.
+参考 https://github.com/codysk/bgmi-docker-all-in-one 大佬的镜像制作而成。
 
 ## 新增功能
-1. Hard linking, hard linking tool provided by [kaaass](https://github.com/kaaass/bgmi_hardlink_helper)
-2. PUID and PGID settings.
-3. Umask settings.
-4. The internal aria2-pro, transmission downloader, can be set within the environment variables to enable or disable it.
-5. Transmission Web Control.
-6. Ariang management interface.
-7. Common Scripts `bgmi_hardlink` `bgmi_download`。
+1. 硬链接，硬链接工具由[kaaass](https://github.com/kaaass/bgmi_hardlink_helper)大佬提供 (具体说明请看下方[硬链接介绍](https://github.com/DDS-Derek/bgmi-docker-all-in-one#%E7%A1%AC%E9%93%BE%E6%8E%A5%E8%AF%B4%E6%98%8E))。
+2. PUID和PGID设置。
+3. Umask设置。
+4. 内部aria2-pro，transmission下载器，可以在环境变量内设置是否启用。
+5. Transmission增强版UI。
+6. Ariang管理界面。
+7. 常用脚本 `bgmi_hardlink` `bgmi_download`。
 
-## Introduction to BGmi
+## BGmi介绍
 
-[Official introduction and usage](https://github.com/BGmi/BGmi/blob/master/README.md)
+[官方介绍和使用方法](https://github.com/BGmi/BGmi/blob/master/README.cn.md)
 
-## Deployment
+## 部署
 ### docker-cli
 
 **Transmission**
 
-> Note: The image has a built-in Transmission Web Control management interface, access `IP:PORT/tr`, this `PORT` is the same port as the access to the BGmi Web port
+> 注意：镜像内置Transmission Web Control管理界面，访问```IP:PORT/tr```，此```PORT```与访问BGmi Web端口为同一端口
 
 ```bash
 docker run -itd \
@@ -53,7 +53,7 @@ docker run -itd \
 
 **Aria2**
 
-> Note: The image has a built-in Ariang management interface, access `IP:PORT/ariang`, this `PORT` is the same port as the access to the BGmi web port
+> 注意：镜像内置Ariang管理界面，访问```IP:PORT/ariang```，此```PORT```与访问BGmi Web端口为同一端口
 
 ```bash
 docker run -itd \
@@ -84,7 +84,7 @@ docker run -itd \
   ddsderek/bgmi-all-in-one:latest
 ```
 
-**Not using the built-in downloader**
+**不使用内置下载器**
 
 ```bash
 docker run -itd \
@@ -119,29 +119,29 @@ docker run -itd \
 
 [docker-compose](https://github.com/DDS-Derek/BGmi-All-In-One-Docker/blob/master/example/default/docker-compose.yml)
 
-## PUID GUID
+## PUID GUID 说明
 
-When using the volume (`-v` flag) permission issue between the host OS and the container, we avoid this issue `PGID` by allowing you to specify the user `PUID` and group.
+当在主机操作系统和容器之间使用卷（`-v`标志）权限问题时，我们通过允许您指定用户`PUID`和组来避免这个问题`PGID`。
 
-Ensure that any volume directories on the host are owned by the same user you specify and that any permissions issues disappear like magic.
+确保主机上的任何卷目录都归您指定的同一用户所有，并且任何权限问题都会像魔术一样消失。
 
-In this case `PUID=1000` and `PGID=1000` find your usage `id user` as follows.
+在这种情况下`PUID=1000`，`PGID=1000`找到你的用途`id user`如下：
 
 ```
   $ id username
     uid=1000(dockeruser) gid=1000(dockergroup) groups=1000(dockergroup)
 ```
 
-## HardLink
+## 硬链接说明
 
-Hard-linked BGmi downloads of new resources, with improved file formatting for automated scraping and no impact on seed preservation.
+硬链接 BGmi 下载的新番资源，改善文件格式以便于自动化刮削，并且不会影响保种。
 
-The hard-linked directory format is used for automatic recognition by the scraper and can be configured correctly to avoid scraping altogether. The current configuration works with Jellyfin's scrapers.
-Theoretically it will also work with most scrapers.
+硬链接后的目录格式用于刮削器的自动识别，配置正确的话可以完全避免刮削。目前的配置适用于 Jellyfin 的刮削器，
+理论上也可适用于绝大多数刮削器。
 
-- The default download directory is ``/meida/downloads`` and the download directory is in the official BGMI format.
-- The cartoons are hard-linked and stored in the ``/media/cartoon`` folder. The default format is `{name}`, e.g. "The Dragon Maid of the Kobayashi Family".
-  It can also be nested, e.g. `{name}/Season {season}`, i.e. "Kobayashi's Dragon Maid/Season 2".
-- The format for naming episodes is `BANGUMI_FILE_FORMAT`, the default is `S{season:0>2d}E{episode:0>2d}. {format}`.
-  For example, `S03E01.mp4`.
+- 番剧默认下载目录为```/meida/downloads```，下载目录的番剧格式为BGMI官方的原格式
+- 番剧硬链接后存储于文件夹 `/media/cartoon` 下。默认格式是 `{name}`，如“小林家的龙女仆”。
+  也可以设置为嵌套，如 `{name}/Season {season}`，即“小林家的龙女仆/Season 2”。
+- 番剧的命名格式为 `BANGUMI_FILE_FORMAT`，默认是 `S{season:0>2d}E{episode:0>2d}.{format}`。
+  如“S01E01.mp4”。
 

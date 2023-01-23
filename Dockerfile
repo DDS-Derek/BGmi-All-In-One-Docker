@@ -6,6 +6,8 @@ LABEL maintainer="ddsrem@163.com"
 ENV BGMI_TAG=v2.2.17
 # Ariang版本
 ENV ARIANG_TAG=1.3.2
+# bgmi_archive_frontend版本
+ENV bgmi_archive_frontend_TAG=0.0.4
 
 ENV LANG=C.UTF-8 \
     PS1="\[\e[32m\][\[\e[m\]\[\e[36m\]\u \[\e[m\]\[\e[37m\]@ \[\e[m\]\[\e[34m\]\h\[\e[m\]\[\e[32m\]]\[\e[m\] \[\e[37;35m\]in\[\e[m\] \[\e[33m\]\w\[\e[m\] \[\e[32m\][\[\e[m\]\[\e[37m\]\d\[\e[m\] \[\e[m\]\[\e[37m\]\t\[\e[m\]\[\e[32m\]]\[\e[m\] \n\[\e[1;31m\]$ \[\e[0m\]"
@@ -75,8 +77,11 @@ RUN \
     pip install \
         ${BGMI_HOME}/BGmi \
     && \
+    mkdir -p \
+        /home/bgmi-docker/bgmi-archive-frontend \
+    && \
     wget \
-        https://github.com/codysk/BGmi-archive-frontend/releases/download/0.0.4/bgmi-archive-frontend.tgz \
+        https://github.com/codysk/BGmi-archive-frontend/releases/download/${bgmi_archive_frontend_TAG}/bgmi-archive-frontend.tgz \
         -O ${BGMI_HOME}/bgmi-archive-frontend.tgz \
     && \
     tar \

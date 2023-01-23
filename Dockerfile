@@ -54,7 +54,7 @@ RUN \
     adduser \
         -S bgmi \
         -G bgmi \
-        -h /home/bgmi-docker \
+        -h ${BGMI_HOME} \
         -u ${PUID} \
     && \
     usermod \
@@ -129,6 +129,8 @@ RUN \
     rm -rf \
         ${BGMI_HOME}/bgmi.tar.gz \
         ${BGMI_HOME}/dl_tools/aria2/ariang/ariang.zip \
+        ${BGMI_HOME}/dl_tools/aria2/aria2-install.sh \
+        ${BGMI_HOME}/dl_tools/transmission/install-tr-control-cn.sh \
         /var/cache/apk/* \
         /root/.cache \
         /tmp/*

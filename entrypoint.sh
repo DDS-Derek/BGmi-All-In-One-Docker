@@ -319,6 +319,12 @@ function downloader {
 
 }
 
+function bgmi_scripts {
+
+    cp -r "${BGMI_HOME}"/scripts/* /usr/local/bin
+
+}
+
 first_lock="${BGMI_HOME}/bgmi_install.lock"
 
 function init_proc {
@@ -340,6 +346,8 @@ if [ ! -f "${first_lock}" ]; then
     config_bgmi_hardlink_helper
 
     permission
+
+    bgmi_scripts
 
     downloader
 

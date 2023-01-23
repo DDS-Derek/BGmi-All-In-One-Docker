@@ -173,7 +173,6 @@ RUN \
         /tmp/*
 
 COPY --chmod=755 . /home/bgmi-docker
-COPY --chmod=755 ./scripts /usr/local/bin
 
 VOLUME ["/bgmi"]
 VOLUME [ "/media" ]

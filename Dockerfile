@@ -75,6 +75,15 @@ RUN \
     pip install \
         ${BGMI_HOME}/BGmi \
     && \
+    wget \
+        https://github.com/codysk/BGmi-archive-frontend/releases/download/0.0.4/bgmi-archive-frontend.tgz \
+        -O ${BGMI_HOME}/bgmi-archive-frontend.tgz \
+    && \
+    tar \
+        -zxvf ${BGMI_HOME}/bgmi-archive-frontend.tgz \
+        -C ${BGMI_HOME}/bgmi-archive-frontend \
+        --strip-components 1 \
+    && \
     ## Transmission Web Control 安装
     mkdir -p \
         ${BGMI_HOME}/dl_tools/transmission \
@@ -128,6 +137,7 @@ RUN \
     ## 清理
     rm -rf \
         ${BGMI_HOME}/bgmi.tar.gz \
+        ${BGMI_HOME}/bgmi-archive-frontend.tgz \
         ${BGMI_HOME}/dl_tools/aria2/ariang/ariang.zip \
         ${BGMI_HOME}/dl_tools/aria2/aria2-install.sh \
         ${BGMI_HOME}/dl_tools/transmission/install-tr-control-cn.sh \

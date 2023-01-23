@@ -99,6 +99,7 @@ server {
 
     location /bangumi {
         alias ${DOWNLOAD_DIR};
+        add_after_body /bangumi/.core/autoindex.html;
     }
 
     location /api {
@@ -219,6 +220,7 @@ server {
 
     location /bangumi {
         alias ${DOWNLOAD_DIR};
+        add_after_body /bangumi/.core/autoindex.html;
     }
 
     location /api {
@@ -268,6 +270,7 @@ server {
 
     location /bangumi {
         alias ${DOWNLOAD_DIR};
+        add_after_body /bangumi/.core/autoindex.html;
     }
 
     location /api {
@@ -326,6 +329,19 @@ function bgmi_scripts {
 
 }
 
+function bgmi_archive_frontend {
+
+    if [ ! -d ${DOWNLOAD_DIR}/.core ]; then
+        mkdir -p ${DOWNLOAD_DIR}/.core
+        cp -r ${BGMI_HOME}/bgmi-archive-frontend/* ${DOWNLOAD_DIR}/.core
+    else
+        rm -rf ${DOWNLOAD_DIR}/.core
+        mkdir -p ${DOWNLOAD_DIR}/.core
+        cp -r ${BGMI_HOME}/bgmi-archive-frontend/* ${DOWNLOAD_DIR}/.core
+    fi
+
+}
+
 first_lock="${BGMI_HOME}/bgmi_install.lock"
 
 function init_proc {
@@ -352,6 +368,8 @@ if [ ! -f "${first_lock}" ]; then
 
     downloader
 
+    bgmi_archive_frontend
+
 fi
 
 chown -R bgmi:bgmi \
@@ -370,6 +388,8 @@ if [[ "$(stat -c '%U' ${DOWNLOAD_DIR})" != "bgmi" ]] || [[ "$(stat -c '%G' ${DOW
     chown bgmi:bgmi \
         ${DOWNLOAD_DIR}
 fi
+chown -R bgmi:bgmi \
+    ${DOWNLOAD_DIR}/.core
 
 cat /home/bgmi-docker/BGmi-Docker.logo
 

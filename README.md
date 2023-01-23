@@ -117,9 +117,40 @@ docker run -itd \
 
 [docker-compose](https://github.com/DDS-Derek/BGmi-All-In-One-Docker/blob/master/example/aria2-pro/docker-compose.yml)
 
-**不使用内置下载器**
+**Not using the built-in downloader**
 
 [docker-compose](https://github.com/DDS-Derek/BGmi-All-In-One-Docker/blob/master/example/default/docker-compose.yml)
+
+## Description of parameters
+
+### BGmi
+
+|         Parameter          |                            Function                            |
+| :-------------------: | :--------------------------------------------------------: |
+|        `-e TZ`        |                          Time zone settings                          |
+|       `-e PUID`       |                       Launcher User ID                       |
+|       `-e PGID`       |                      Launcher User Group ID                      |
+|      `-e UMASK`       |                          Permission Mask                          |
+|    `-e MEDIA_DIR`     |         BGmi hard link directory (directory must be under `/media`)          |
+|   `-e DOWNLOAD_DIR`   |          BGmi download directory (directory must be under `/media`)           |
+| `-e BGMI_DOWNLOADER`  |     BGmi downloader (optional `transmission` `aria2` `false`)     |
+|   `-e BGMI_SOURCE`    | set bgmi default data source (bangumi_moe, mikan_project or dmhy) |
+| `-e BGMI_ADMIN_TOKEN` |               Setting up the BGMI web interface authentication token               |
+|        `-p 80`        |                       BGmi Web Port                        |
+|      `-v /bgmi`       |                          Configuration files                          |
+|      `-v /media`      |            Media folder containing download files and hard link files            |
+
+### Transmission
+
+|       参数       |           作用            |
+| :--------------: | :-----------------------: |
+|   `-e TR_USER`   | Transmission Web Login Users |
+|   `-e TR_PASS`   | Transmission Web Login Password |
+| `-e TR_PEERPORT` |      Seed transfer port       |
+
+### Aria2
+
+This image is built to use Aria2-Pro, see [Aria2-Pro-Docker Official Instructions](https://github.com/P3TERX/Aria2-Pro-Docker#parameters) for specific parameters.
 
 ## PUID GUID
 

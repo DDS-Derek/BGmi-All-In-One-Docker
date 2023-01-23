@@ -121,6 +121,37 @@ docker run -itd \
 
 [docker-compose](https://github.com/DDS-Derek/BGmi-All-In-One-Docker/blob/master/example/default/docker-compose.yml)
 
+## 参数说明
+
+### BGmi
+
+|         参数          |                            作用                            |
+| :-------------------: | :--------------------------------------------------------: |
+|        `-e TZ`        |                          时区设置                          |
+|       `-e PUID`       |                       启动程序用户ID                       |
+|       `-e PGID`       |                      启动程序用户组ID                      |
+|      `-e UMASK`       |                          权限掩码                          |
+|    `-e MEDIA_DIR`     |         BGmi 硬链接目录（目录必须在 `/media` 下）          |
+|   `-e DOWNLOAD_DIR`   |          BGmi 下载目录（目录必须在 `/media` 下）           |
+| `-e BGMI_DOWNLOADER`  |     BGmi 下载器（可选 `transmission` `aria2` `false`）     |
+|   `-e BGMI_SOURCE`    | 设置 BGMI 默认数据源（bangumi_moe、mikan_project 或 DMHY） |
+| `-e BGMI_ADMIN_TOKEN` |               设置 BGMI Web 界面身份验证令牌               |
+|        `-p 80`        |                       BGmi Web 端口                        |
+|      `-v /bgmi`       |                          配置文件                          |
+|      `-v /media`      |            媒体文件夹，包含下载文件和硬链接文件            |
+
+### Transmission
+
+|       参数       |           作用            |
+| :--------------: | :-----------------------: |
+|   `-e TR_USER`   | transmission Web 登入用户 |
+|   `-e TR_PASS`   | transmission Web 登入密码 |
+| `-e TR_PEERPORT` |       种子传输端口        |
+
+### Aria2
+
+此镜像内置使用Aria2-Pro，具体参数设置请看[Aria2-Pro-Docker官方说明](https://github.com/P3TERX/Aria2-Pro-Docker#parameters)
+
 ## PUID GUID 说明
 
 当在主机操作系统和容器之间使用卷（`-v`标志）权限问题时，我们通过允许您指定用户`PUID`和组来避免这个问题`PGID`。

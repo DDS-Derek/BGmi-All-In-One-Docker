@@ -24,7 +24,7 @@ crontab -l | grep "bgmi update" > /dev/null
 if [ $? -eq 0 ]; then
     echo "[-] crontab update already exist";
 else
-    (crontab -l ; echo "0 */2 * * * LC_ALL=en_US.UTF-8 su-exec bgmi $BGMI_PATH update $DOWNLOAD") | crontab -
+    (crontab -l ; echo "0 */2 * * * umask ${UMASK}; LC_ALL=en_US.UTF-8 su-exec bgmi $BGMI_PATH update $DOWNLOAD") | crontab -
     echo "[+] crontab update added"
 fi
 
@@ -33,6 +33,6 @@ crontab -l | grep "bgmi cal" > /dev/null
 if [ $? -eq 0 ]; then
     echo "[-] crontab update cover already exist";
 else
-    (crontab -l ; echo "40 */10 * * * LC_ALL=en_US.UTF-8 TRAVIS_CI=1 su-exec bgmi $BGMI_PATH cal --force-update --download-cover") | crontab -
+    (crontab -l ; echo "40 */10 * * * umask ${UMASK}; LC_ALL=en_US.UTF-8 TRAVIS_CI=1 su-exec bgmi $BGMI_PATH cal --force-update --download-cover") | crontab -
     echo "[+] crontab update cover added"
 fi

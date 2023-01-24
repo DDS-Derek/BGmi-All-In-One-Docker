@@ -3,7 +3,7 @@ FROM ddsderek/bgmi-all-in-one:base
 LABEL maintainer="ddsrem@163.com"
 
 # BGmi版本
-ENV BGMI_TAG=v2.2.17
+ENV BGMI_TAG=v2.2.18
 # Ariang版本
 ENV ARIANG_TAG=1.3.2
 # bgmi_archive_frontend版本

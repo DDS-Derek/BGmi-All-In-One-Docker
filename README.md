@@ -165,11 +165,11 @@ In this case `PUID=1000` and `PGID=1000` find your usage `id user` as follows.
     uid=1000(dockeruser) gid=1000(dockergroup) groups=1000(dockergroup)
 ```
 
-## HardLink
+## Hardlink
 
-Hard-linked BGmi downloads of new resources, with improved file formatting for automated scraping and no impact on seed preservation.
+Hardlink BGmi downloads of new resources, with improved file formatting for automated scraping and no impact on seed preservation.
 
-The hard-linked directory format is used for automatic recognition by the scraper and can be configured correctly to avoid scraping altogether. The current configuration works with Jellyfin's scrapers.
+The hardlink directory format is used for automatic recognition by the scraper and can be configured correctly to avoid scraping altogether. The current configuration works with Jellyfin's scrapers.
 Theoretically it will also work with most scrapers.
 
 - The default download directory is ``/meida/downloads`` and the download directory is in the official BGMI format.

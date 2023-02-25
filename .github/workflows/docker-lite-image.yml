@@ -16,7 +16,7 @@ jobs:
       - name: Set Version
         id: set-version
         run: |
-          echo "::set-output name=version::${GITHUB_REF:10}"
+          echo "version=${GITHUB_REF:10}" >> $GITHUB_OUTPUT
           echo "ReleaseTag=${GITHUB_REF:10}"
 
       - 

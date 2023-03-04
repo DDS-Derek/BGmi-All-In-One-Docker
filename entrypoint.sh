@@ -67,10 +67,12 @@ function config_bgmi {
     	bgmi install
     	bgmi source $data_source
     	bgmi config ADMIN_TOKEN $admin_token
+        touch /etc/crontabs/root
     	bash /home/bgmi-docker/BGmi/bgmi/others/crontab.sh
     else
     	bgmi upgrade
     	bgmi config ADMIN_TOKEN $admin_token
+        touch /etc/crontabs/root
     	bash /home/bgmi-docker/BGmi/bgmi/others/crontab.sh
     fi
 

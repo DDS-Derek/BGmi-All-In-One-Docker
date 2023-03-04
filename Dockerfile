@@ -1,39 +1,33 @@
-FROM ddsderek/bgmi-all-in-one:base
+FROM alpine:3.17
 
 LABEL maintainer="ddsrem@163.com"
 
 # BGmi版本
-ENV BGMI_TAG=v2.3.0
+ARG BGMI_TAG=v2.3.0
 # Ariang版本
-ENV ARIANG_TAG=1.3.2
+ARG ARIANG_TAG=1.3.2
 # bgmi_archive_frontend版本
-ENV bgmi_archive_frontend_TAG=0.0.4
+ARG bgmi_archive_frontend_TAG=0.0.4
 
 ENV LANG=C.UTF-8 \
-    PS1="\[\e[32m\][\[\e[m\]\[\e[36m\]\u \[\e[m\]\[\e[37m\]@ \[\e[m\]\[\e[34m\]\h\[\e[m\]\[\e[32m\]]\[\e[m\] \[\e[37;35m\]in\[\e[m\] \[\e[33m\]\w\[\e[m\] \[\e[32m\][\[\e[m\]\[\e[37m\]\d\[\e[m\] \[\e[m\]\[\e[37m\]\t\[\e[m\]\[\e[32m\]]\[\e[m\] \n\[\e[1;31m\]$ \[\e[0m\]"
-
-# 程序默认变量，不能修改
-ENV BGMI_PATH="/bgmi/conf/bgmi" \
+    PS1="\[\e[32m\][\[\e[m\]\[\e[36m\]\u \[\e[m\]\[\e[37m\]@ \[\e[m\]\[\e[34m\]\h\[\e[m\]\[\e[32m\]]\[\e[m\] \[\e[37;35m\]in\[\e[m\] \[\e[33m\]\w\[\e[m\] \[\e[32m\][\[\e[m\]\[\e[37m\]\d\[\e[m\] \[\e[m\]\[\e[37m\]\t\[\e[m\]\[\e[32m\]]\[\e[m\] \n\[\e[1;31m\]$ \[\e[0m\]" \
+    BGMI_PATH="/bgmi/conf/bgmi" \
     BGMI_HOME="/home/bgmi-docker" \
-    RCLONE_CONFIG=/bgmi/conf/rclone/rclone.conf
-
-# 权限设置
-ENV PUID=1000 \
+    RCLONE_CONFIG=/bgmi/conf/rclone/rclone.conf \
+    # 权限设置
+    PUID=1000 \
     PGID=1000 \
-    UMASK=022
-
-# BGmi 设置
-ENV BGMI_SOURCE=mikan_project \
+    UMASK=022 \
+    # BGmi 设置
+    BGMI_SOURCE=mikan_project \
     BGMI_ADMIN_TOKEN=password \
-    BGMI_DOWNLOADER=transmission
-
-# DIR 设置
-# 注意：这两个目录必须在 /media 下
-ENV DOWNLOAD_DIR=/media/downloads \
-    MEDIA_DIR=/media/cartoon
-
-# Aria2-Pro 设置
-ENV UPDATE_TRACKERS=true \
+    BGMI_DOWNLOADER=transmission \
+    # DIR 设置
+    # 注意：这两个目录必须在 /media 下
+    DOWNLOAD_DIR=/media/downloads \
+    MEDIA_DIR=/media/cartoon \
+    # Aria2-Pro 设置
+    UPDATE_TRACKERS=true \
     CUSTOM_TRACKER_URL= \
     LISTEN_PORT=6888 \
     RPC_PORT=6800 \
@@ -42,13 +36,42 @@ ENV UPDATE_TRACKERS=true \
     IPV6_MODE= \
     SPECIAL_MODE=
 
-# Transmission 设置
-#ENV TR_USER=bgmi \
-#    TR_PASS=password \
-#    TR_PEERPORT=51413
-
 RUN \
-    ## 创建用户
+    ## Base
+    apk add --no-cache \
+        linux-headers \
+        python3-dev \
+        python3 \
+        nginx \
+        bash \
+        supervisor \
+        transmission-daemon \
+        curl \
+        tzdata \
+        shadow \
+        jq \
+        findutils \
+        su-exec \
+    && \
+    apk add --no-cache --virtual=build-dependencies \
+        zip \
+        unzip \
+        tar \
+        git \
+        build-base \
+        gcc \
+        musl-dev \
+        libxslt-dev \
+        zlib-dev \
+        libxml2-dev \
+        libffi-dev \
+        openssl-dev \
+        cargo \
+    && \
+    curl https://bootstrap.pypa.io/get-pip.py | python3 && \
+    pip install cryptography && \
+    pip install 'transmissionrpc' && \
+    ## Master
     addgroup \
         -S bgmi \
         -g ${PGID} \
@@ -64,7 +87,8 @@ RUN \
     && \
     ## Bgmi程序主体下载安装
     mkdir -p \
-        ${BGMI_HOME}/BGmi && \
+        ${BGMI_HOME}/BGmi \
+    && \
     wget \
         https://github.com/BGmi/BGmi/archive/refs/tags/${BGMI_TAG}.tar.gz \
         -O ${BGMI_HOME}/bgmi.tar.gz \
@@ -127,23 +151,21 @@ RUN \
         -d ${BGMI_HOME}/dl_tools/aria2/ariang \
         ${BGMI_HOME}/dl_tools/aria2/ariang/ariang.zip \
     && \
-    ## rclone 安装
-    curl -fsSL https://rclone.org/install.sh | bash \
-    && \
     ## Hardlink 安装
+    ## kaaass/bgmi_hardlink_helper
     git clone \
         https://github.com/album-GitHub/bgmi_hardlink_helper.git \
         ${BGMI_HOME}/bgmi_hardlink_helper \
     && \
-    git clone \
-        https://github.com/kaaass/bgmi_hardlink_helper.git \
-        ${BGMI_HOME}/bgmi_hardlink_helper_old_1 \
+    apk del --purge \
+        build-dependencies \
     && \
     ## 清理
     rm -rf \
         ${BGMI_HOME}/bgmi.tar.gz \
         ${BGMI_HOME}/bgmi-archive-frontend.tgz \
         ${BGMI_HOME}/dl_tools/aria2/ariang/ariang.zip \
+        ${BGMI_HOME}/bgmi_hardlink_helper/.git \
         ${BGMI_HOME}/dl_tools/aria2/aria2-install.sh \
         ${BGMI_HOME}/dl_tools/transmission/install-tr-control-cn.sh \
         /var/cache/apk/* \

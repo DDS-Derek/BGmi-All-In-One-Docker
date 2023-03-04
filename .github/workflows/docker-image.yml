@@ -1,4 +1,4 @@
-name: 构建BGmi-All-In-One镜像  
+name: Build BGmi-All-In-One image
 
 on:
     release:
@@ -12,11 +12,11 @@ jobs:
         name: Checkout
         uses: actions/checkout@master
       
-      - name: Set Version
-        id: set-version
-        run: |
-          echo "version=${GITHUB_REF:10}" >> $GITHUB_OUTPUT
-          echo "ReleaseTag=${GITHUB_REF:10}"
+      - name: Docker meta
+        id: meta
+        uses: docker/metadata-action@v4
+        with:
+          images: ${{ secrets.DOCKER_USERNAME }}/bgmi-all-in-one
 
       - 
         name: Set Up QEMU
@@ -35,7 +35,7 @@ jobs:
 
       - 
         name: Build
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v4
         with:
           context: .
           file: Dockerfile
@@ -45,9 +45,8 @@ jobs:
             linux/arm/v7
             linux/arm/v6
           push: true
-          tags: |
-            ${{ secrets.DOCKER_USERNAME }}/bgmi-all-in-one:${{ steps.set-version.outputs.version }}
-            ${{ secrets.DOCKER_USERNAME }}/bgmi-all-in-one:latest
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
 
       -
         name: Docker Hub Description
@@ -56,5 +55,5 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
           repository: ${{ secrets.DOCKER_USERNAME }}/bgmi-all-in-one
-          short-description: BGmi Docker镜像，内置Transmission，Aria2-Pro下载器
+          short-description: A better BGmi Docker image
           readme-filepath: ./README.md

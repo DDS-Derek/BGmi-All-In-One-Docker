@@ -70,7 +70,6 @@ RUN \
         cargo \
     && \
     pip install --upgrade pip setuptools wheel && \
-    pip install cryptography && \
     pip install 'transmissionrpc' && \
     ## Master
     addgroup \

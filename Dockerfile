@@ -41,6 +41,7 @@ RUN \
     apk add --no-cache \
         linux-headers \
         python3-dev \
+        py3-pip \
         python3 \
         nginx \
         bash \
@@ -68,8 +69,7 @@ RUN \
         openssl-dev \
         cargo \
     && \
-    curl https://bootstrap.pypa.io/get-pip.py | python3 && \
-    pip install cryptography && \
+    pip install --upgrade pip setuptools wheel && \
     pip install 'transmissionrpc' && \
     ## Master
     addgroup \

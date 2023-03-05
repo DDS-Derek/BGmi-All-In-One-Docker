@@ -33,7 +33,7 @@ jobs:
           context: .
           file: test.Dockerfile
           platforms: |
-            linux/arm/v6
+            linux/386
           push: true
           tags: |
             ${{ secrets.DOCKER_USERNAME }}/bgmi-all-in-one:test

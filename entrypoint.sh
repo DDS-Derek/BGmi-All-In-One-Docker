@@ -148,14 +148,17 @@ function config_bgmi_hardlink_helper {
 }
 
 # 设置permission
-function permission {
+function adduser {
 
     if [[ -z ${PUID} && -z ${PGID} ]] || [[ ${PUID} = 65534 && ${PGID} = 65534 ]]; then
-    	echo -e "\033[31mIgnore permission settings.\033[0m"
-    	exit 1
+    	echo -e "\033[31m[+] Ignore permission settings. Start with root user\033[0m"
+    	export PUID=0
+        export PGID=0
+    	groupmod -o -g "$PGID" bgmi 2>&1 | sed "s#^#[+] $0#g" | sed "s#/home/bgmi-docker/entrypoint.sh##g"
+    	usermod -o -u "$PUID" bgmi 2>&1 | sed "s#^#[+] $0#g" | sed "s#/home/bgmi-docker/entrypoint.sh##g"
     else
-    	groupmod -o -g "$PGID" bgmi
-    	usermod -o -u "$PUID" bgmi
+    	groupmod -o -g "$PGID" bgmi 2>&1 | sed "s#^#[+] $0#g" | sed "s#/home/bgmi-docker/entrypoint.sh##g"
+    	usermod -o -u "$PUID" bgmi 2>&1 | sed "s#^#[+] $0#g" | sed "s#/home/bgmi-docker/entrypoint.sh##g"
     fi
 
 }
@@ -366,7 +369,7 @@ if [ ! -f "${first_lock}" ]; then
 
     config_bgmi_hardlink_helper
 
-    permission
+    adduser
 
     bgmi_scripts
 

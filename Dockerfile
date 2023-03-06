@@ -53,6 +53,7 @@ RUN \
         jq \
         findutils \
         su-exec \
+        dumb-init \
     && \
     apk add --no-cache --virtual=build-dependencies \
         zip \

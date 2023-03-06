@@ -399,4 +399,4 @@ cat /home/bgmi-docker/BGmi-Docker.logo
 
 umask "${UMASK}"
 
-exec /usr/bin/supervisord -n -c "${BGMI_HOME}"/bgmi_supervisord.ini
+exec dumb-init /usr/bin/supervisord -n -c "${BGMI_HOME}"/bgmi_supervisord.ini

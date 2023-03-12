@@ -5,7 +5,7 @@ LABEL maintainer="ddsrem@163.com"
 # BGmi版本
 ARG BGMI_TAG=v2.3.1
 # Ariang版本
-ARG ARIANG_TAG=1.3.2
+ARG ARIANG_TAG=1.3.3
 # bgmi_archive_frontend版本
 ARG bgmi_archive_frontend_TAG=0.0.4
 

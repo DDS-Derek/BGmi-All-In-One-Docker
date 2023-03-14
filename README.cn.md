@@ -1,7 +1,6 @@
 # BGmi All In One Docker
 
 [![Build](https://github.com/DDS-Derek/BGmi-All-In-One-Docker/actions/workflows/docker-image.yml/badge.svg)](https://github.com/DDS-Derek/BGmi-All-In-One-Docker/actions/workflows/docker-image.yml)
-[![Build-Base](https://github.com/DDS-Derek/BGmi-All-In-One-Docker/actions/workflows/docker-base-image.yml/badge.svg)](https://github.com/DDS-Derek/BGmi-All-In-One-Docker/actions/workflows/docker-base-image.yml)
 
 > [English](https://github.com/DDS-Derek/BGmi-All-In-One-Docker/blob/master/README.md) | 中文
 

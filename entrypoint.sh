@@ -1,7 +1,5 @@
 #!/bin/bash
 
-pid=0
-
 ## 创建文件夹
 function mkdir_dir {
 

@@ -172,6 +172,7 @@ RUN \
         /root/.cache \
         /tmp/*
 
+COPY --from=powerman/dockerize:0.19.0 /usr/local/bin/dockerize /usr/local/bin
 COPY --chmod=755 . /home/bgmi-docker
 
 VOLUME ["/bgmi"]

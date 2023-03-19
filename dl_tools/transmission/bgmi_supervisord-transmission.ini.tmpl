@@ -1,16 +1,16 @@
 [unix_http_server]
-file=%(ENV_BGMI_HOME)s/supervisor.sock
+file={{ .Env.BGMI_HOME }}/supervisor.sock
 chmod=0700
 [supervisord]
 nodaemon=true
 childlogdir=/bgmi/log/supervisor
-logfile=%(ENV_BGMI_HOME)s/supervisord.log
-pidfile=%(ENV_BGMI_HOME)s/supervisord.pid
+logfile={{ .Env.BGMI_HOME }}/supervisord.log
+pidfile={{ .Env.BGMI_HOME }}/supervisord.pid
 user=root
 [rpcinterface:supervisor]
 supervisor.rpcinterface_factory = supervisor.rpcinterface:make_main_rpcinterface
 [supervisorctl]
-serverurl=unix://%(ENV_BGMI_HOME)s/supervisor.sock
+serverurl=unix://{{ .Env.BGMI_HOME }}/supervisor.sock
 
 [group:bgmi]
 programs=bgmi_http,transmission,nginx,crond

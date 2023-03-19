@@ -174,7 +174,7 @@ function transmission_install {
         mkdir -p /bgmi/conf/transmission
     fi
 
-    cp /home/bgmi-docker/dl_tools/transmission/bgmi_supervisord-transmission.ini ${BGMI_HOME}/bgmi_supervisord.ini
+    dockerize -template /home/bgmi-docker/dl_tools/transmission/bgmi_supervisord-transmission.ini.tmpl:${BGMI_HOME}/bgmi_supervisord.ini
 
     cp /home/bgmi-docker/dl_tools/transmission/transmission-daemon /etc/conf.d/transmission-daemon
 
@@ -295,7 +295,7 @@ server {
 
 EOF
 
-    cp "${aria2_settings_dir}"/bgmi_supervisord-aria2.ini "${BGMI_HOME}"/bgmi_supervisord.ini
+    dockerize -template "${aria2_settings_dir}"/bgmi_supervisord-aria2.ini.tmpl:"${BGMI_HOME}"/bgmi_supervisord.ini
 
     bash "${aria2_settings_dir}"/aria2_pro/settings.sh
 
@@ -305,7 +305,7 @@ function default_install {
 
     default_install_dir="/home/bgmi-docker/dl_tools"
 
-    cp "${default_install_dir}"/default/bgmi_supervisord.ini "${BGMI_HOME}"/bgmi_supervisord.ini
+    dockerize -template "${default_install_dir}"/default/bgmi_supervisord.ini.tmpl "${BGMI_HOME}"/bgmi_supervisord.ini
 
 }
 

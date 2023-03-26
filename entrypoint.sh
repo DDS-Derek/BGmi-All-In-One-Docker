@@ -1,5 +1,7 @@
 #!/bin/bash
 
+umask "${UMASK}"
+
 ## 创建文件夹
 function mkdir_dir {
 
@@ -397,7 +399,5 @@ chown -R bgmi:bgmi \
     ${DOWNLOAD_DIR}/.core
 
 cat /home/bgmi-docker/BGmi-Docker.logo
-
-umask "${UMASK}"
 
 exec dumb-init /usr/bin/supervisord -n -c "${BGMI_HOME}"/bgmi_supervisord.ini

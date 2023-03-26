@@ -307,7 +307,7 @@ function default_install {
 
     default_install_dir="/home/bgmi-docker/dl_tools"
 
-    dockerize -no-overwrite -template "${default_install_dir}"/default/bgmi_supervisord.ini.tmpl "${BGMI_HOME}"/bgmi_supervisord.ini
+    dockerize -no-overwrite -template "${default_install_dir}"/default/bgmi_supervisord.ini.tmpl:"${BGMI_HOME}"/bgmi_supervisord.ini
 
 }
 

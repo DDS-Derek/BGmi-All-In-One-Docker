@@ -1,0 +1,55 @@
+data_source = "{{ .Env.BGMI_SOURCE }}"
+download_delegate = "aria2-rpc"
+tmp_path = "{{ .Env.BGMI_PATH }}/tmp"
+save_path = "{{ .Env.DOWNLOAD_DIR }}"
+front_static_path = "{{ .Env.BGMI_PATH }}/front_static"
+db_path = "{{ .Env.BGMI_PATH }}/bangumi.db"
+script_path = "{{ .Env.BGMI_PATH }}/scripts"
+tools_path = "{{ .Env.BGMI_PATH }}/tools"
+max_path = 3
+bangumi_moe_url = "https://bangumi.moe"
+share_dmhy_url = "https://share.dmhy.org"
+mikan_username = ""
+mikan_password = ""
+lang = "zh_cn"
+enable_global_include_keywords = false
+global_include_keywords = [
+    "1080",
+]
+enable_global_filters = true
+global_filters = [
+    "Leopard-Raws",
+    "hevc",
+    "x265",
+    "c-a Raws",
+    "U3-Web",
+]
+
+[http]
+admin_token = "{{ .Env.BGMI_ADMIN_TOKEN }}"
+danmaku_api_url = ""
+serve_static_files = false
+
+[aria2]
+rpc_url = "http://127.0.0.1:6800/rpc"
+rpc_token = "token:"
+
+[transmission]
+rpc_url = "127.0.0.1"
+rpc_port = 9091
+rpc_username = "your_username"
+rpc_password = "your_password"
+rpc_path = "/transmission/"
+
+[qbittorrent]
+rpc_host = "127.0.0.1"
+rpc_port = 8080
+rpc_username = "admin"
+rpc_password = "adminadmin"
+category = ""
+
+[deluge]
+rpc_url = "http://127.0.0.1:8112/json"
+rpc_password = "deluge"
+
+[save_path_map]

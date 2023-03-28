@@ -3,6 +3,7 @@
 .git
 
 # Ignore useless files
-example/
 README.md
 README.cn.md
+.dockerignore
+renovate.json

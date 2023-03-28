@@ -3,7 +3,7 @@ file={{ .Env.BGMI_HOME }}/supervisor.sock
 chmod=0700
 [supervisord]
 nodaemon=true
-childlogdir=/bgmi/log/supervisor
+childlogdir={{ .Env.BGMI_HOME }}/log/supervisor
 logfile={{ .Env.BGMI_HOME }}/supervisord.log
 pidfile={{ .Env.BGMI_HOME }}/supervisord.pid
 user=root

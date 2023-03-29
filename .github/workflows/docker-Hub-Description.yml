@@ -1,7 +1,13 @@
 name: Docker Hub Description
 
 on:
-  workflow_dispatch:
+    workflow_dispatch:
+    push:
+      branches:
+        - master
+      paths:
+        - README.cn.md
+        - README.md
 
 jobs:
   job:

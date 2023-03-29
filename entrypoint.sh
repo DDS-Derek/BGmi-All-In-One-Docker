@@ -47,7 +47,17 @@ function __config_bgmi {
     cp ${BGMI_HOME}/config/crontab.sh ${BGMI_HOME}/BGmi/bgmi/others/crontab.sh
 
     if [ ! -f "${bgmi_config}" ]; then
-    	dockerize -no-overwrite -template ${BGMI_HOME}/config/bgmi_config.toml.tmpl:${bgmi_config}
+        if [ -z ${BGMI_VERSION} ]; then
+            export DOWNLOADER=transmission-rpc
+            dockerize -no-overwrite -template ${BGMI_HOME}/config/bgmi_config.toml.tmpl:${bgmi_config}
+        elif [ "${BGMI_VERSION}" == "transmission" ]; then
+            export DOWNLOADER=transmission-rpc
+            dockerize -no-overwrite -template ${BGMI_HOME}/config/bgmi_config.toml.tmpl:${bgmi_config}
+        elif [ "${BGMI_VERSION}" == "aria2" ]; then
+            export DOWNLOADER=aria2-rpc
+            export ARIA2_RPC_TOKEN=${RPC_SECRET}
+            dockerize -no-overwrite -template ${BGMI_HOME}/config/bgmi_config.toml.tmpl:${bgmi_config}
+        fi
     fi
 
     if [ ! -f $bangumi_db ]; then
@@ -73,7 +83,52 @@ function __config_nginx {
     ln -s $bgmi_nginx $nginx_conf_dir
 
     if [ ! -f "${bgmi_nginx_conf}" ]; then
-    	dockerize -no-overwrite -template ${BGMI_HOME}/config/bgmi_nginx.conf.tmpl:${bgmi_nginx_conf}
+        if [ -z ${BGMI_VERSION} ]; then
+            export NGINX_PARAMETER="
+    location /api {
+        proxy_pass http://127.0.0.1:8888;
+    }
+
+    location /resource {
+        proxy_pass http://127.0.0.1:8888;
+    }
+
+    location / {
+        alias /bgmi/conf/bgmi/front_static/;
+    }
+"
+        elif [ "${BGMI_VERSION}" == "transmission" ]; then
+            export NGINX_PARAMETER="
+    location /api {
+        proxy_pass http://127.0.0.1:8888;
+    }
+    location /resource {
+        proxy_pass http://127.0.0.1:8888;
+    }
+    location /transmission {
+        proxy_pass http://127.0.0.1:9091;
+    }
+    location / {
+        alias /bgmi/conf/bgmi/front_static/;
+    }
+"
+        elif [ "${BGMI_VERSION}" == "aria2" ]; then
+            export NGINX_PARAMETER="
+    location /api {
+        proxy_pass http://127.0.0.1:8888;
+    }
+    location /resource {
+        proxy_pass http://127.0.0.1:8888;
+    }
+    location /ariang {
+        alias /home/bgmi-docker/downloader/aria2/ariang;
+    }
+    location / {
+        alias /bgmi/conf/bgmi/front_static/;
+    }
+"
+        fi
+    dockerize -no-overwrite -template ${BGMI_HOME}/config/bgmi_nginx.conf.tmpl:${bgmi_nginx_conf}
     fi
 
     sed -i "s/user nginx;/user bgmi;/g" /etc/nginx/nginx.conf
@@ -96,9 +151,53 @@ function __adduser {
 
 }
 
-function __supervisord {
+function __supervisord_downloader {
 
-    dockerize -no-overwrite -template ${BGMI_HOME}/config/bgmi_supervisord.ini.tmpl:${BGMI_HOME}/bgmi_supervisord.ini
+    if [ -z ${BGMI_VERSION} ]; then
+    
+        dockerize -no-overwrite -template ${BGMI_HOME}/downloader/none/supervisord.ini.tmpl:${BGMI_HOME}/bgmi_supervisord.ini
+
+    elif [ "${BGMI_VERSION}" == "transmission" ]; then
+
+        transmission_config_file="/bgmi/conf/transmission/settings.json"
+        dockerize -no-overwrite -template ${BGMI_HOME}/downloader/transmission/supervisord.ini.tmpl:${BGMI_HOME}/bgmi_supervisord.ini
+        if [ ! -f /bgmi/conf/transmission ]; then
+            mkdir -p /bgmi/conf/transmission
+        fi
+        cp /home/bgmi-docker/downloader/transmission/transmission-daemon /etc/conf.d/transmission-daemon
+        if [ ! -f ${transmission_config_file} ]; then
+            cp /home/bgmi-docker/downloader/transmission/settings.json ${transmission_config_file}
+        fi
+        if [[ -n "$TR_USER" ]] && [[ -n "$TR_PASS" ]]; then
+            sed -i '/rpc-authentication-required/c\    "rpc-authentication-required": true,' ${transmission_config_file}
+            sed -i "/rpc-username/c\    \"rpc-username\": \"$TR_USER\"," ${transmission_config_file}
+            sed -i "/rpc-password/c\    \"rpc-password\": \"$TR_PASS\"," ${transmission_config_file}
+            bgmi config TRANSMISSION_RPC_USERNAME $TR_USER
+            bgmi config TRANSMISSION_RPC_PASSWORD $TR_PASS
+        else
+            sed -i '/rpc-authentication-required/c\    "rpc-authentication-required": false,' ${transmission_config_file}
+            sed -i "/rpc-username/c\    \"rpc-username\": \"$TR_USER\"," ${transmission_config_file}
+            sed -i "/rpc-password/c\    \"rpc-password\": \"$TR_PASS\"," ${transmission_config_file}
+        fi
+        if [[ -n "${TR_PEERPORT}" ]]; then
+            sed -i "/\"peer-port\"/c\    \"peer-port\": ${TR_PEERPORT}," ${transmission_config_file}
+            sed -i '/peer-port-random-on-start/c\     "peer-port-random-on-start": false,' ${transmission_config_file}
+        fi
+        if [ ! -z "${DOWNLOAD_DIR}" ]; then
+            sed -i "/\"download-dir\"/c\    \"download-dir\": \"$DOWNLOAD_DIR\"," ${transmission_config_file}
+            sed -i "/\"incomplete-dir\"/c\    \"incomplete-dir\": \"$DOWNLOAD_DIR\"," ${transmission_config_file}
+        fi
+
+    elif [ "${BGMI_VERSION}" == "aria2" ]; then
+
+        dockerize -no-overwrite -template ${BGMI_HOME}/downloader/aria2/supervisord.ini.tmpl:${BGMI_HOME}/bgmi_supervisord.ini
+
+        bash ${BGMI_HOME}/downloader/aria2/settings.sh
+
+    else
+        echo -e "\033[31m[+] Wrong container version, start with default version\033[0m"
+        dockerize -no-overwrite -template ${BGMI_HOME}/downloader/none/supervisord.ini.tmpl:${BGMI_HOME}/bgmi_supervisord.ini
+    fi
 
 }
 
@@ -132,7 +231,7 @@ if [ ! -f "${first_lock}" ]; then
 
     __bgmi_scripts
 
-    __supervisord
+    __supervisord_downloader
 
 fi
 

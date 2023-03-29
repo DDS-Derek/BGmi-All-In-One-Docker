@@ -1,5 +1,5 @@
 data_source = "{{ .Env.BGMI_SOURCE }}"
-download_delegate = "aria2-rpc"
+download_delegate = "{{ .Env.DOWNLOADER }}"
 tmp_path = "{{ .Env.BGMI_PATH }}/tmp"
 save_path = "{{ .Env.DOWNLOAD_DIR }}"
 front_static_path = "{{ .Env.BGMI_PATH }}/front_static"
@@ -32,7 +32,7 @@ serve_static_files = false
 
 [aria2]
 rpc_url = "http://127.0.0.1:6800/rpc"
-rpc_token = "token:"
+rpc_token = "token:{{ .Env.ARIA2_RPC_TOKEN }}"
 
 [transmission]
 rpc_url = "127.0.0.1"

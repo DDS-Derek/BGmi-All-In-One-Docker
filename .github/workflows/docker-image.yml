@@ -48,7 +48,8 @@ jobs:
           push: true
           build-args: |
             BGMI_TAG=${{ DOCKER_METADATA_OUTPUT_VERSION }}
-          tags: ${{ steps.meta.outputs.tags }}
+          tags: |
+            ${{ secrets.DOCKER_USERNAME }}/bgmi-all-in-one:tr-${{ DOCKER_METADATA_OUTPUT_VERSION }}
           labels: ${{ steps.meta.outputs.labels }}
 
       -

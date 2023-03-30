@@ -102,7 +102,8 @@ function __config_nginx {
     dockerize -no-overwrite -template ${BGMI_HOME}/config/bgmi_nginx.conf.tmpl:${bgmi_nginx_conf}
     fi
 
-    sed -i "s/user nginx;/user bgmi;/g" /etc/nginx/nginx.conf
+    rm -rf /etc/nginx/nginx.conf
+    cp ${BGMI_HOME}/config/nginx.conf /etc/nginx/nginx.conf
 
 }
 

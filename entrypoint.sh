@@ -55,7 +55,7 @@ function __config_bgmi {
             dockerize -no-overwrite -template ${BGMI_HOME}/config/bgmi_config.toml.tmpl:${bgmi_config}
         elif [ "${BGMI_VERSION}" == "aria2" ]; then
             export DOWNLOADER=aria2-rpc
-            export ARIA2_RPC_TOKEN=${RPC_SECRET}
+            export ARIA2_RPC_TOKEN=${ARIA2_RPC_SECRET}
             dockerize -no-overwrite -template ${BGMI_HOME}/config/bgmi_config.toml.tmpl:${bgmi_config}
         fi
     fi
@@ -85,46 +85,17 @@ function __config_nginx {
     if [ ! -f "${bgmi_nginx_conf}" ]; then
         if [ -z ${BGMI_VERSION} ]; then
             export NGINX_PARAMETER="
-    location /api {
-        proxy_pass http://127.0.0.1:8888;
-    }
-
-    location /resource {
-        proxy_pass http://127.0.0.1:8888;
-    }
-
-    location / {
-        alias /bgmi/conf/bgmi/front_static/;
-    }
 "
         elif [ "${BGMI_VERSION}" == "transmission" ]; then
             export NGINX_PARAMETER="
-    location /api {
-        proxy_pass http://127.0.0.1:8888;
-    }
-    location /resource {
-        proxy_pass http://127.0.0.1:8888;
-    }
-    location /transmission {
+    location /tr {
         proxy_pass http://127.0.0.1:9091;
-    }
-    location / {
-        alias /bgmi/conf/bgmi/front_static/;
     }
 "
         elif [ "${BGMI_VERSION}" == "aria2" ]; then
             export NGINX_PARAMETER="
-    location /api {
-        proxy_pass http://127.0.0.1:8888;
-    }
-    location /resource {
-        proxy_pass http://127.0.0.1:8888;
-    }
     location /ariang {
         alias /home/bgmi-docker/downloader/aria2/ariang;
-    }
-    location / {
-        alias /bgmi/conf/bgmi/front_static/;
     }
 "
         fi
@@ -159,34 +130,9 @@ function __supervisord_downloader {
 
     elif [ "${BGMI_VERSION}" == "transmission" ]; then
 
-        transmission_config_file="/bgmi/conf/transmission/settings.json"
         dockerize -no-overwrite -template ${BGMI_HOME}/downloader/transmission/supervisord.ini.tmpl:${BGMI_HOME}/bgmi_supervisord.ini
-        if [ ! -f /bgmi/conf/transmission ]; then
-            mkdir -p /bgmi/conf/transmission
-        fi
-        cp /home/bgmi-docker/downloader/transmission/transmission-daemon /etc/conf.d/transmission-daemon
-        if [ ! -f ${transmission_config_file} ]; then
-            cp /home/bgmi-docker/downloader/transmission/settings.json ${transmission_config_file}
-        fi
-        if [[ -n "$TR_USER" ]] && [[ -n "$TR_PASS" ]]; then
-            sed -i '/rpc-authentication-required/c\    "rpc-authentication-required": true,' ${transmission_config_file}
-            sed -i "/rpc-username/c\    \"rpc-username\": \"$TR_USER\"," ${transmission_config_file}
-            sed -i "/rpc-password/c\    \"rpc-password\": \"$TR_PASS\"," ${transmission_config_file}
-            bgmi config TRANSMISSION_RPC_USERNAME $TR_USER
-            bgmi config TRANSMISSION_RPC_PASSWORD $TR_PASS
-        else
-            sed -i '/rpc-authentication-required/c\    "rpc-authentication-required": false,' ${transmission_config_file}
-            sed -i "/rpc-username/c\    \"rpc-username\": \"$TR_USER\"," ${transmission_config_file}
-            sed -i "/rpc-password/c\    \"rpc-password\": \"$TR_PASS\"," ${transmission_config_file}
-        fi
-        if [[ -n "${TR_PEERPORT}" ]]; then
-            sed -i "/\"peer-port\"/c\    \"peer-port\": ${TR_PEERPORT}," ${transmission_config_file}
-            sed -i '/peer-port-random-on-start/c\     "peer-port-random-on-start": false,' ${transmission_config_file}
-        fi
-        if [ ! -z "${DOWNLOAD_DIR}" ]; then
-            sed -i "/\"download-dir\"/c\    \"download-dir\": \"$DOWNLOAD_DIR\"," ${transmission_config_file}
-            sed -i "/\"incomplete-dir\"/c\    \"incomplete-dir\": \"$DOWNLOAD_DIR\"," ${transmission_config_file}
-        fi
+
+        bash ${BGMI_HOME}/downloader/transmission/settings.sh
 
     elif [ "${BGMI_VERSION}" == "aria2" ]; then
 

@@ -108,11 +108,11 @@ DOWNLOAD_PROFILE
 }
 
 if ! [[ "${ARIA2_UPDATE_TRACKERS}" = "false" || "${ARIA2_UPDATE_TRACKERS}" = "disable" ]]; then
-    (crontab -l ; echo "0 7 * * * su bgmi -c 'sleep $((RANDOM % 1800)); bash /bgmi/conf/aria2/script/tracker.sh /bgmi/conf/aria2/aria2.conf RPC 2>&1 | tee /bgmi/log/tracker.log'") | crontab -
+    (crontab -l ; echo "0 7 * * * umask 022; export CUSTOM_TRACKER_URL=${ARIA2_CUSTOM_TRACKER_URL}; sleep $((RANDOM % 1800)); su-exec bgmi bash /bgmi/conf/aria2/script/tracker.sh /bgmi/conf/aria2/aria2.conf RPC 2>&1 | tee /bgmi/log/tracker.log") | crontab -
     touch /bgmi/log/tracker.log
     PROFILES="tracker.sh"
     DOWNLOAD_PROFILE
-    bash ${SCRIPT_DIR}/tracker.sh ${ARIA2_CONF}
+    export CUSTOM_TRACKER_URL=${ARIA2_CUSTOM_TRACKER_URL}; bash ${SCRIPT_DIR}/tracker.sh ${ARIA2_CONF}
 fi
 
 if [[ "${ARIA2_SPECIAL_MODE}" = "rclone" ]]; then

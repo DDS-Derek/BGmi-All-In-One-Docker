@@ -8,5 +8,17 @@ server {
     location /bangumi {
         alias {{ .Env.DOWNLOAD_DIR }};
     }
+
+    location /api {
+        proxy_pass http://127.0.0.1:8888;
+    }
+
+    location /resource {
+        proxy_pass http://127.0.0.1:8888;
+    }
+
+    location / {
+        alias /bgmi/conf/bgmi/front_static/;
+    }
 {{ .Env.NGINX_PARAMETER }}
 }

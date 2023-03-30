@@ -48,17 +48,21 @@ function __config_bgmi {
 
     if [ ! -f "${bgmi_config}" ]; then
         if [ -z ${BGMI_VERSION} ]; then
-            export DOWNLOADER=transmission-rpc
-            dockerize -no-overwrite -template ${BGMI_HOME}/config/bgmi_config.toml.tmpl:${bgmi_config}
+            export BGMI_DOWNLOAD_DELEGATE=transmission-rpc
         elif [ "${BGMI_VERSION}" == "transmission" ]; then
-            export DOWNLOADER=transmission-rpc
-            dockerize -no-overwrite -template ${BGMI_HOME}/config/bgmi_config.toml.tmpl:${bgmi_config}
+            export BGMI_DOWNLOAD_DELEGATE=transmission-rpc
+            if [[ -n "$TR_USER" ]] && [[ -n "$TR_PASS" ]]; then
+                export BGMI_TRANSMISSION_RPC_USERNAME=${TR_USER}
+                export BGMI_TRANSMISSION_RPC_PASSWORD=${TR_PASS}
+            fi
         elif [ "${BGMI_VERSION}" == "aria2" ]; then
-            export DOWNLOADER=aria2-rpc
-            export ARIA2_RPC_TOKEN=${ARIA2_RPC_SECRET}
-            dockerize -no-overwrite -template ${BGMI_HOME}/config/bgmi_config.toml.tmpl:${bgmi_config}
+            export BGMI_DOWNLOAD_DELEGATE=aria2-rpc
+            export BGMI_ARIA2_RPC_TOKEN=token:${ARIA2_RPC_SECRET}
+            export BGMI_ARIA2_RPC_URL=http://127.0.0.1:${ARIA2_RPC_PORT}/rpc
         fi
     fi
+
+    export BGMI_SAVE_PATH=${DOWNLOAD_DIR}
 
     if [ ! -f $bangumi_db ]; then
     	bgmi install
@@ -88,7 +92,7 @@ function __config_nginx {
 "
         elif [ "${BGMI_VERSION}" == "transmission" ]; then
             export NGINX_PARAMETER="
-    location /tr {
+    location /transmission {
         proxy_pass http://127.0.0.1:9091;
     }
 "

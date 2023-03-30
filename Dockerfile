@@ -2,7 +2,7 @@ FROM alpine:3.17
 
 LABEL maintainer="ddsrem@163.com"
 
-ARG BGMI_TAG=v3.2.2
+ARG BGMI_TAG=v3.3.0
 
 ENV LANG=C.UTF-8 \
     PS1="\[\e[32m\][\[\e[m\]\[\e[36m\]\u \[\e[m\]\[\e[37m\]@ \[\e[m\]\[\e[34m\]\h\[\e[m\]\[\e[32m\]]\[\e[m\] \[\e[37;35m\]in\[\e[m\] \[\e[33m\]\w\[\e[m\] \[\e[32m\][\[\e[m\]\[\e[37m\]\d\[\e[m\] \[\e[m\]\[\e[37m\]\t\[\e[m\]\[\e[32m\]]\[\e[m\] \n\[\e[1;31m\]$ \[\e[0m\]" \
@@ -14,8 +14,8 @@ ENV LANG=C.UTF-8 \
     # 注意：这两个目录必须在 /media 下
     DOWNLOAD_DIR=/media/downloads \
     MEDIA_DIR=/media/cartoon \
-    BGMI_ADMIN_TOKEN=password \
-    BGMI_SOURCE=mikan_project
+    BGMI_HTTP_ADMIN_TOKEN=password \
+    BGMI_DATA_SOURCE=mikan_project
 
 RUN set -ex && \
     apk add --no-cache \

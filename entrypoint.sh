@@ -57,7 +57,7 @@ function __config_bgmi {
     cp ${BGMI_HOME}/config/crontab.sh ${BGMI_HOME}/BGmi/bgmi/others/crontab.sh
 
     if [ "${BGMI_VERSION}" == "transmission" ]; then
-        export BGMI_TRANSMISSION_RPC_URL=127.0.0.1:9091/tr/rpc
+        export BGMI_TRANSMISSION_RPC_PATH=/tr/rpc
         if [[ -n "$TR_USER" ]] && [[ -n "$TR_PASS" ]]; then
             export BGMI_TRANSMISSION_RPC_USERNAME=${TR_USER}
             export BGMI_TRANSMISSION_RPC_PASSWORD=${TR_PASS}

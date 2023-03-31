@@ -38,6 +38,16 @@ function __mkdir_dir {
 
 }
 
+function __bgmi_crond {
+
+    crontab -r
+    if [ ! -f /etc/crontabs/root ]; then
+        touch /etc/crontabs/root
+    fi
+    bash ${BGMI_HOME}/BGmi/bgmi/others/crontab.sh
+
+}
+
 # 设置BGMI
 function __config_bgmi {
 
@@ -46,32 +56,25 @@ function __config_bgmi {
 
     cp ${BGMI_HOME}/config/crontab.sh ${BGMI_HOME}/BGmi/bgmi/others/crontab.sh
 
-    if [ ! -f "${bgmi_config}" ]; then
-        if [ -z ${BGMI_VERSION} ]; then
-            export BGMI_DOWNLOAD_DELEGATE=transmission-rpc
-        elif [ "${BGMI_VERSION}" == "transmission" ]; then
-            export BGMI_DOWNLOAD_DELEGATE=transmission-rpc
-            if [[ -n "$TR_USER" ]] && [[ -n "$TR_PASS" ]]; then
-                export BGMI_TRANSMISSION_RPC_USERNAME=${TR_USER}
-                export BGMI_TRANSMISSION_RPC_PASSWORD=${TR_PASS}
-            fi
-        elif [ "${BGMI_VERSION}" == "aria2" ]; then
-            export BGMI_DOWNLOAD_DELEGATE=aria2-rpc
-            export BGMI_ARIA2_RPC_TOKEN=token:${ARIA2_RPC_SECRET}
-            export BGMI_ARIA2_RPC_URL=http://127.0.0.1:${ARIA2_RPC_PORT}/rpc
+    if [ "${BGMI_VERSION}" == "transmission" ]; then
+        export BGMI_TRANSMISSION_RPC_URL=127.0.0.1:9091/tr/rpc
+        if [[ -n "$TR_USER" ]] && [[ -n "$TR_PASS" ]]; then
+            export BGMI_TRANSMISSION_RPC_USERNAME=${TR_USER}
+            export BGMI_TRANSMISSION_RPC_PASSWORD=${TR_PASS}
         fi
+    elif [ "${BGMI_VERSION}" == "aria2" ]; then
+        export BGMI_ARIA2_RPC_TOKEN=token:${ARIA2_RPC_SECRET}
+        export BGMI_ARIA2_RPC_URL=http://127.0.0.1:${ARIA2_RPC_PORT}/rpc
     fi
 
     export BGMI_SAVE_PATH=${DOWNLOAD_DIR}
 
     if [ ! -f $bangumi_db ]; then
     	bgmi install
-        touch /etc/crontabs/root
-    	bash /home/bgmi-docker/BGmi/bgmi/others/crontab.sh
+        __bgmi_crond
     else
     	bgmi upgrade
-        touch /etc/crontabs/root
-    	bash /home/bgmi-docker/BGmi/bgmi/others/crontab.sh
+        __bgmi_crond
     fi
 
 }
@@ -92,7 +95,7 @@ function __config_nginx {
 "
         elif [ "${BGMI_VERSION}" == "transmission" ]; then
             export NGINX_PARAMETER="
-    location /transmission {
+    location /tr {
         proxy_pass http://127.0.0.1:9091;
     }
 "
@@ -164,8 +167,6 @@ function __init_proc {
 
     touch "${first_lock}"
 
-    crontab -r
-
 }
 
 if [ ! -f "${first_lock}" ]; then
@@ -174,15 +175,15 @@ if [ ! -f "${first_lock}" ]; then
 
     __mkdir_dir
 
+    __adduser
+
     __config_bgmi
 
     __config_nginx
 
-    __adduser
+    __supervisord_downloader
 
     __bgmi_scripts
-
-    __supervisord_downloader
 
 fi
 
@@ -204,6 +205,6 @@ if [[ "$(stat -c '%U' ${DOWNLOAD_DIR})" != "bgmi" ]] || [[ "$(stat -c '%G' ${DOW
         ${DOWNLOAD_DIR}
 fi
 
-cat /home/bgmi-docker/BGmi-Docker.logo
+cat /home/bgmi-docker/utils/BGmi-Docker.logo
 
 exec dumb-init /usr/bin/supervisord -n -c "${BGMI_HOME}"/bgmi_supervisord.ini

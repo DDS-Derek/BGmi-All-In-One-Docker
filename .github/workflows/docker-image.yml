@@ -185,7 +185,6 @@ jobs:
           file: NAStool.Dockerfile
           platforms: |
             linux/amd64
-            linux/arm64/v8
           push: true
           tags: |
             ${{ secrets.DOCKER_USERNAME }}/bgmi-all-in-one:${{ steps.meta.outputs.version }}-nastools

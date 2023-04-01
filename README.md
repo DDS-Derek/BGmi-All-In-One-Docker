@@ -9,13 +9,14 @@
 Made from a image of https://github.com/codysk/bgmi-docker-all-in-one.
 
 ## New features
-1. Hard linking, hard linking tool provided by [kaaass](https://github.com/kaaass/bgmi_hardlink_helper)
+1. Hard linking, hard linking is achieved through NAStool's live directory synchronisation feature
 2. PUID and PGID settings.
 3. Umask settings.
-4. The internal aria2-pro, transmission downloader, can be set within the environment variables to enable or disable it.
+4. The internal aria2-pro, transmission downloader.
 5. Transmission Web Control.
 6. Ariang management interface.
-7. Common Scripts `bgmi_hardlink` `bgmi_download`。
+7. Common Scripts `bgmi_download`.
+8. Small mirror size and few layers.
 
 ## Introduction to BGmi
 
@@ -43,13 +44,12 @@ docker run -itd \
   -e UMASK=022 \
   -e MEDIA_DIR=/media/cartoon \
   -e DOWNLOAD_DIR=/media/downloads \
-  -e BGMI_DOWNLOADER=transmission \
-  -e BGMI_SOURCE=mikan_project \
-  -e BGMI_ADMIN_TOKEN=password \
+  -e BGMI_DATA_SOURCE=mikan_project \
+  -e BGMI_HTTP_ADMIN_TOKEN=password \
   -e TR_USER=bgmi \
   -e TR_PASS=password \
   -e TR_PEERPORT=51413 \
-  ddsderek/bgmi-all-in-one:latest
+  ddsderek/bgmi-all-in-one:transmission
 ```
 
 **Aria2**
@@ -71,18 +71,17 @@ docker run -itd \
   -e UMASK=022 \
   -e MEDIA_DIR=/media/cartoon \
   -e DOWNLOAD_DIR=/media/downloads \
-  -e BGMI_DOWNLOADER=aria2 \
-  -e BGMI_SOURCE=mikan_project \
-  -e BGMI_ADMIN_TOKEN=password \
-  -e UPDATE_TRACKERS=true \
-  -e CUSTOM_TRACKER_URL= \
-  -e LISTEN_PORT=6888 \
-  -e RPC_PORT=6800 \
-  -e RPC_SECRET= \
-  -e DISK_CACHE= \
-  -e IPV6_MODE= \
-  -e SPECIAL_MODE= \
-  ddsderek/bgmi-all-in-one:latest
+  -e BGMI_DATA_SOURCE=mikan_project \
+  -e BGMI_HTTP_ADMIN_TOKEN=password \
+  -e ARIA2_UPDATE_TRACKERS=true \
+  -e ARIA2_CUSTOM_TRACKER_URL= \
+  -e ARIA2_LISTEN_PORT=6888 \
+  -e ARIA2_RPC_PORT=6800 \
+  -e ARIA2_RPC_SECRET= \
+  -e ARIA2_DISK_CACHE= \
+  -e ARIA2_IPV6_MODE= \
+  -e ARIA2_SPECIAL_MODE= \
+  ddsderek/bgmi-all-in-one:aria2
 ```
 
 **Not using the built-in downloader**
@@ -91,7 +90,7 @@ docker run -itd \
 docker run -itd \
   --name=bgmi \
   --restart always \
-  -v /bgmi:/bgmi \
+  -v /root/config/bgmi:/bgmi \
   -v /media:/media \
   -p 80:80 \
   -e TZ=Asia/Shanghai \
@@ -100,10 +99,24 @@ docker run -itd \
   -e UMASK=022 \
   -e MEDIA_DIR=/media/cartoon \
   -e DOWNLOAD_DIR=/media/downloads \
-  -e BGMI_DOWNLOADER=false \
-  -e BGMI_SOURCE=mikan_project \
-  -e BGMI_ADMIN_TOKEN=password \
+  -e BGMI_DATA_SOURCE=mikan_project \
+  -e BGMI_HTTP_ADMIN_TOKEN=password \
   ddsderek/bgmi-all-in-one:latest
+```
+
+**Hard link with NAStool**
+
+```bash
+docker run -itd \
+  --name=bgmi-nt \
+  --restart always \
+  -v /root/config/nas-tools/config:/config \
+  -v /media:/media \
+  -e TZ=Asia/Shanghai \
+  -e PGID=1000 \
+  -e PUID=1000 \
+  -e UMASK=022 \
+  ddsderek/bgmi-all-in-one:nastools
 ```
 
 ### docker-compose
@@ -122,6 +135,15 @@ docker run -itd \
 
 ## Description of parameters
 
+### Image TAG
+
+|     TAG      |             Explanation             |
+| :----------: | :--------------------------: |
+|    latest    |     Image containing only the BGmi program     |
+| transmission | Image containing BGmi and transmission |
+|    aria2     |    Image containing of BGmi and aria2     |
+|   nastools   | Image containing the NAStool and specially optimised for size  |
+
 ### BGmi
 
 |         Parameter          |                            Function                            |
@@ -133,8 +155,8 @@ docker run -itd \
 |    `-e MEDIA_DIR`     |         BGmi hard link directory (directory must be under `/media`)          |
 |   `-e DOWNLOAD_DIR`   |          BGmi download directory (directory must be under `/media`)           |
 | `-e BGMI_DOWNLOADER`  |     BGmi downloader (optional `transmission` `aria2` `false`)     |
-|   `-e BGMI_SOURCE`    | set bgmi default data source (bangumi_moe, mikan_project or dmhy) |
-| `-e BGMI_ADMIN_TOKEN` |               Setting up the BGMI web interface authentication token               |
+|   `-e BGMI_DATA_SOURCE`    | set bgmi default data source (bangumi_moe, mikan_project or dmhy) |
+| `-e BGMI_HTTP_ADMIN_TOKEN` |               Setting up the BGMI web interface authentication token               |
 |        `-p 80`        |                       BGmi Web Port                        |
 |      `-v /bgmi`       |                          Configuration files                          |
 |      `-v /media`      |            Media folder containing download files and hard link files            |
@@ -170,10 +192,4 @@ Hardlink BGmi downloads of new resources, with improved file formatting for auto
 
 The hardlink directory format is used for automatic recognition by the scraper and can be configured correctly to avoid scraping altogether. The current configuration works with Jellyfin's scrapers.
 Theoretically it will also work with most scrapers.
-
-- The default download directory is ``/meida/downloads`` and the download directory is in the official BGMI format.
-- The cartoons are hard-linked and stored in the ``/media/cartoon`` folder. The default format is `{name}`, e.g. "The Dragon Maid of the Kobayashi Family".
-  It can also be nested, e.g. `{name}/Season {season}`, i.e. "Kobayashi's Dragon Maid/Season 2".
-- The format for naming episodes is `BANGUMI_FILE_FORMAT`, the default is `S{season:0>2d}E{episode:0>2d}. {format}`.
-  For example, `S03E01.mp4`.
 

@@ -8,14 +8,15 @@
 
 参考 https://github.com/codysk/bgmi-docker-all-in-one 大佬的镜像制作而成。
 
-## 新增功能
-1. 硬链接，硬链接工具由[kaaass](https://github.com/kaaass/bgmi_hardlink_helper)大佬提供
+## 功能
+1. 硬链接，硬链接通过 NAStool 的实时目录同步功能实现
 2. PUID和PGID设置。
 3. Umask设置。
-4. 内部aria2-pro，transmission下载器，可以在环境变量内设置是否启用。
+4. 内部aria2-pro，transmission下载器。
 5. Transmission增强版UI。
 6. Ariang管理界面。
-7. 常用脚本 `bgmi_hardlink` `bgmi_download`。
+7. 常用脚本 `bgmi_download`。
+8. 镜像体积小，层数少。
 
 ## BGmi介绍
 
@@ -43,13 +44,12 @@ docker run -itd \
   -e UMASK=022 \
   -e MEDIA_DIR=/media/cartoon \
   -e DOWNLOAD_DIR=/media/downloads \
-  -e BGMI_DOWNLOADER=transmission \
-  -e BGMI_SOURCE=mikan_project \
-  -e BGMI_ADMIN_TOKEN=password \
+  -e BGMI_DATA_SOURCE=mikan_project \
+  -e BGMI_HTTP_ADMIN_TOKEN=password \
   -e TR_USER=bgmi \
   -e TR_PASS=password \
   -e TR_PEERPORT=51413 \
-  ddsderek/bgmi-all-in-one:latest
+  ddsderek/bgmi-all-in-one:transmission
 ```
 
 **Aria2**
@@ -71,18 +71,17 @@ docker run -itd \
   -e UMASK=022 \
   -e MEDIA_DIR=/media/cartoon \
   -e DOWNLOAD_DIR=/media/downloads \
-  -e BGMI_DOWNLOADER=aria2 \
-  -e BGMI_SOURCE=mikan_project \
-  -e BGMI_ADMIN_TOKEN=password \
-  -e UPDATE_TRACKERS=true \
-  -e CUSTOM_TRACKER_URL= \
-  -e LISTEN_PORT=6888 \
-  -e RPC_PORT=6800 \
-  -e RPC_SECRET= \
-  -e DISK_CACHE= \
-  -e IPV6_MODE= \
-  -e SPECIAL_MODE= \
-  ddsderek/bgmi-all-in-one:latest
+  -e BGMI_DATA_SOURCE=mikan_project \
+  -e BGMI_HTTP_ADMIN_TOKEN=password \
+  -e ARIA2_UPDATE_TRACKERS=true \
+  -e ARIA2_CUSTOM_TRACKER_URL= \
+  -e ARIA2_LISTEN_PORT=6888 \
+  -e ARIA2_RPC_PORT=6800 \
+  -e ARIA2_RPC_SECRET= \
+  -e ARIA2_DISK_CACHE= \
+  -e ARIA2_IPV6_MODE= \
+  -e ARIA2_SPECIAL_MODE= \
+  ddsderek/bgmi-all-in-one:aria2
 ```
 
 **不使用内置下载器**
@@ -91,7 +90,7 @@ docker run -itd \
 docker run -itd \
   --name=bgmi \
   --restart always \
-  -v /bgmi:/bgmi \
+  -v /root/config/bgmi:/bgmi \
   -v /media:/media \
   -p 80:80 \
   -e TZ=Asia/Shanghai \
@@ -100,10 +99,24 @@ docker run -itd \
   -e UMASK=022 \
   -e MEDIA_DIR=/media/cartoon \
   -e DOWNLOAD_DIR=/media/downloads \
-  -e BGMI_DOWNLOADER=false \
-  -e BGMI_SOURCE=mikan_project \
-  -e BGMI_ADMIN_TOKEN=password \
+  -e BGMI_DATA_SOURCE=mikan_project \
+  -e BGMI_HTTP_ADMIN_TOKEN=password \
   ddsderek/bgmi-all-in-one:latest
+```
+
+**配合 NAStool 硬链接**
+
+```bash
+docker run -itd \
+  --name=bgmi-nt \
+  --restart always \
+  -v /root/config/nas-tools/config:/config \
+  -v /media:/media \
+  -e TZ=Asia/Shanghai \
+  -e PGID=1000 \
+  -e PUID=1000 \
+  -e UMASK=022 \
+  ddsderek/bgmi-all-in-one:nastools
 ```
 
 ### docker-compose
@@ -122,6 +135,15 @@ docker run -itd \
 
 ## 参数说明
 
+### 镜像TAG
+
+|     TAG      |             解释             |
+| :----------: | :--------------------------: |
+|    latest    |     只包含BGmi程序的镜像     |
+| transmission | 包含BGmi和transmission的镜像 |
+|    aria2     |    包含BGmi和aria2的镜像     |
+|   nastools   | 包含NAStool，专门优化过大小  |
+
 ### BGmi
 
 |         参数          |                            作用                            |
@@ -132,9 +154,8 @@ docker run -itd \
 |      `-e UMASK`       |                          权限掩码                          |
 |    `-e MEDIA_DIR`     |         BGmi 硬链接目录（目录必须在 `/media` 下）          |
 |   `-e DOWNLOAD_DIR`   |          BGmi 下载目录（目录必须在 `/media` 下）           |
-| `-e BGMI_DOWNLOADER`  |     BGmi 下载器（可选 `transmission` `aria2` `false`）     |
-|   `-e BGMI_SOURCE`    | 设置 BGMI 默认数据源（bangumi_moe、mikan_project 或 DMHY） |
-| `-e BGMI_ADMIN_TOKEN` |               设置 BGMI Web 界面身份验证令牌               |
+|   `-e BGMI_DATA_SOURCE`    | 设置 BGMI 默认数据源（bangumi_moe、mikan_project 或 DMHY） |
+| `-e BGMI_HTTP_ADMIN_TOKEN` |               设置 BGMI Web 界面身份验证令牌               |
 |        `-p 80`        |                       BGmi Web 端口                        |
 |      `-v /bgmi`       |                          配置文件                          |
 |      `-v /media`      |            媒体文件夹，包含下载文件和硬链接文件            |
@@ -170,10 +191,4 @@ docker run -itd \
 
 硬链接后的目录格式用于刮削器的自动识别，配置正确的话可以完全避免刮削。目前的配置适用于 Jellyfin 的刮削器，
 理论上也可适用于绝大多数刮削器。
-
-- 番剧默认下载目录为```/meida/downloads```，下载目录的番剧格式为BGMI官方的原格式
-- 番剧硬链接后存储于文件夹 `/media/cartoon` 下。默认格式是 `{name}`，如“小林家的龙女仆”。
-  也可以设置为嵌套，如 `{name}/Season {season}`，即“小林家的龙女仆/Season 2”。
-- 番剧的命名格式为 `BANGUMI_FILE_FORMAT`，默认是 `S{season:0>2d}E{episode:0>2d}.{format}`。
-  如“S01E01.mp4”。
 

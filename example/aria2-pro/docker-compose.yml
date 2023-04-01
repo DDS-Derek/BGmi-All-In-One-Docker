@@ -1,0 +1,30 @@
+version: '3.3'
+services:
+    bgmi-all-in-one:
+        container_name: bgmi
+        restart: always
+        volumes:
+            - '/bgmi:/bgmi'
+            - '/media:/media'
+        ports:
+            - '80:80'
+            - '6888:6888/tcp'
+            - '6888:6888/udp'
+        environment:
+            - TZ=Asia/Shanghai
+            - PGID=1000
+            - PUID=1000
+            - UMASK=022
+            - MEDIA_DIR=/media/cartoon
+            - DOWNLOAD_DIR=/media/downloads
+            - BGMI_DATA_SOURCE=mikan_project
+            - BGMI_HTTP_ADMIN_TOKEN=password
+            - ARIA2_UPDATE_TRACKERS=true
+            - ARIA2_CUSTOM_TRACKER_URL=
+            - ARIA2_LISTEN_PORT=6888
+            - ARIA2_RPC_PORT=6800
+            - ARIA2_RPC_SECRET=
+            - ARIA2_DISK_CACHE=
+            - ARIA2_IPV6_MODE=
+            - ARIA2_SPECIAL_MODE=
+        image: 'ddsderek/bgmi-all-in-one:aria2'

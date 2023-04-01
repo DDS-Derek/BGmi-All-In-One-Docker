@@ -7,3 +7,4 @@ README.md
 README.cn.md
 .dockerignore
 renovate.json
+example/

@@ -16,7 +16,6 @@ RUN apk add --no-cache --virtual=build-dependencies \
         zip \
         curl \
         bash \
-        fuse \
         inotify-tools \
         npm \
         dumb-init \

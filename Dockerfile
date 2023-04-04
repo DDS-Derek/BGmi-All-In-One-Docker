@@ -2,7 +2,7 @@ FROM alpine:3.17
 
 LABEL maintainer="ddsrem@163.com"
 
-ARG BGMI_TAG=v4.1.1
+ARG BGMI_TAG=v4.2.2
 
 ENV LANG=C.UTF-8 \
     PS1="\[\e[32m\][\[\e[m\]\[\e[36m\]\u \[\e[m\]\[\e[37m\]@ \[\e[m\]\[\e[34m\]\h\[\e[m\]\[\e[32m\]]\[\e[m\] \[\e[37;35m\]in\[\e[m\] \[\e[33m\]\w\[\e[m\] \[\e[32m\][\[\e[m\]\[\e[37m\]\d\[\e[m\] \[\e[m\]\[\e[37m\]\t\[\e[m\]\[\e[32m\]]\[\e[m\] \n\[\e[1;31m\]$ \[\e[0m\]" \
@@ -40,9 +40,9 @@ RUN set -ex && \
     mkdir -p ${BGMI_HOME}/BGmi && \
     wget \
         https://github.com/BGmi/BGmi/archive/refs/tags/${BGMI_TAG}.tar.gz \
-        -O ${BGMI_HOME}/bgmi.tar.gz && \
+        -O /tmp/bgmi.tar.gz && \
     tar \
-        -zxvf ${BGMI_HOME}/bgmi.tar.gz \
+        -zxvf /tmp/bgmi.tar.gz \
         -C ${BGMI_HOME}/BGmi \
         --strip-components 1 && \
     pip install ${BGMI_HOME}/BGmi && \
@@ -50,8 +50,6 @@ RUN set -ex && \
     mkdir -p ${BGMI_HOME}/log/supervisor && \
     # Clear
     rm -rf \
-        ${BGMI_HOME}/bgmi.tar.gz \
-        ${BGMI_HOME}/bgmi_hardlink_helper/.git \
         /var/cache/apk/* \
         /root/.cache \
         /tmp/*

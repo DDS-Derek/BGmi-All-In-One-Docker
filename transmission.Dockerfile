@@ -2,8 +2,7 @@ ARG BGMI_TAG
 
 FROM ddsderek/bgmi-all-in-one:${BGMI_TAG}
 
-ENV BGMI_VERSION=transmission \
-    BGMI_DOWNLOAD_DELEGATE=transmission-rpc
+ENV BGMI_VERSION=transmission
 
 RUN set -ex && \
     # Transmission install

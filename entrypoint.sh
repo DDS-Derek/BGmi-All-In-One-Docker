@@ -1,5 +1,23 @@
 #!/bin/bash
 
+Green="\033[32m"
+Red="\033[31m"
+Yellow='\033[33m'
+Font="\033[0m"
+INFO="${Green}INFO${Font}"
+ERROR="${Red}ERROR${Font}"
+WARN="${Yellow}WARN${Font}"
+Time=$(date +"%Y-%m-%d %T")
+INFO(){
+echo -e "${Time} ${INFO}    | ${1}"
+}
+ERROR(){
+echo -e "${Time} ${ERROR}    | ${1}"
+}
+WARN(){
+echo -e "${Time} ${WARN}    | ${1}"
+}
+
 umask "${UMASK}"
 
 ## 创建文件夹
@@ -56,25 +74,27 @@ function __config_bgmi {
 
     cp ${BGMI_HOME}/config/crontab.sh ${BGMI_HOME}/BGmi/bgmi/others/crontab.sh
 
-    if [ "${BGMI_VERSION}" == "transmission" ]; then
-        export BGMI_TRANSMISSION_RPC_PATH=/tr/rpc
-        if [[ -n "$TR_USER" ]] && [[ -n "$TR_PASS" ]]; then
-            export BGMI_TRANSMISSION_RPC_USERNAME=${TR_USER}
-            export BGMI_TRANSMISSION_RPC_PASSWORD=${TR_PASS}
-        fi
-    elif [ "${BGMI_VERSION}" == "aria2" ]; then
-        export BGMI_ARIA2_RPC_TOKEN=token:${ARIA2_RPC_SECRET}
-        export BGMI_ARIA2_RPC_URL=http://127.0.0.1:${ARIA2_RPC_PORT}/rpc
-    fi
-
-    export BGMI_SAVE_PATH=${DOWNLOAD_DIR}
-
     if [ ! -f $bangumi_db ]; then
     	bgmi install
         __bgmi_crond
     else
     	bgmi upgrade
         __bgmi_crond
+    fi
+
+    bgmi config set save_path --value ${DOWNLOAD_DIR}
+
+    if [ "${BGMI_VERSION}" == "transmission" ]; then
+        bgmi config set download_delegate --value transmission-rpc
+        bgmi config set transmission rpc_path --value /tr/rpc
+        if [[ -n "$TR_USER" ]] && [[ -n "$TR_PASS" ]]; then
+            bgmi config set transmission rpc_username --value ${TR_USER}
+            bgmi config set transmission rpc_password --value ${TR_PASS}
+        fi
+    elif [ "${BGMI_VERSION}" == "aria2" ]; then
+        bgmi config set download_delegate --value aria2-rpc
+        bgmi config set aria2 rpc_token --value token:${ARIA2_RPC_SECRET}
+        bgmi config set aria2 rpc_url --value http://127.0.0.1:${ARIA2_RPC_PORT}/rpc
     fi
 
 }
@@ -118,14 +138,14 @@ function __config_nginx {
 function __adduser {
 
     if [[ -z ${PUID} && -z ${PGID} ]]; then
-    	echo -e "\033[31m[+] Ignore permission settings. Start with root user\033[0m"
+    	WARN "Ignore permission settings. Start with root user"
     	export PUID=0
         export PGID=0
-    	groupmod -o -g "$PGID" bgmi 2>&1 | sed "s#^#[+] $0#g" | sed "s#/home/bgmi-docker/entrypoint.sh##g"
-    	usermod -o -u "$PUID" bgmi 2>&1 | sed "s#^#[+] $0#g" | sed "s#/home/bgmi-docker/entrypoint.sh##g"
+    	groupmod -o -g "$PGID" bgmi 2>&1 | sed "s#^#${Time} WARN    | $0#g" | sed "s#/home/bgmi-docker/entrypoint.sh##g"
+    	usermod -o -u "$PUID" bgmi 2>&1 | sed "s#^#${Time} WARN    | $0#g" | sed "s#/home/bgmi-docker/entrypoint.sh##g"
     else
-    	groupmod -o -g "$PGID" bgmi 2>&1 | sed "s#^#[+] $0#g" | sed "s#/home/bgmi-docker/entrypoint.sh##g"
-    	usermod -o -u "$PUID" bgmi 2>&1 | sed "s#^#[+] $0#g" | sed "s#/home/bgmi-docker/entrypoint.sh##g"
+    	groupmod -o -g "$PGID" bgmi 2>&1 | sed "s#^#${Time} INFO    | $0#g" | sed "s#/home/bgmi-docker/entrypoint.sh##g"
+    	usermod -o -u "$PUID" bgmi 2>&1 | sed "s#^#${Time} INFO    | $0#g" | sed "s#/home/bgmi-docker/entrypoint.sh##g"
     fi
 
 }

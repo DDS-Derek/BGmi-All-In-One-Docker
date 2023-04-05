@@ -13,7 +13,8 @@ ENV LANG="C.UTF-8" \
     DOWNLOAD_DIR=/media/downloads \
     MEDIA_DIR=/media/cartoon
 
-RUN apk add --no-cache \
+RUN set -ex && \
+    apk add --no-cache \
         tzdata \
         zip \
         curl \

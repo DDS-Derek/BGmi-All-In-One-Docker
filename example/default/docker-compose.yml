@@ -1,10 +1,10 @@
 version: '3.3'
 services:
-    bgmi-all-in-one:
-        container_name: bgmi
+    bgmi:
+        container_name: BGmi
         restart: always
         volumes:
-            - '/root/config/bgmi:/bgmi'
+            - './bgmi:/bgmi'
             - '/media:/media'
         ports:
             - '80:80'

@@ -1,10 +1,10 @@
 version: '3.3'
 services:
-    bgmi-all-in-one:
-        container_name: bgmi-nt
+    bgmi-nas-tools:
+        container_name: BGmi-NAStool
         restart: always
         volumes:
-            - '/root/config/nas-tools/config:/config'
+            - './bgmi-nas-tools/config:/config'
             - '/media:/media'
         environment:
             - TZ=Asia/Shanghai

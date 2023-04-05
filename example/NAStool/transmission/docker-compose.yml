@@ -23,3 +23,16 @@ services:
             - TR_PASS=password
             - TR_PEERPORT=51413
         image: 'ddsderek/bgmi-all-in-one:transmission'
+
+    bgmi-nas-tools:
+        container_name: BGmi-NAStool
+        restart: always
+        volumes:
+            - './bgmi-nas-tools/config:/config'
+            - '/media:/media'
+        environment:
+            - TZ=Asia/Shanghai
+            - PGID=1000
+            - PUID=1000
+            - UMASK=022
+        image: 'ddsderek/bgmi-all-in-one:nastools'

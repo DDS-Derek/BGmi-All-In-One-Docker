@@ -2,32 +2,30 @@
 
 [![Build](https://github.com/DDS-Derek/BGmi-All-In-One-Docker/actions/workflows/docker-image.yml/badge.svg)](https://github.com/DDS-Derek/BGmi-All-In-One-Docker/actions/workflows/docker-image.yml)
 
-> English | [中文](https://github.com/DDS-Derek/BGmi-All-In-One-Docker/blob/master/README.cn.md)
+**注意，Dockerhub仓库从`ddsderek/bgmi-docker-all-in-one`换为`ddsderek/bgmi-all-in-one`**
 
-**Note that the Dockerhub repository was changed from `ddsderek/bgmi-docker-all-in-one` to `ddsderek/bgmi-all-in-one`**
+参考 https://github.com/codysk/bgmi-docker-all-in-one 大佬的镜像制作而成。
 
-Made from a image of https://github.com/codysk/bgmi-docker-all-in-one.
+## 功能
+1. 硬链接，硬链接通过 NAStool 的实时目录同步功能实现
+2. PUID和PGID设置。
+3. Umask设置。
+4. 内部aria2-pro，transmission下载器。
+5. Transmission增强版UI。
+6. Ariang管理界面。
+7. 常用脚本 `bgmi_download`。
+8. 镜像体积小，层数少。
 
-## New features
-1. Hard linking, hard linking is achieved through NAStool's live directory synchronisation feature
-2. PUID and PGID settings.
-3. Umask settings.
-4. The internal aria2-pro, transmission downloader.
-5. Transmission Web Control.
-6. Ariang management interface.
-7. Common Scripts `bgmi_download`.
-8. Small mirror size and few layers.
+## BGmi介绍
 
-## Introduction to BGmi
+[官方介绍和使用方法](https://github.com/BGmi/BGmi/blob/master/README.cn.md)
 
-[Official introduction and usage](https://github.com/BGmi/BGmi/blob/master/README.md)
-
-## Deployment
+## 部署
 ### docker-cli
 
 **Transmission**
 
-> Note: The image has a built-in Transmission Web Control management interface, access `IP:PORT/tr`, this `PORT` is the same port as the access to the BGmi Web port
+> 注意：镜像内置Transmission Web Control管理界面，访问```IP:PORT/tr```，此```PORT```与访问BGmi Web端口为同一端口
 
 ```bash
 docker run -itd \
@@ -54,7 +52,7 @@ docker run -itd \
 
 **Aria2**
 
-> Note: The image has a built-in Ariang management interface, access `IP:PORT/ariang`, this `PORT` is the same port as the access to the BGmi web port
+> 注意：镜像内置Ariang管理界面，访问```IP:PORT/ariang```，此```PORT```与访问BGmi Web端口为同一端口
 
 ```bash
 docker run -itd \
@@ -84,7 +82,7 @@ docker run -itd \
   ddsderek/bgmi-all-in-one:aria2
 ```
 
-**Not using the built-in downloader**
+**不使用内置下载器**
 
 ```bash
 docker run -itd \
@@ -104,7 +102,7 @@ docker run -itd \
   ddsderek/bgmi-all-in-one:latest
 ```
 
-**Hard link with NAStool**
+**配合 NAStool 硬链接**
 
 ```bash
 docker run -itd \
@@ -129,67 +127,66 @@ docker run -itd \
 
 [docker-compose](https://github.com/DDS-Derek/BGmi-All-In-One-Docker/blob/master/example/aria2-pro/docker-compose.yml)
 
-**Not using the built-in downloader**
+**不使用内置下载器**
 
 [docker-compose](https://github.com/DDS-Derek/BGmi-All-In-One-Docker/blob/master/example/default/docker-compose.yml)
 
-## Description of parameters
+## 参数说明
 
-### Image TAG
+### 镜像TAG
 
-|     TAG      |             Explanation             |
+|     TAG      |             解释             |
 | :----------: | :--------------------------: |
-|    latest    |     Image containing only the BGmi program     |
-| transmission | Image containing BGmi and transmission |
-|    aria2     |    Image containing of BGmi and aria2     |
-|   nastools   | Image containing the NAStool and specially optimised for size  |
+|    latest    |     只包含BGmi程序的镜像     |
+| transmission | 包含BGmi和transmission的镜像 |
+|    aria2     |    包含BGmi和aria2的镜像     |
+|   nastools   | 包含NAStool，专门优化过大小  |
 
 ### BGmi
 
-|         Parameter          |                            Function                            |
+|         参数          |                            作用                            |
 | :-------------------: | :--------------------------------------------------------: |
-|        `-e TZ`        |                          Time zone settings                          |
-|       `-e PUID`       |                       Launcher User ID                       |
-|       `-e PGID`       |                      Launcher User Group ID                      |
-|      `-e UMASK`       |                          Permission Mask                          |
-|    `-e MEDIA_DIR`     |         BGmi hard link directory (directory must be under `/media`)          |
-|   `-e DOWNLOAD_DIR`   |          BGmi download directory (directory must be under `/media`)           |
-| `-e BGMI_DOWNLOADER`  |     BGmi downloader (optional `transmission` `aria2` `false`)     |
-|   `-e BGMI_DATA_SOURCE`    | set bgmi default data source (bangumi_moe, mikan_project or dmhy) |
-| `-e BGMI_HTTP_ADMIN_TOKEN` |               Setting up the BGMI web interface authentication token               |
-|        `-p 80`        |                       BGmi Web Port                        |
-|      `-v /bgmi`       |                          Configuration files                          |
-|      `-v /media`      |            Media folder containing download files and hard link files            |
+|        `-e TZ`        |                          时区设置                          |
+|       `-e PUID`       |                       启动程序用户ID                       |
+|       `-e PGID`       |                      启动程序用户组ID                      |
+|      `-e UMASK`       |                          权限掩码                          |
+|    `-e MEDIA_DIR`     |         BGmi 硬链接目录（目录必须在 `/media` 下）          |
+|   `-e DOWNLOAD_DIR`   |          BGmi 下载目录（目录必须在 `/media` 下）           |
+|   `-e BGMI_DATA_SOURCE`    | 设置 BGMI 默认数据源（bangumi_moe、mikan_project 或 DMHY） |
+| `-e BGMI_HTTP_ADMIN_TOKEN` |               设置 BGMI Web 界面身份验证令牌               |
+|        `-p 80`        |                       BGmi Web 端口                        |
+|      `-v /bgmi`       |                          配置文件                          |
+|      `-v /media`      |            媒体文件夹，包含下载文件和硬链接文件            |
 
 ### Transmission
 
 |       参数       |           作用            |
 | :--------------: | :-----------------------: |
-|   `-e TR_USER`   | Transmission Web Login Users |
-|   `-e TR_PASS`   | Transmission Web Login Password |
-| `-e TR_PEERPORT` |      Seed transfer port       |
+|   `-e TR_USER`   | transmission Web 登入用户 |
+|   `-e TR_PASS`   | transmission Web 登入密码 |
+| `-e TR_PEERPORT` |       种子传输端口        |
 
 ### Aria2
 
-This image is built to use Aria2-Pro, see [Aria2-Pro-Docker Official Instructions](https://github.com/P3TERX/Aria2-Pro-Docker#parameters) for specific parameters.
+此镜像内置使用Aria2-Pro，具体参数设置请看[Aria2-Pro-Docker官方说明](https://github.com/P3TERX/Aria2-Pro-Docker#parameters)
 
-## PUID GUID
+## PUID GUID 说明
 
-When using the volume (`-v` flag) permission issue between the host OS and the container, we avoid this issue `PGID` by allowing you to specify the user `PUID` and group.
+当在主机操作系统和容器之间使用卷（`-v`标志）权限问题时，我们通过允许您指定用户`PUID`和组来避免这个问题`PGID`。
 
-Ensure that any volume directories on the host are owned by the same user you specify and that any permissions issues disappear like magic.
+确保主机上的任何卷目录都归您指定的同一用户所有，并且任何权限问题都会像魔术一样消失。
 
-In this case `PUID=1000` and `PGID=1000` find your usage `id user` as follows.
+在这种情况下`PUID=1000`，`PGID=1000`找到你的用途`id user`如下：
 
 ```
   $ id username
     uid=1000(dockeruser) gid=1000(dockergroup) groups=1000(dockergroup)
 ```
 
-## Hardlink
+## 硬链接说明
 
-Hardlink BGmi downloads of new resources, with improved file formatting for automated scraping and no impact on seed preservation.
+硬链接 BGmi 下载的新番资源，改善文件格式以便于自动化刮削，并且不会影响保种。
 
-The hardlink directory format is used for automatic recognition by the scraper and can be configured correctly to avoid scraping altogether. The current configuration works with Jellyfin's scrapers.
-Theoretically it will also work with most scrapers.
+硬链接后的目录格式用于刮削器的自动识别，配置正确的话可以完全避免刮削。目前的配置适用于 Jellyfin 的刮削器，
+理论上也可适用于绝大多数刮削器。
 

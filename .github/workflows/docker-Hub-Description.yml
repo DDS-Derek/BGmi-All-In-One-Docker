@@ -6,7 +6,6 @@ on:
       branches:
         - master
       paths:
-        - README.cn.md
         - README.md
 
 jobs:

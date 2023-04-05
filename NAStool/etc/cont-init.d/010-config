@@ -1,21 +1,15 @@
-#!/bin/sh
+#!/usr/bin/with-contenv bash
 
-cd ${WORKDIR}
+function 010_config {
+umask "${UMASK}"
 
-echo -e "
-PUID=${PUID}
+echo -e "PUID=${PUID}
 PGID=${PGID}
-Umask=${UMASK}
-"
+Umask=${UMASK}"
 
-# 更改 nt userid 和 groupid
 groupmod -o -g "$PGID" nt
 usermod -o -u "$PUID" nt
 
-# 掩码设置
-umask "${UMASK}"
-
-# 创建目录、权限设置
 media_cartoon=${MEDIA_DIR}
 meida_downloads=${DOWNLOAD_DIR}
 if [ ! -d $media_cartoon ]; then
@@ -24,7 +18,10 @@ fi
 if [ ! -d $meida_downloads ]; then
 	mkdir -p $meida_downloads
 fi
-chown -R nt:nt "${WORKDIR}" "${NT_HOME}" /config /etc/hosts
+if [ ! -d /config ]; then
+	mkdir /config
+fi
+chown -R nt:nt "${NT_HOME}" /config /etc/hosts
 if [[ "$(stat -c '%U' /media)" != "nt" ]] || [[ "$(stat -c '%G' /media)" != "nt" ]]; then
     chown nt:nt \
         /media
@@ -37,6 +34,6 @@ if [[ "$(stat -c '%U' ${DOWNLOAD_DIR})" != "nt" ]] || [[ "$(stat -c '%G' ${DOWNL
     chown nt:nt \
         ${DOWNLOAD_DIR}
 fi
+}
 
-# 启动主程序
-exec su-exec nt:nt "$(which dumb-init)" "$(which pm2-runtime)" start run.py -n NAStool --interpreter python3
+010_config 2>&1 | sed "s#^#cont-init: info: $(realpath $0): \1#g"

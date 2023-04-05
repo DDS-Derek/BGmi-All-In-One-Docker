@@ -1,0 +1,5 @@
+#!/usr/bin/with-contenv bash
+
+umask "${UMASK}"
+
+exec s6-setuidgid nt /usr/bin/nas-tools

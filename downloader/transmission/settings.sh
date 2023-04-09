@@ -33,5 +33,3 @@ if [ ! -z "${DOWNLOAD_DIR}" ]; then
     sed -i "/\"download-dir\"/c\    \"download-dir\": \"$DOWNLOAD_DIR\"," ${transmission_config_file}
     sed -i "/\"incomplete-dir\"/c\    \"incomplete-dir\": \"$DOWNLOAD_DIR\"," ${transmission_config_file}
 fi
-
-(crontab -l ; echo "0 3 * * * blocklist-update 2>&1") | crontab -

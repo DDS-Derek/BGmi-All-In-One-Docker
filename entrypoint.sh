@@ -226,5 +226,7 @@ if [[ "$(stat -c '%U' ${DOWNLOAD_DIR})" != "bgmi" ]] || [[ "$(stat -c '%G' ${DOW
 fi
 
 cat /home/bgmi-docker/utils/BGmi-Docker.logo
+echo "Current crontab is:"
+crontab -l
 
 exec dumb-init /usr/bin/supervisord -n -c "${BGMI_HOME}"/bgmi_supervisord.ini

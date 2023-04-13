@@ -4,7 +4,6 @@ ARG NAStool_TAG=v3.1.5
 
 ENV LANG="C.UTF-8" \
     TZ="Asia/Shanghai" \
-    NASTOOL_CONFIG="/config/config.yaml" \
     PS1="\[\e[32m\][\[\e[m\]\[\e[36m\]\u \[\e[m\]\[\e[37m\]@ \[\e[m\]\[\e[34m\]\h\[\e[m\]\[\e[32m\]]\[\e[m\] \[\e[37;35m\]in\[\e[m\] \[\e[33m\]\w\[\e[m\] \[\e[32m\][\[\e[m\]\[\e[37m\]\d\[\e[m\] \[\e[m\]\[\e[37m\]\t\[\e[m\]\[\e[32m\]]\[\e[m\] \n\[\e[1;31m\]$ \[\e[0m\]" \
     PUID=1000 \
     PGID=1000 \
@@ -28,8 +27,8 @@ RUN set -ex && \
     if [ "$(uname -m)" = "x86_64" ]; then ARCH=amd64; elif [ "$(uname -m)" = "aarch64" ]; then ARCH=arm64; fi && \
     wget \
         https://github.com/NAStool/nas-tools/releases/download/${NAStool_TAG}/nastool_linux_musl_${ARCH}_${NAStool_TAG} \
-        -O /usr/bin/nas-tools && \
-    chmod +x /usr/bin/nas-tools && \
+        -O /nas-tools && \
+    chmod +x /nas-tools && \
     # Add user
     mkdir ${NT_HOME} && \
     addgroup -S nt -g 911 && \

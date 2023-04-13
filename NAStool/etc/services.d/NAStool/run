@@ -2,4 +2,4 @@
 
 umask "${UMASK}"
 
-exec s6-setuidgid nt /usr/bin/nas-tools
+exec s6-setuidgid nt /nas-tools

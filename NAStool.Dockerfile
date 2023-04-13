@@ -1,6 +1,6 @@
 FROM alpine:3.17
 
-ARG NAStool_TAG=v3.1.3
+ARG NAStool_TAG=v3.1.5
 
 ENV LANG="C.UTF-8" \
     TZ="Asia/Shanghai" \

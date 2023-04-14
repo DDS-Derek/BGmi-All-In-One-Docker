@@ -13,12 +13,12 @@
 4. 内部aria2-pro，transmission下载器。
 5. Transmission增强版UI。
 6. Ariang管理界面。
-7. 常用脚本 `bgmi_download`。
+7. 常用脚本 `bgmi_download` `bgmi_hardlink`。
 8. 镜像体积小，层数少。
 
 ## BGmi介绍
 
-[官方介绍和使用方法](https://github.com/BGmi/BGmi/blob/master/README.cn.md)
+[官方介绍和使用方法](https://github.com/BGmi/BGmi/blob/master/README.md)
 
 ## 部署
 ### docker-cli

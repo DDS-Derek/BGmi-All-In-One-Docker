@@ -108,6 +108,8 @@ function __config_bgmi_hardlink {
     if [ ! -f ${BGMI_HARDLINK_PATH}/config.py ]; then
         dockerize -no-overwrite -template ${BGMI_HOME}/hardlink/config.py:${BGMI_HARDLINK_PATH}/config.py
     fi
+    
+    rm -rf ${BGMI_HOME}/hardlink/config.py
 
     (crontab -l ; echo "20 */2 * * * umask ${UMASK}; LC_ALL=zh_CN.UTF-8 su-exec bgmi $(which python3) ${BGMI_HOME}/hardlink/hardlink.py run") | crontab -
     INFO "hard link timing task setting is completed"

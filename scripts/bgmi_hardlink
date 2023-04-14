@@ -18,7 +18,6 @@ WARN(){
 echo -e "${Time} ${WARN}    | ${1}"
 }
 
-INFO "Download start"
-umask ${UMASK}; LC_ALL=zh_CN.UTF-8 TRAVIS_CI=1 su-exec bgmi $(which bgmi) cal --force-update --download-cover
-umask ${UMASK}; LC_ALL=zh_CN.UTF-8 su-exec bgmi $(which bgmi) update --download
+INFO "Hardlink start"
+umask ${UMASK}; LC_ALL=zh_CN.UTF-8 su-exec bgmi $(which python3) /home/bgmi-docker/hardlink/hardlink.py run
 INFO "done"

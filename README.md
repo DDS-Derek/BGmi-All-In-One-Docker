@@ -7,7 +7,7 @@
 参考 https://github.com/codysk/bgmi-docker-all-in-one 大佬的镜像制作而成。
 
 ## 功能
-1. 硬链接，硬链接通过 NAStool 的实时目录同步功能实现
+1. 硬链接，硬链接通过内置硬链接脚本实现。
 2. PUID和PGID设置。
 3. Umask设置。
 4. 内部aria2-pro，transmission下载器。
@@ -44,6 +44,7 @@ docker run -itd \
   -e DOWNLOAD_DIR=/media/downloads \
   -e BGMI_DATA_SOURCE=mikan_project \
   -e BGMI_HTTP_ADMIN_TOKEN=password \
+  -e BGMI_HARDLINK_USE=true \
   -e TR_USER=bgmi \
   -e TR_PASS=password \
   -e TR_PEERPORT=51413 \
@@ -71,6 +72,7 @@ docker run -itd \
   -e DOWNLOAD_DIR=/media/downloads \
   -e BGMI_DATA_SOURCE=mikan_project \
   -e BGMI_HTTP_ADMIN_TOKEN=password \
+  -e BGMI_HARDLINK_USE=true \
   -e ARIA2_UPDATE_TRACKERS=true \
   -e ARIA2_CUSTOM_TRACKER_URL= \
   -e ARIA2_LISTEN_PORT=6888 \
@@ -99,22 +101,8 @@ docker run -itd \
   -e DOWNLOAD_DIR=/media/downloads \
   -e BGMI_DATA_SOURCE=mikan_project \
   -e BGMI_HTTP_ADMIN_TOKEN=password \
+  -e BGMI_HARDLINK_USE=false \
   ddsderek/bgmi-all-in-one:latest
-```
-
-**配合 NAStool 硬链接**
-
-```bash
-docker run -itd \
-  --name=bgmi-nt \
-  --restart always \
-  -v /root/config/nas-tools/config:/config \
-  -v /media:/media \
-  -e TZ=Asia/Shanghai \
-  -e PGID=1000 \
-  -e PUID=1000 \
-  -e UMASK=022 \
-  ddsderek/bgmi-all-in-one:nastools
 ```
 
 ### docker-compose
@@ -140,7 +128,6 @@ docker run -itd \
 |    latest    |     只包含BGmi程序的镜像     |
 | transmission | 包含BGmi和transmission的镜像 |
 |    aria2     |    包含BGmi和aria2的镜像     |
-|   nastools   | 包含NAStool，专门优化过大小  |
 
 ### BGmi
 
@@ -154,6 +141,7 @@ docker run -itd \
 |   `-e DOWNLOAD_DIR`   |          BGmi 下载目录（目录必须在 `/media` 下）           |
 |   `-e BGMI_DATA_SOURCE`    | 设置 BGMI 默认数据源（bangumi_moe、mikan_project 或 DMHY） |
 | `-e BGMI_HTTP_ADMIN_TOKEN` |               设置 BGMI Web 界面身份验证令牌               |
+| `-e BGMI_HARDLINK_USE` |               是否启用镜像内置的硬链接脚本（默认开启）               |
 |        `-p 80`        |                       BGmi Web 端口                        |
 |      `-v /bgmi`       |                          配置文件                          |
 |      `-v /media`      |            媒体文件夹，包含下载文件和硬链接文件            |
@@ -190,3 +178,7 @@ docker run -itd \
 硬链接后的目录格式用于刮削器的自动识别，配置正确的话可以完全避免刮削。目前的配置适用于 Jellyfin 的刮削器，
 理论上也可适用于绝大多数刮削器。
 
+- 番剧存储于文件夹 `BANGUMI_FOLDER_FORMAT` 下。默认格式是 `{name}`，如“小林家的龙女仆”。
+  也可以设置为嵌套，如 `{name}/Season {season}`，即“小林家的龙女仆/Season 2”。
+- 番剧的命名格式为 `BANGUMI_FILE_FORMAT`，默认是 `S{season:0>2d}E{episode:0>2d}.{format}`。
+  如“S01E01.mp4”。

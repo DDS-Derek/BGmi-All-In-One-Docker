@@ -7,6 +7,7 @@ ARG BGMI_TAG=v4.3.5
 ENV LANG=C.UTF-8 \
     PS1="\[\e[32m\][\[\e[m\]\[\e[36m\]\u \[\e[m\]\[\e[37m\]@ \[\e[m\]\[\e[34m\]\h\[\e[m\]\[\e[32m\]]\[\e[m\] \[\e[37;35m\]in\[\e[m\] \[\e[33m\]\w\[\e[m\] \[\e[32m\][\[\e[m\]\[\e[37m\]\d\[\e[m\] \[\e[m\]\[\e[37m\]\t\[\e[m\]\[\e[32m\]]\[\e[m\] \n\[\e[1;31m\]$ \[\e[0m\]" \
     BGMI_PATH="/bgmi/conf/bgmi" \
+    BGMI_HARDLINK_PATH="/bgmi/conf/bgmi_hardlink" \
     BGMI_HOME="/home/bgmi-docker" \
     PUID=1000 \
     PGID=1000 \

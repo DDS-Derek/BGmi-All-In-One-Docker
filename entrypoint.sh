@@ -30,28 +30,28 @@ function __mkdir_dir {
     media_cartoon=${MEDIA_DIR}
     meida_downloads=${DOWNLOAD_DIR}
 
-    if [ ! -d $nginx_run ]; then
-    	mkdir -p $nginx_run
+    if [ ! -d ${nginx_run} ]; then
+    	mkdir -p ${nginx_run}
     fi
 
-    if [ ! -d $bgmi_conf ]; then
-    	mkdir -p $bgmi_conf
+    if [ ! -d ${bgmi_conf} ]; then
+    	mkdir -p ${bgmi_conf}
     fi
 
-    if [ ! -d $bgmi_nginx ]; then
-    	mkdir -p $bgmi_nginx
+    if [ ! -d ${bgmi_nginx} ]; then
+    	mkdir -p ${bgmi_nginx}
     fi
 
-    if [ ! -d $bgmi_log ]; then
-    	mkdir -p $bgmi_log
+    if [ ! -d ${bgmi_log} ]; then
+    	mkdir -p ${bgmi_log}
     fi
 
-    if [ ! -d $media_cartoon ]; then
-    	mkdir -p $media_cartoon
+    if [ ! -d ${media_cartoon} ]; then
+    	mkdir -p ${media_cartoon}
     fi
 
-    if [ ! -d $meida_downloads ]; then
-    	mkdir -p $meida_downloads
+    if [ ! -d ${meida_downloads} ]; then
+    	mkdir -p ${meida_downloads}
     fi
 
 }
@@ -96,6 +96,21 @@ function __config_bgmi {
         bgmi config set aria2 rpc_token --value token:${ARIA2_RPC_SECRET}
         bgmi config set aria2 rpc_url --value http://127.0.0.1:${ARIA2_RPC_PORT}/rpc
     fi
+
+}
+
+function __config_bgmi_hardlink {
+
+    if [ ! -d ${BGMI_HARDLINK_PATH} ]; then
+    	mkdir -p ${BGMI_HARDLINK_PATH}
+    fi
+
+    if [ ! -f ${BGMI_HARDLINK_PATH}/config.py ]; then
+        dockerize -no-overwrite -template ${BGMI_HOME}/hardlink/config.py:${BGMI_HARDLINK_PATH}/config.py
+    fi
+
+    (crontab -l ; echo "20 */2 * * * umask ${UMASK}; LC_ALL=zh_CN.UTF-8 su-exec bgmi $(which python3) ${BGMI_HOME}/hardlink/hardlink.py run") | crontab -
+    INFO "hard link timing task setting is completed"
 
 }
 
@@ -182,6 +197,7 @@ function __bgmi_scripts {
 }
 
 first_lock="${BGMI_HOME}/bgmi_install.lock"
+BGMI_HARDLINK_USE=${BGMI_HARDLINK_USE:-true}
 
 function __init_proc {
 
@@ -199,6 +215,10 @@ if [ ! -f "${first_lock}" ]; then
 
     __config_bgmi
 
+    if [ "${BGMI_HARDLINK_USE}" == "true" ]; then
+        __config_bgmi_hardlink
+    fi
+
     __config_nginx
 
     __supervisord_downloader
@@ -209,7 +229,10 @@ fi
 
 chown -R bgmi:bgmi \
     /home/bgmi-docker \
-    /home/bgmi
+    /home/bgmi \
+    /var/lib/nginx \
+    /run/nginx \
+    /var/log/nginx
 chown -R bgmi:bgmi \
     /bgmi
 if [[ "$(stat -c '%U' /media)" != "bgmi" ]] || [[ "$(stat -c '%G' /media)" != "bgmi" ]]; then

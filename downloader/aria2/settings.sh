@@ -164,6 +164,9 @@ sed -i "s@^\(dht-file-path6=\).*@\1${ARIA2_CONF_DIR}/dht6.dat@" ${ARIA2_CONF}
 [[ "${ARIA2_SPECIAL_MODE}" = "move" ]] &&
     sed -i "s@^\(on-download-complete=\).*@\1${SCRIPT_DIR}/move.sh@" ${ARIA2_CONF}
 
+# set ariang
+sed -i 's|6800|${ARIA2_RPC_PORT}|g' /home/bgmi-docker/downloader/aria2/ariang/js/aria-ng*.min.js
+
 cat /home/bgmi-docker/downloader/aria2/Aria2-Pro
 
 exit 0

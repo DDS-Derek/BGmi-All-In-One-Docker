@@ -95,6 +95,7 @@ jobs:
           push: true
           build-args: |
             BGMI_TAG=${{ steps.meta.outputs.version }}
+            ALPINE_VERSION=edge
           tags: |
             ${{ secrets.DOCKER_USERNAME }}/bgmi-all-in-one:${{ steps.meta.outputs.version }}-transmission
             ${{ secrets.DOCKER_USERNAME }}/bgmi-all-in-one:transmission

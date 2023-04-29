@@ -1,4 +1,4 @@
-ARG BGMI_TAG
+ARG BGMI_TAG=v4.3.8
 
 FROM ddsderek/bgmi-all-in-one:${BGMI_TAG}
 
@@ -15,22 +15,9 @@ ENV BGMI_VERSION=aria2 \
 
 RUN set -ex && \
     # Aria2-Pro install
-    wget \
-        https://raw.githubusercontent.com/P3TERX/aria2-builder/master/aria2-install.sh \
-        -O /tmp/aria2-install.sh && \
-    chmod +x /tmp/aria2-install.sh && \
-    bash /tmp/aria2-install.sh && \
+    curl --insecure -fsSL https://raw.githubusercontent.com/P3TERX/aria2-builder/master/aria2-install.sh | bash && \
     # AriaNg install
     mkdir -p ${BGMI_HOME}/downloader/aria2/ariang && \
-    wget \
-        https://github.com/mayswind/AriaNg/releases/download/${ARIANG_TAG}/AriaNg-${ARIANG_TAG}.zip \
-        -O /tmp/ariang.zip && \
-    unzip \
-        -d ${BGMI_HOME}/downloader/aria2/ariang \
-        /tmp/ariang.zip && \
-    # Clear
-    rm -rf \
-        /var/cache/apk/* \
-        /root/.cache \
-        /tmp/*
-        
+    curl \
+        -sL https://github.com/mayswind/AriaNg/releases/download/${ARIANG_TAG}/AriaNg-${ARIANG_TAG}.zip | \
+        busybox unzip -qd ${BGMI_HOME}/downloader/aria2/ariang -

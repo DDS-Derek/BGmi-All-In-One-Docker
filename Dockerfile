@@ -39,13 +39,9 @@ RUN set -ex && \
     adduser -S bgmi -G bgmi -h /home/bgmi -u 911 -s /bin/bash bgmi && \
     # BGmi install
     mkdir -p ${BGMI_HOME}/BGmi && \
-    wget \
-        https://github.com/BGmi/BGmi/archive/refs/tags/${BGMI_TAG}.tar.gz \
-        -O /tmp/bgmi.tar.gz && \
-    tar \
-        -zxvf /tmp/bgmi.tar.gz \
-        -C ${BGMI_HOME}/BGmi \
-        --strip-components 1 && \
+    curl \
+        -sL https://github.com/BGmi/BGmi/archive/refs/tags/${BGMI_TAG}.tar.gz | \
+        tar -zxvf - --strip-components 1 -C ${BGMI_HOME}/BGmi && \
     pip install ${BGMI_HOME}/BGmi && \
     # Supervisor log dir
     mkdir -p ${BGMI_HOME}/log/supervisor && \

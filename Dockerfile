@@ -43,6 +43,8 @@ RUN set -ex && \
         -sL https://github.com/BGmi/BGmi/archive/refs/tags/${BGMI_TAG}.tar.gz | \
         tar -zxvf - --strip-components 1 -C ${BGMI_HOME}/BGmi && \
     pip install ${BGMI_HOME}/BGmi && \
+    # Filebrowser install
+    curl -fsSL https://raw.githubusercontent.com/filebrowser/get/master/get.sh | bash && \
     # Supervisor log dir
     mkdir -p ${BGMI_HOME}/log/supervisor && \
     # Clear

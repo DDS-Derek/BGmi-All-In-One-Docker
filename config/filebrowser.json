@@ -1,0 +1,8 @@
+{
+    "port": 8098,
+    "baseURL": "/file",
+    "address": "",
+    "log": "stdout",
+    "database": "/bgmi/conf/filebrowser/filebrowser.db",
+    "root": "/media"
+}

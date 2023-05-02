@@ -13,7 +13,7 @@ supervisor.rpcinterface_factory = supervisor.rpcinterface:make_main_rpcinterface
 serverurl=unix://{{ .Env.BGMI_HOME }}/supervisor.sock
 
 [group:bgmi]
-programs=bgmi_http,nginx,crond
+programs=bgmi_http,nginx,crond,filebrowser
 
 [program:bgmi_http]
 command=bgmi_http --port=8888 --address=0.0.0.0
@@ -32,4 +32,11 @@ redirect_stderr=true
 command=crond -f
 autorestart=true
 stdout_logfile=/bgmi/log/crond.log
+redirect_stderr=true
+
+[program:filebrowser]
+command=filebrowser -c /bgmi/conf/filebrowser/settings.json -d /bgmi/conf/filebrowser/filebrowser.db --noauth
+user=bgmi
+autorestart=true
+stdout_logfile=/bgmi/log/filebrowser.log
 redirect_stderr=true

@@ -26,6 +26,7 @@ function __mkdir_dir {
     nginx_run="/var/run/nginx"
     bgmi_conf="/bgmi/conf/bgmi"
     bgmi_nginx="/bgmi/conf/nginx"
+    filebrowser_conf="/bgmi/conf/filebrowser"
     bgmi_log="/bgmi/log"
     media_cartoon=${MEDIA_DIR}
     meida_downloads=${DOWNLOAD_DIR}
@@ -40,6 +41,10 @@ function __mkdir_dir {
 
     if [ ! -d ${bgmi_nginx} ]; then
     	mkdir -p ${bgmi_nginx}
+    fi
+
+    if [ ! -d ${filebrowser_conf} ]; then
+    	mkdir -p ${filebrowser_conf}
     fi
 
     if [ ! -d ${bgmi_log} ]; then
@@ -220,6 +225,10 @@ if [ ! -f "${first_lock}" ]; then
     fi
 
     __config_nginx
+
+    if [ ! -f /bgmi/conf/filebrowser/settings.json ]; then
+        cp ${BGMI_HOME}/config/filebrowser.json /bgmi/conf/filebrowser/settings.json
+    fi
 
     __supervisord_downloader
 

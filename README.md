@@ -15,6 +15,7 @@
 6. Ariang管理界面。
 7. 常用脚本 `bgmi_download` `bgmi_hardlink`。
 8. 镜像体积小，层数少。
+9. 内置FileBrowser，管理文件更方便（通过```IP:PORT/file```访问）。
 
 ## BGmi介绍
 

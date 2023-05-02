@@ -1,4 +1,4 @@
-ARG BGMI_TAG=v4.3.8
+ARG BGMI_TAG
 
 FROM ddsderek/bgmi-all-in-one:${BGMI_TAG}
 

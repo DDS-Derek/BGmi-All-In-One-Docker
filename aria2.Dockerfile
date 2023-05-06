@@ -2,7 +2,6 @@ ARG BGMI_TAG
 
 FROM ddsderek/bgmi-all-in-one:${BGMI_TAG}
 
-ARG ARIANG_TAG=1.3.4
 ENV BGMI_VERSION=aria2 \
     ARIA2_UPDATE_TRACKERS=true \
     ARIA2_CUSTOM_TRACKER_URL= \
@@ -18,6 +17,7 @@ RUN set -ex && \
     curl --insecure -fsSL https://raw.githubusercontent.com/P3TERX/aria2-builder/master/aria2-install.sh | bash && \
     # AriaNg install
     mkdir -p ${BGMI_HOME}/downloader/aria2/ariang && \
+    ARIANG_TAG=$(curl -s "https://api.github.com/repos/mayswind/AriaNg/releases/latest" | jq -r .tag_name) && \
     curl \
         -sL https://github.com/mayswind/AriaNg/releases/download/${ARIANG_TAG}/AriaNg-${ARIANG_TAG}.zip | \
         busybox unzip -qd ${BGMI_HOME}/downloader/aria2/ariang -

@@ -11,8 +11,8 @@ RUN set -ex && \
     mv /etc/apk/repositories /etc/apk/repositories_bak && \
     echo "https://dl-cdn.alpinelinux.org/alpine/v3.17/main"        > /etc/apk/repositories && \
     echo "https://dl-cdn.alpinelinux.org/alpine/v3.17/community"   >> /etc/apk/repositories && \
-    echo "https://dl-cdn.alpinelinux.org/alpine/edge/main"         >> /etc/apk/repositories && \
-    echo "https://dl-cdn.alpinelinux.org/alpine/edge/community"    >> /etc/apk/repositories && \
+    echo "https://dl-cdn.alpinelinux.org/alpine/v3.18/main"         >> /etc/apk/repositories && \
+    echo "https://dl-cdn.alpinelinux.org/alpine/v3.18/community"    >> /etc/apk/repositories && \
     mkdir /tmp/version && \
     curl -sL "http://dl-cdn.alpinelinux.org/alpine/${ALPINE_VERSION}/community/x86_64/APKINDEX.tar.gz" | tar -xz -C /tmp/version && \
     TRANSMISSION_VERSION=$(awk '/^P:transmission$/,/V:/' /tmp/version/APKINDEX | sed -n 2p | sed 's/^V://') && \

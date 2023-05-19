@@ -29,10 +29,14 @@ RUN set -ex && \
         tzdata \
         shadow \
         jq \
+        ca-certificates \
+        coreutils \
+        netcat-openbsd \
+        procps-ng \
         findutils \
         su-exec \
         dumb-init && \
-    pip install --upgrade pip setuptools wheel && \
+    pip install --upgrade pip && \
     # Adduser
     mkdir /home/bgmi && \
     addgroup -S bgmi -g 911 && \

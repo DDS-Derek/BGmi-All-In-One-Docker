@@ -101,6 +101,56 @@ jobs:
             ${{ secrets.DOCKER_USERNAME }}/bgmi-all-in-one:transmission
           labels: ${{ steps.meta.outputs.labels }}
 
+  transmission-v3:
+    needs: [bgmi]
+    runs-on: ubuntu-latest
+    steps:
+      - 
+        name: Checkout
+        uses: actions/checkout@master
+      
+      - name: Docker meta
+        id: meta
+        uses: docker/metadata-action@v4
+        with:
+          images: ${{ secrets.DOCKER_USERNAME }}/bgmi-all-in-one
+
+      - 
+        name: Set Up QEMU
+        uses: docker/setup-qemu-action@v2
+
+      - 
+        name: Set Up Buildx
+        uses: docker/setup-buildx-action@v2
+        
+      - 
+        name: Login DockerHub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - 
+        name: Build
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          file: transmission.Dockerfile
+          platforms: |
+            linux/386
+            linux/amd64
+            linux/arm64/v8
+            linux/arm/v7
+            linux/arm/v6
+          push: true
+          build-args: |
+            BGMI_TAG=${{ steps.meta.outputs.version }}
+            ALPINE_VERSION=v3.17
+          tags: |
+            ${{ secrets.DOCKER_USERNAME }}/bgmi-all-in-one:${{ steps.meta.outputs.version }}-transmission-v3
+            ${{ secrets.DOCKER_USERNAME }}/bgmi-all-in-one:transmission-v3
+          labels: ${{ steps.meta.outputs.labels }}
+
   aria2:
     needs: [bgmi]
     runs-on: ubuntu-latest

@@ -18,6 +18,8 @@ ENV LANG=C.UTF-8 \
     BGMI_HTTP_ADMIN_TOKEN=password \
     BGMI_DATA_SOURCE=mikan_project
 
+COPY --from=powerman/dockerize:0.19.0 /usr/local/bin/dockerize /usr/local/bin
+
 RUN set -ex && \
     apk add --no-cache \
         python3 \
@@ -29,6 +31,7 @@ RUN set -ex && \
         tzdata \
         shadow \
         jq \
+        grep \
         ca-certificates \
         coreutils \
         netcat-openbsd \
@@ -38,10 +41,12 @@ RUN set -ex && \
         dumb-init && \
     pip install --upgrade pip && \
     # Adduser
-    mkdir /home/bgmi && \
+    mkdir /home/bgmi /versions && \
     addgroup -S bgmi -g 911 && \
     adduser -S bgmi -G bgmi -h /home/bgmi -u 911 -s /bin/bash bgmi && \
     # BGmi install
+    echo $(dockerize --version) > /versions/DOCKERIZE_VERSION.txt && \
+    echo ${BGMI_TAG} > /versions/BGMI_VERSION.txt && \
     mkdir -p ${BGMI_HOME}/BGmi && \
     curl \
         -sL https://github.com/BGmi/BGmi/archive/refs/tags/${BGMI_TAG}.tar.gz | \
@@ -49,6 +54,7 @@ RUN set -ex && \
     pip install ${BGMI_HOME}/BGmi && \
     # Filebrowser install
     curl -fsSL https://raw.githubusercontent.com/filebrowser/get/master/get.sh | bash && \
+    echo $(filebrowser version) > /versions/FILEBROWSER_VERSION.txt && \
     # Supervisor log dir
     mkdir -p ${BGMI_HOME}/log/supervisor && \
     # Clear
@@ -57,7 +63,6 @@ RUN set -ex && \
         /root/.cache \
         /tmp/*
 
-COPY --from=powerman/dockerize:0.19.0 /usr/local/bin/dockerize /usr/local/bin
 COPY --chmod=755 . /home/bgmi-docker
 
 ENTRYPOINT ["/home/bgmi-docker/entrypoint.sh"]

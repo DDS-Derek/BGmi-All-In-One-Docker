@@ -15,9 +15,11 @@ ENV BGMI_VERSION=aria2 \
 RUN set -ex && \
     # Aria2-Pro install
     curl --insecure -fsSL https://raw.githubusercontent.com/P3TERX/aria2-builder/master/aria2-install.sh | bash && \
+    echo $(aria2c --version) > /versions/ARIA2C_VERSION.txt && \
     # AriaNg install
     mkdir -p ${BGMI_HOME}/downloader/aria2/ariang && \
     ARIANG_TAG=$(curl -s "https://api.github.com/repos/mayswind/AriaNg/releases/latest" | jq -r .tag_name) && \
+    echo ${ARIANG_TAG} > /versions/ARIANG_VERSION.txt && \
     curl \
         -sL https://github.com/mayswind/AriaNg/releases/download/${ARIANG_TAG}/AriaNg-${ARIANG_TAG}.zip | \
         busybox unzip -qd ${BGMI_HOME}/downloader/aria2/ariang -

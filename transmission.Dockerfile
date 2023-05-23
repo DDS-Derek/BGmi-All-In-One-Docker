@@ -22,15 +22,16 @@ RUN set -ex && \
     elif [ "${TR_VERSION}" == 4 ]; \
         then export TRANSMISSION_WEB_HOME=/usr/share/transmission/public_html; \
     fi && \
-    echo ${TRANSMISSION_VERSION} && \
-    echo ${TRANSMISSION_WEB_HOME} && \
+    echo ${TRANSMISSION_VERSION} > /versions/TRANSMISSION_VERSION.txt && \
     apk add --update --no-cache \
         transmission-cli==${TRANSMISSION_VERSION} \
         transmission-daemon==${TRANSMISSION_VERSION} && \
     # Transmission Web Control install
     mv ${TRANSMISSION_WEB_HOME}/index.html ${TRANSMISSION_WEB_HOME}/index.original.html && \
     mkdir /tmp/web && \
-    curl -sL https://github.com/transmission-web-control/transmission-web-control/releases/latest/download/dist.tar.gz | \
+    TRANSMISSION_WEB_CONTROL_VERSION=$(curl -s https://api.github.com/repos/transmission-web-control/transmission-web-control/releases/latest | jq -r '.tag_name') && \
+    echo ${TRANSMISSION_WEB_CONTROL_VERSION} > /versions/TRANSMISSION_WEB_CONTROL_VERSION.txt && \
+    curl -sL https://github.com/transmission-web-control/transmission-web-control/releases/download/${TRANSMISSION_WEB_CONTROL_VERSION}/dist.tar.gz | \
     tar xzvpf - --strip-components=1 -C /tmp/web && \
     cp -r /tmp/web/dist/* ${TRANSMISSION_WEB_HOME} && \
     # Clear

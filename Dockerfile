@@ -45,7 +45,6 @@ RUN set -ex && \
     addgroup -S bgmi -g 911 && \
     adduser -S bgmi -G bgmi -h /home/bgmi -u 911 -s /bin/bash bgmi && \
     # BGmi install
-    echo $(dockerize --version) > /versions/DOCKERIZE_VERSION.txt && \
     echo ${BGMI_TAG} > /versions/BGMI_VERSION.txt && \
     mkdir -p ${BGMI_HOME}/BGmi && \
     curl \
@@ -53,8 +52,10 @@ RUN set -ex && \
         tar -zxvf - --strip-components 1 -C ${BGMI_HOME}/BGmi && \
     pip install ${BGMI_HOME}/BGmi && \
     # Filebrowser install
-    curl -fsSL https://raw.githubusercontent.com/filebrowser/get/master/get.sh | bash && \
-    echo $(filebrowser version) > /versions/FILEBROWSER_VERSION.txt && \
+    touch /tmp/filebrowser_install.sh && \
+    curl -fsSL https://raw.githubusercontent.com/filebrowser/get/master/get.sh -o /tmp/filebrowser_install.sh && \
+    echo 'echo ${filemanager_tag} > /versions/FILEBROWSER_VERSION.txt' >> /tmp/filebrowser_install.sh && \
+    bash /tmp/filebrowser_install.sh && \
     # Supervisor log dir
     mkdir -p ${BGMI_HOME}/log/supervisor && \
     # Clear

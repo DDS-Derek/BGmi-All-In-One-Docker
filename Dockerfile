@@ -21,6 +21,7 @@ ENV LANG=C.UTF-8 \
 COPY --from=powerman/dockerize:0.19.0 /usr/local/bin/dockerize /usr/local/bin
 
 RUN set -ex && \
+    dockerize --version && \
     apk add --no-cache \
         python3 \
         py3-pip \
@@ -40,6 +41,10 @@ RUN set -ex && \
         su-exec \
         dumb-init && \
     pip install --upgrade pip && \
+    python3 -V && \
+    nginx -v && \
+    supervisord -v && \
+    crond --help && \
     # Adduser
     mkdir /home/bgmi /versions && \
     addgroup -S bgmi -g 911 && \
@@ -51,11 +56,14 @@ RUN set -ex && \
         -sL https://github.com/BGmi/BGmi/archive/refs/tags/${BGMI_TAG}.tar.gz | \
         tar -zxvf - --strip-components 1 -C ${BGMI_HOME}/BGmi && \
     pip install ${BGMI_HOME}/BGmi && \
+    bgmi --help && \
+    bgmi_http --help && \
     # Filebrowser install
     touch /tmp/filebrowser_install.sh && \
     curl -fsSL https://raw.githubusercontent.com/filebrowser/get/master/get.sh -o /tmp/filebrowser_install.sh && \
     echo 'echo ${filemanager_tag} > /versions/FILEBROWSER_VERSION.txt' >> /tmp/filebrowser_install.sh && \
     bash /tmp/filebrowser_install.sh && \
+    filebrowser version && \
     # Supervisor log dir
     mkdir -p ${BGMI_HOME}/log/supervisor && \
     # Clear

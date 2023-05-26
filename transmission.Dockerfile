@@ -34,6 +34,7 @@ RUN set -ex && \
     curl -sL https://github.com/transmission-web-control/transmission-web-control/releases/download/${TRANSMISSION_WEB_CONTROL_VERSION}/dist.tar.gz | \
     tar xzvpf - --strip-components=1 -C /tmp/web && \
     cp -r /tmp/web/dist/* ${TRANSMISSION_WEB_HOME} && \
+    transmission-daemon --version && \
     # Clear
     rm -rf /etc/apk/repositories && \
     mv /etc/apk/repositories_bak /etc/apk/repositories && \

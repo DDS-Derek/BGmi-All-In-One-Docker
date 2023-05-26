@@ -22,4 +22,5 @@ RUN set -ex && \
     echo ${ARIANG_TAG} > /versions/ARIANG_VERSION.txt && \
     curl \
         -sL https://github.com/mayswind/AriaNg/releases/download/${ARIANG_TAG}/AriaNg-${ARIANG_TAG}.zip | \
-        busybox unzip -qd ${BGMI_HOME}/downloader/aria2/ariang -
+        busybox unzip -qd ${BGMI_HOME}/downloader/aria2/ariang - && \
+    aria2c --version

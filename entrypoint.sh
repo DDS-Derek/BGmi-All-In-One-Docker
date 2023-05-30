@@ -137,6 +137,9 @@ function __config_nginx {
             export NGINX_PARAMETER="
     location /tr {
         proxy_pass http://127.0.0.1:9091;
+        proxy_set_header Host \$host;
+        proxy_set_header X-Real-IP \$remote_addr;
+        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
     }
 "
         elif [ "${BGMI_VERSION}" == "aria2" ]; then

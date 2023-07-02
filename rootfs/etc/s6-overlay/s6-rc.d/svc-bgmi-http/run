@@ -1,0 +1,8 @@
+#!/usr/bin/with-contenv bash
+# shellcheck shell=bash
+
+umask ${UMASK}
+
+exec \
+    s6-notifyoncheck -d -n 300 -w 1000 -c "nc -z localhost 8888" \
+    s6-setuidgid bgmi bgmi_http --port=8888 --address=0.0.0.0

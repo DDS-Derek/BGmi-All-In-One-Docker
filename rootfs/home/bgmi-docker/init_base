@@ -1,0 +1,26 @@
+#!/usr/bin/with-contenv bash
+# shellcheck shell=bash
+
+Green="\033[32m"
+Red="\033[31m"
+Yellow='\033[33m'
+Font="\033[0m"
+INFO="${Green}INFO${Font}"
+ERROR="${Red}ERROR${Font}"
+WARN="${Yellow}WARN${Font}"
+Time=$(date +"%Y-%m-%d %T")
+function INFO() {
+echo -e "${Time} ${INFO}    | ${1}"
+}
+function ERROR() {
+echo -e "${Time} ${ERROR}    | ${1}"
+}
+function WARN() {
+echo -e "${Time} ${WARN}    | ${1}"
+}
+
+first_lock="${BGMI_HOME}/bgmi_install.lock"
+
+BGMI_HARDLINK_USE=${BGMI_HARDLINK_USE:-true}
+
+umask ${UMASK}

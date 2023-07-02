@@ -1,0 +1,20 @@
+#!/usr/bin/with-contenv bash
+# shellcheck shell=bash
+
+. /home/bgmi-docker/init_base
+
+if [ -z ${BGMI_VERSION} ]; then
+    INFO "No downloader start"
+    tail -f /dev/null
+elif [ "${BGMI_VERSION}" == "aria2" ]; then
+    exec \
+        s6-notifyoncheck -d -n 300 -w 1000 -c "nc -z localhost ${ARIA2_RPC_PORT}" \
+        s6-setuidgid bgmi aria2c --conf-path=/bgmi/conf/aria2/aria2.conf
+elif [ "${BGMI_VERSION}" == "transmission" ]; then
+    exec \
+        s6-notifyoncheck -d -n 300 -w 1000 -c "nc -z localhost 9091" \
+        s6-setuidgid bgmi transmission-daemon -f -g /bgmi/conf/transmission/ --encryption-preferred
+else
+    INFO "No downloader start"
+    tail -f /dev/null
+fi

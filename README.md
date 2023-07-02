@@ -55,6 +55,8 @@ docker run -itd \
 **Aria2**
 
 > 注意：镜像内置Ariang管理界面，访问```IP:PORT/ariang```，此```PORT```与访问BGmi Web端口为同一端口
+> 其中Aria2 RPC端口做了Nginx反向代理，与访问BGmi Web端口为同一端口，类似于图中这样设置
+![](./docs/img/ariang.png)
 
 ```bash
 docker run -itd \
@@ -110,15 +112,15 @@ docker run -itd \
 
 **transmission**
 
-[docker-compose](https://github.com/DDS-Derek/BGmi-All-In-One-Docker/blob/master/example/transmission/docker-compose.yml)
+[docker-compose](https://github.com/DDS-Derek/BGmi-All-In-One-Docker/blob/master/docs/example/transmission/docker-compose.yml)
 
 **Aria2**
 
-[docker-compose](https://github.com/DDS-Derek/BGmi-All-In-One-Docker/blob/master/example/aria2-pro/docker-compose.yml)
+[docker-compose](https://github.com/DDS-Derek/BGmi-All-In-One-Docker/blob/master/docs/example/aria2-pro/docker-compose.yml)
 
 **不使用内置下载器**
 
-[docker-compose](https://github.com/DDS-Derek/BGmi-All-In-One-Docker/blob/master/example/default/docker-compose.yml)
+[docker-compose](https://github.com/DDS-Derek/BGmi-All-In-One-Docker/blob/master/docs/example/default/docker-compose.yml)
 
 ## 参数说明
 

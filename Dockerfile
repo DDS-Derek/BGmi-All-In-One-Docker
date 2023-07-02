@@ -1,11 +1,15 @@
 FROM alpine:3.18
 
-LABEL maintainer="ddsrem@163.com"
+LABEL maintainer="ddstomo@gmail.com"
 
 ARG BGMI_TAG=v4.4.6
 
 ENV LANG=C.UTF-8 \
     PS1="\[\e[32m\][\[\e[m\]\[\e[36m\]\u \[\e[m\]\[\e[37m\]@ \[\e[m\]\[\e[34m\]\h\[\e[m\]\[\e[32m\]]\[\e[m\] \[\e[37;35m\]in\[\e[m\] \[\e[33m\]\w\[\e[m\] \[\e[32m\][\[\e[m\]\[\e[37m\]\d\[\e[m\] \[\e[m\]\[\e[37m\]\t\[\e[m\]\[\e[32m\]]\[\e[m\] \n\[\e[1;31m\]$ \[\e[0m\]" \
+    S6_SERVICES_GRACETIME=30000 \
+    S6_KILL_GRACETIME=60000 \
+    S6_CMD_WAIT_FOR_SERVICES_MAXTIME=0 \
+    S6_SYNC_DISKS=1 \
     BGMI_PATH="/bgmi/conf/bgmi" \
     BGMI_HARDLINK_PATH="/bgmi/conf/bgmi_hardlink" \
     BGMI_HOME="/home/bgmi-docker" \
@@ -27,7 +31,6 @@ RUN set -ex && \
         py3-pip \
         nginx \
         bash \
-        supervisor \
         curl \
         tzdata \
         shadow \
@@ -38,12 +41,10 @@ RUN set -ex && \
         netcat-openbsd \
         procps-ng \
         findutils \
-        su-exec \
-        dumb-init && \
+        s6-overlay && \
     pip install --upgrade pip && \
     python3 -V && \
     nginx -v && \
-    supervisord -v && \
     crond --help && \
     # Adduser
     mkdir /home/bgmi /versions && \
@@ -72,9 +73,9 @@ RUN set -ex && \
         /root/.cache \
         /tmp/*
 
-COPY --chmod=755 . /home/bgmi-docker
+COPY --chmod=755 ./rootfs /
 
-ENTRYPOINT ["/home/bgmi-docker/entrypoint.sh"]
+ENTRYPOINT [ "/init" ]
 
 VOLUME [ "/bgmi", "/media" ]
 

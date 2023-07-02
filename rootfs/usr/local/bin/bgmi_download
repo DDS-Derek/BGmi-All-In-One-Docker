@@ -1,0 +1,24 @@
+#!/bin/bash
+
+Green="\033[32m"
+Red="\033[31m"
+Yellow='\033[33m'
+Font="\033[0m"
+INFO="${Green}INFO${Font}"
+ERROR="${Red}ERROR${Font}"
+WARN="${Yellow}WARN${Font}"
+Time=$(date +"%Y-%m-%d %T")
+INFO(){
+echo -e "${Time} ${INFO}    | ${1}"
+}
+ERROR(){
+echo -e "${Time} ${ERROR}    | ${1}"
+}
+WARN(){
+echo -e "${Time} ${WARN}    | ${1}"
+}
+
+INFO "Download start"
+umask ${UMASK}; LC_ALL=zh_CN.UTF-8 TRAVIS_CI=1 s6-setuidgid bgmi $(which bgmi) cal --force-update --download-cover
+umask ${UMASK}; LC_ALL=zh_CN.UTF-8 s6-setuidgid bgmi $(which bgmi) update --download
+INFO "done"

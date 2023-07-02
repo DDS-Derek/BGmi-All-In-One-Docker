@@ -1,0 +1,19 @@
+#!/usr/bin/with-contenv bash
+# shellcheck shell=bash
+
+. /home/bgmi-docker/init_base
+
+if [ ! -f "${first_lock}" ]; then
+
+	if [[ -z ${PUID} && -z ${PGID} ]]; then
+		WARN "Ignore permission settings. Start with root user"
+		export PUID=0
+		export PGID=0
+		groupmod -o -g "$PGID" bgmi 2>&1 | sed "s#^#${Time} WARN    | $0#g" | sed "s#/home/bgmi-docker/entrypoint.sh##g"
+		usermod -o -u "$PUID" bgmi 2>&1 | sed "s#^#${Time} WARN    | $0#g" | sed "s#/home/bgmi-docker/entrypoint.sh##g"
+	else
+		groupmod -o -g "$PGID" bgmi 2>&1 | sed "s#^#${Time} INFO    | $0#g" | sed "s#/home/bgmi-docker/entrypoint.sh##g"
+		usermod -o -u "$PUID" bgmi 2>&1 | sed "s#^#${Time} INFO    | $0#g" | sed "s#/home/bgmi-docker/entrypoint.sh##g"
+	fi
+
+fi

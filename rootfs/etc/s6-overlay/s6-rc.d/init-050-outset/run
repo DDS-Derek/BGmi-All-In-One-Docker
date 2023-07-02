@@ -1,0 +1,8 @@
+#!/usr/bin/with-contenv bash
+# shellcheck shell=bash
+
+. /home/bgmi-docker/init_base
+
+cat /home/bgmi-docker/utils/BGmi-Docker.logo
+echo "Current crontab is:"
+crontab -l

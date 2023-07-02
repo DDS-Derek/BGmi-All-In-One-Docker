@@ -1,0 +1,25 @@
+#!/usr/bin/with-contenv bash
+# shellcheck shell=bash
+
+. /home/bgmi-docker/init_base
+
+chown -R bgmi:bgmi \
+    /home/bgmi-docker \
+    /home/bgmi \
+    /var/lib/nginx \
+    /run/nginx \
+    /var/log/nginx
+chown -R bgmi:bgmi \
+    /bgmi
+if [[ "$(stat -c '%U' /media)" != "bgmi" ]] || [[ "$(stat -c '%G' /media)" != "bgmi" ]]; then
+    chown bgmi:bgmi \
+        /media
+fi
+if [[ "$(stat -c '%U' ${MEDIA_DIR})" != "bgmi" ]] || [[ "$(stat -c '%G' ${MEDIA_DIR})" != "bgmi" ]]; then
+    chown bgmi:bgmi \
+        ${MEDIA_DIR}
+fi
+if [[ "$(stat -c '%U' ${DOWNLOAD_DIR})" != "bgmi" ]] || [[ "$(stat -c '%G' ${DOWNLOAD_DIR})" != "bgmi" ]]; then
+    chown bgmi:bgmi \
+        ${DOWNLOAD_DIR}
+fi

@@ -1,0 +1,138 @@
+#!/usr/bin/with-contenv bash
+# shellcheck shell=bash
+
+. /home/bgmi-docker/init_base
+
+function __bgmi_crond {
+
+    crontab -r
+    if [ ! -f /etc/crontabs/root ]; then
+        touch /etc/crontabs/root
+    fi
+    bash ${BGMI_HOME}/BGmi/bgmi/others/crontab.sh
+
+}
+
+function __config_bgmi {
+
+    bangumi_db="$BGMI_PATH/bangumi.db"
+    bgmi_config="$BGMI_PATH/config.toml"
+
+    cp ${BGMI_HOME}/config/crontab.sh ${BGMI_HOME}/BGmi/bgmi/others/crontab.sh
+
+    if [ ! -f $bangumi_db ]; then
+    	bgmi install
+        __bgmi_crond
+    else
+    	bgmi upgrade
+        __bgmi_crond
+    fi
+
+    bgmi config set save_path --value ${DOWNLOAD_DIR}
+
+    if [ "${BGMI_VERSION}" == "transmission" ]; then
+        bgmi config set download_delegate --value transmission-rpc
+        bgmi config set transmission rpc_path --value /tr/rpc
+        if [[ -n "$TR_USER" ]] && [[ -n "$TR_PASS" ]]; then
+            bgmi config set transmission rpc_username --value ${TR_USER}
+            bgmi config set transmission rpc_password --value ${TR_PASS}
+        fi
+    elif [ "${BGMI_VERSION}" == "aria2" ]; then
+        bgmi config set download_delegate --value aria2-rpc
+        bgmi config set aria2 rpc_token --value token:${ARIA2_RPC_SECRET}
+        bgmi config set aria2 rpc_url --value http://127.0.0.1:${ARIA2_RPC_PORT}/rpc
+    fi
+
+}
+
+function __config_bgmi_hardlink {
+
+    if [ ! -d ${BGMI_HARDLINK_PATH} ]; then
+    	mkdir -p ${BGMI_HARDLINK_PATH}
+    fi
+
+    if [ ! -f ${BGMI_HARDLINK_PATH}/config.py ]; then
+        dockerize -no-overwrite -template ${BGMI_HOME}/config/config.py:${BGMI_HARDLINK_PATH}/config.py
+    fi
+
+    (crontab -l ; echo "20 */2 * * * umask ${UMASK}; LC_ALL=zh_CN.UTF-8 s6-setuidgid bgmi $(which python3) ${BGMI_HOME}/hardlink/hardlink.py run") | crontab -
+    INFO "hard link timing task setting is completed"
+
+}
+
+function __config_nginx {
+
+    bgmi_nginx="/bgmi/conf/nginx"
+    bgmi_nginx_conf="$bgmi_nginx/bgmi.conf"
+    nginx_conf_dir="/etc/nginx/http.d"
+
+    rm -rf $nginx_conf_dir
+    ln -s $bgmi_nginx $nginx_conf_dir
+
+    if [ ! -f "${bgmi_nginx_conf}" ]; then
+        if [ -z ${BGMI_VERSION} ]; then
+            export NGINX_PARAMETER="
+"
+        elif [ "${BGMI_VERSION}" == "transmission" ]; then
+            export NGINX_PARAMETER="
+    location /tr {
+        proxy_pass http://127.0.0.1:9091;
+        proxy_set_header Host \$host;
+        proxy_set_header X-Real-IP \$remote_addr;
+        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
+    }
+"
+        elif [ "${BGMI_VERSION}" == "aria2" ]; then
+            export NGINX_PARAMETER="
+    location /ariang {
+        alias /home/bgmi-docker/downloader/aria2/ariang;
+    }
+
+    location /jsonrpc {
+        proxy_pass http://127.0.0.1:${ARIA2_RPC_PORT}/jsonrpc;
+        proxy_set_header Host \$host;
+        proxy_set_header X-Real-IP \$remote_addr;
+        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
+    }
+"
+        fi
+    dockerize -no-overwrite -template ${BGMI_HOME}/config/bgmi_nginx.conf.tmpl:${bgmi_nginx_conf}
+    fi
+
+}
+
+function __set_downloader {
+
+    if [ -z ${BGMI_VERSION} ]; then
+        INFO "No downloader settings"
+    elif [ "${BGMI_VERSION}" == "transmission" ]; then
+        INFO "Set transmission"
+        bash ${BGMI_HOME}/downloader/transmission/settings.sh
+    elif [ "${BGMI_VERSION}" == "aria2" ]; then
+        INFO "Set aria2"
+        bash ${BGMI_HOME}/downloader/aria2/settings.sh
+    else
+        WARN "Wrong container version, start with default version"
+    fi
+
+}
+
+if [ ! -f "${first_lock}" ]; then
+
+    __config_bgmi
+
+    if [ "${BGMI_HARDLINK_USE}" == "true" ]; then
+        __config_bgmi_hardlink
+    fi
+
+    __config_nginx
+
+    if [ ! -f /bgmi/conf/filebrowser/settings.json ]; then
+        cp ${BGMI_HOME}/config/filebrowser.json /bgmi/conf/filebrowser/settings.json
+    fi
+
+    __set_downloader
+
+    touch "${first_lock}"
+
+fi

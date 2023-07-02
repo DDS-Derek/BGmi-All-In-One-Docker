@@ -1,0 +1,59 @@
+#!/usr/bin/with-contenv bash
+# shellcheck shell=bash
+
+. /home/bgmi-docker/init_base
+
+nginx_run="/var/run/nginx"
+bgmi_conf="/bgmi/conf/bgmi"
+bgmi_nginx="/bgmi/conf/nginx"
+filebrowser_conf="/bgmi/conf/filebrowser"
+bgmi_log="/bgmi/log"
+nginx_log_dir="/bgmi/log/nginx"
+nginx_log_error="/bgmi/log/nginx/error.log"
+nginx_log_access="/bgmi/log/nginx/access.log"
+media_cartoon=${MEDIA_DIR}
+meida_downloads=${DOWNLOAD_DIR}
+
+if [ ! -f "${first_lock}" ]; then
+
+	if [ ! -d ${nginx_run} ]; then
+		mkdir -p ${nginx_run}
+	fi
+
+	if [ ! -d ${bgmi_conf} ]; then
+		mkdir -p ${bgmi_conf}
+	fi
+
+	if [ ! -d ${bgmi_nginx} ]; then
+		mkdir -p ${bgmi_nginx}
+	fi
+
+	if [ ! -d ${filebrowser_conf} ]; then
+		mkdir -p ${filebrowser_conf}
+	fi
+
+    if [ ! -d ${bgmi_log} ]; then
+    	mkdir -p ${bgmi_log}
+    fi
+
+	if [ ! -d ${media_cartoon} ]; then
+		mkdir -p ${media_cartoon}
+	fi
+
+	if [ ! -d ${meida_downloads} ]; then
+		mkdir -p ${meida_downloads}
+	fi
+
+	if [ ! -d ${nginx_log_dir} ]; then
+		mkdir -p ${nginx_log_dir}
+	fi
+
+	if [ ! -f ${nginx_log_access} ]; then
+		touch ${nginx_log_access}
+	fi
+
+	if [ ! -f ${nginx_log_error} ]; then
+		touch ${nginx_log_error}
+	fi
+
+fi

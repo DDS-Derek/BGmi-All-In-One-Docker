@@ -1,3 +1,5 @@
+# syntax=docker/dockerfile:1
+
 ARG BGMI_TAG
 
 FROM ddsderek/bgmi-all-in-one:${BGMI_TAG}

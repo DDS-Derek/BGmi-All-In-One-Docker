@@ -6,3 +6,13 @@
 cat /home/bgmi-docker/utils/BGmi-Docker.logo
 echo "Current crontab is:"
 crontab -l
+
+echo "Software version information:"
+versions_dir="/versions"
+for file in "$versions_dir"/*; do
+    if [ -f "$file" ]; then
+        filename=$(basename "$file")
+        content=$(cat "$file")
+        echo "$filename $content"
+    fi
+done

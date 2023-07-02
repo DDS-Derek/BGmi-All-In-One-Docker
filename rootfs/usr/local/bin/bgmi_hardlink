@@ -1,4 +1,5 @@
-#!/bin/bash
+#!/usr/bin/with-contenv bash
+# shellcheck shell=bash
 
 Green="\033[32m"
 Red="\033[31m"

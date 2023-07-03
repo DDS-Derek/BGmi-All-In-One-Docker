@@ -5,7 +5,6 @@
 
 chown -R bgmi:bgmi \
     /home/bgmi-docker \
-    /home/bgmi \
     /var/lib/nginx \
     /run/nginx \
     /var/log/nginx

@@ -49,9 +49,9 @@ RUN set -ex && \
     nginx -v && \
     crond --help && \
     # Adduser
-    mkdir /home/bgmi /versions && \
+    mkdir ${BGMI_HOME} /versions && \
     addgroup -S bgmi -g 911 && \
-    adduser -S bgmi -G bgmi -h /home/bgmi -u 911 -s /bin/bash bgmi && \
+    adduser -S bgmi -G bgmi -h ${BGMI_HOME} -u 911 -s /bin/bash bgmi && \
     # BGmi install
     echo ${BGMI_TAG} > /versions/BGMI_VERSION.txt && \
     mkdir -p ${BGMI_HOME}/BGmi && \

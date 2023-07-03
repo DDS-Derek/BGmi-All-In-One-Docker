@@ -1,3 +1,5 @@
+#!/usr/bin/with-contenv bash
+# shellcheck shell=bash
 #     _         _       ____    ____
 #    / \   _ __(_) __ _|___ \  |  _ \ _ __ ___
 #   / _ \ | '__| |/ _` | __) | | |_) | '__/ _ \

@@ -1,4 +1,5 @@
-#!/bin/bash
+#!/usr/bin/with-contenv bash
+# shellcheck shell=bash
 
 transmission_config_file="/bgmi/conf/transmission/settings.json"
 

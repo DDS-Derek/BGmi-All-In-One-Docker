@@ -1,6 +1,6 @@
 from bgmi.lib.models import STATUS_DELETED, STATUS_END, STATUS_UPDATING, Followed
 from bgmi.front.index import get_player
-from bgmi.config import cfg
+from bgmi import config as bgmi_config
 import os
 import sys
 config_path = os.getenv("BGMI_HARDLINK_PATH")
@@ -9,6 +9,13 @@ if config_path:
 from config import *
 import argparse as arg
 
+if hasattr(bgmi_config, 'SAVE_PATH'):
+    save_path = bgmi_config.SAVE_PATH
+elif hasattr(bgmi_config, 'cfg'):
+    save_path = bgmi_config.cfg.save_path
+else:
+    print("不支持此 BGmi 版本！")
+    exit(1)
 
 def run_hardlink(preview=False):
     """
@@ -41,7 +48,7 @@ def run_hardlink(preview=False):
             path = ep['path']
             info['format'] = path.split('.')[-1]
             # 源位置
-            src_path = os.path.join(cfg.save_path, path[1:])
+            src_path = os.path.join(save_path, path[1:])
             # 目标位置
             dst_dir = os.path.join(
                 HARDLINK_DEST,

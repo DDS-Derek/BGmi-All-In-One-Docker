@@ -20,5 +20,5 @@ echo -e "${Time} ${WARN}    | ${1}"
 }
 
 INFO "Hardlink start"
-umask ${UMASK}; LC_ALL=zh_CN.UTF-8 su-exec bgmi $(which python3) /home/bgmi-docker/hardlink/hardlink.py run
+umask ${UMASK}; LC_ALL=zh_CN.UTF-8 s6-setuidgid bgmi $(which python3) /home/bgmi-docker/hardlink/hardlink.py run
 INFO "done"

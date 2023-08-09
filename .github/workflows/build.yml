@@ -1,8 +1,8 @@
-name: Build BGmi-All-In-One image
+name: Build image
 
 on:
-    release:
-        types: [published]
+  release:
+    types: [published]
 
 jobs:
   bgmi:
@@ -10,9 +10,10 @@ jobs:
     steps:
       - 
         name: Checkout
-        uses: actions/checkout@master
+        uses: actions/checkout@v3
       
-      - name: Docker meta
+      - 
+        name: Docker meta
         id: meta
         uses: docker/metadata-action@v4
         with:
@@ -59,7 +60,8 @@ jobs:
         name: Checkout
         uses: actions/checkout@master
       
-      - name: Docker meta
+      - 
+        name: Docker meta
         id: meta
         uses: docker/metadata-action@v4
         with:
@@ -109,7 +111,8 @@ jobs:
         name: Checkout
         uses: actions/checkout@master
       
-      - name: Docker meta
+      - 
+        name: Docker meta
         id: meta
         uses: docker/metadata-action@v4
         with:
@@ -159,7 +162,8 @@ jobs:
         name: Checkout
         uses: actions/checkout@master
       
-      - name: Docker meta
+      - 
+        name: Docker meta
         id: meta
         uses: docker/metadata-action@v4
         with:

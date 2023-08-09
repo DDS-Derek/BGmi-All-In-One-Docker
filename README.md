@@ -1,6 +1,7 @@
 # BGmi All In One Docker
 
-[![Build](https://github.com/DDS-Derek/BGmi-All-In-One-Docker/actions/workflows/docker-image.yml/badge.svg)](https://github.com/DDS-Derek/BGmi-All-In-One-Docker/actions/workflows/docker-image.yml)
+[![Build](https://github.com/DDS-Derek/BGmi-All-In-One-Docker/actions/workflows/build.yml/badge.svg)](https://github.com/DDS-Derek/BGmi-All-In-One-Docker/actions/workflows/build.yml)
+[![Test](https://github.com/DDS-Derek/BGmi-All-In-One-Docker/actions/workflows/test.yml/badge.svg)](https://github.com/DDS-Derek/BGmi-All-In-One-Docker/actions/workflows/test.yml)
 
 **注意，Dockerhub仓库从`ddsderek/bgmi-docker-all-in-one`换为`ddsderek/bgmi-all-in-one`**
 

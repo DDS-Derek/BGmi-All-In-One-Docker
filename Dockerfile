@@ -67,8 +67,6 @@ RUN set -ex && \
     echo 'echo ${filemanager_tag} > /versions/FILEBROWSER_VERSION.txt' >> /tmp/filebrowser_install.sh && \
     bash /tmp/filebrowser_install.sh && \
     filebrowser version && \
-    # Supervisor log dir
-    mkdir -p ${BGMI_HOME}/log/supervisor && \
     # Clear
     rm -rf \
         /var/cache/apk/* \

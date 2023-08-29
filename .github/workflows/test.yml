@@ -39,3 +39,5 @@ jobs:
           tags: |
             ${{ secrets.DOCKER_USERNAME }}/bgmi-all-in-one:test
           labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha, scope=${{ github.workflow }}
+          cache-to: type=gha, scope=${{ github.workflow }}

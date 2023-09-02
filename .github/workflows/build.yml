@@ -18,6 +18,9 @@ jobs:
         uses: docker/metadata-action@v4
         with:
           images: ${{ secrets.DOCKER_USERNAME }}/bgmi-all-in-one
+          tags: |
+            type=semver,pattern={{raw}}
+            type=raw,value=latest
 
       - 
         name: Set Up QEMU
@@ -47,9 +50,7 @@ jobs:
             linux/arm/v7
             linux/arm/v6
           push: true
-          tags: |
-            ${{ secrets.DOCKER_USERNAME }}/bgmi-all-in-one:${{ steps.meta.outputs.version }}
-            ${{ secrets.DOCKER_USERNAME }}/bgmi-all-in-one:latest
+          tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha, scope=${{ github.workflow }}
           cache-to: type=gha, scope=${{ github.workflow }}
@@ -68,6 +69,9 @@ jobs:
         uses: docker/metadata-action@v4
         with:
           images: ${{ secrets.DOCKER_USERNAME }}/bgmi-all-in-one
+          tags: |
+            type=semver,pattern={{raw}}-transmission
+            type=raw,value=transmission
 
       - 
         name: Set Up QEMU
@@ -101,9 +105,7 @@ jobs:
             BGMI_TAG=${{ steps.meta.outputs.version }}
             ALPINE_VERSION=edge
             TRANSMISSION_WEB_HOME=/usr/share/transmission/public_html
-          tags: |
-            ${{ secrets.DOCKER_USERNAME }}/bgmi-all-in-one:${{ steps.meta.outputs.version }}-transmission
-            ${{ secrets.DOCKER_USERNAME }}/bgmi-all-in-one:transmission
+          tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
   aria2:
@@ -120,6 +122,9 @@ jobs:
         uses: docker/metadata-action@v4
         with:
           images: ${{ secrets.DOCKER_USERNAME }}/bgmi-all-in-one
+          tags: |
+            type=semver,pattern={{raw}}-aria2
+            type=raw,value=aria2
 
       - 
         name: Set Up QEMU
@@ -151,7 +156,5 @@ jobs:
           push: true
           build-args: |
             BGMI_TAG=${{ steps.meta.outputs.version }}
-          tags: |
-            ${{ secrets.DOCKER_USERNAME }}/bgmi-all-in-one:${{ steps.meta.outputs.version }}-aria2
-            ${{ secrets.DOCKER_USERNAME }}/bgmi-all-in-one:aria2
+          tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}

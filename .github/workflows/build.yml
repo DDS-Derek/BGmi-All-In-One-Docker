@@ -24,7 +24,7 @@ jobs:
 
       -
         name: Generate Release
-        uses: actions/create-release@latest
+        uses: softprops/action-gh-release@v1
         with:
           tag_name: ${{ steps.set-version.outputs.RELEASE_VERSION }}
           name: ${{ steps.set-version.outputs.RELEASE_VERSION }}

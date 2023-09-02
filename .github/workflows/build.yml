@@ -13,13 +13,26 @@ jobs:
         uses: actions/checkout@v3
       
       - 
+        name: Set Version
+        id: set-version
+        run: |
+          BGMI_VERSION=$(jq -r '.BGmi.version' info.json)
+          RELEASE_VERSION=$(jq -r '.Release_Version' info.json)
+
+          echo "BGMI_VERSION=${BGMI_VERSION}"
+          echo "RELEASE_VERSION=${RELEASE_VERSION}"
+
+          echo "BGMI_VERSION=${BGMI_VERSION}" >> $GITHUB_OUTPUT
+          echo "RELEASE_VERSION=${RELEASE_VERSION}" >> $GITHUB_OUTPUT
+
+      - 
         name: Docker meta
         id: meta
         uses: docker/metadata-action@v4
         with:
           images: ${{ secrets.DOCKER_USERNAME }}/bgmi-all-in-one
           tags: |
-            type=semver,pattern={{raw}}
+            type=raw,value=${{ steps.set-version.outputs.RELEASE_VERSION }}
             type=raw,value=latest
 
       - 
@@ -50,6 +63,8 @@ jobs:
             linux/arm/v7
             linux/arm/v6
           push: true
+          build-args: |
+            BGMI_VERSION=${{ steps.set-version.outputs.BGMI_VERSION }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha, scope=${{ github.workflow }}
@@ -64,13 +79,29 @@ jobs:
         uses: actions/checkout@master
       
       - 
+        name: Set Version
+        id: set-version
+        run: |
+          ALPINE_VERSION=$(jq -r '.Transmission.alpine_version' info.json)
+          TRANSMISSION_WEB_HOME=$(jq -r '.Transmission.web_home' info.json)
+          RELEASE_VERSION=$(jq -r '.Release_Version' info.json)
+
+          echo "ALPINE_VERSION=${ALPINE_VERSION}"
+          echo "TRANSMISSION_WEB_HOME=${TRANSMISSION_WEB_HOME}"
+          echo "RELEASE_VERSION=${RELEASE_VERSION}"
+
+          echo "ALPINE_VERSION=${ALPINE_VERSION}" >> $GITHUB_OUTPUT
+          echo "TRANSMISSION_WEB_HOME=${TRANSMISSION_WEB_HOME}" >> $GITHUB_OUTPUT
+          echo "RELEASE_VERSION=${RELEASE_VERSION}" >> $GITHUB_OUTPUT
+
+      - 
         name: Docker meta
         id: meta
         uses: docker/metadata-action@v4
         with:
           images: ${{ secrets.DOCKER_USERNAME }}/bgmi-all-in-one
           tags: |
-            type=semver,pattern={{raw}}-transmission
+            type=raw,value=${{ steps.set-version.outputs.RELEASE_VERSION }}-transmission
             type=raw,value=transmission
 
       - 
@@ -102,9 +133,9 @@ jobs:
             linux/arm/v6
           push: true
           build-args: |
-            BGMI_TAG=${{ steps.meta.outputs.version }}
-            ALPINE_VERSION=edge
-            TRANSMISSION_WEB_HOME=/usr/share/transmission/public_html
+            RELEASE_VERSION=${{ steps.set-version.outputs.RELEASE_VERSION }}
+            ALPINE_VERSION=${{ steps.set-version.outputs.ALPINE_VERSION }}
+            TRANSMISSION_WEB_HOME=${{ steps.set-version.outputs.TRANSMISSION_WEB_HOME }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
@@ -117,13 +148,23 @@ jobs:
         uses: actions/checkout@master
       
       - 
+        name: Set Version
+        id: set-version
+        run: |
+          RELEASE_VERSION=$(jq -r '.Release_Version' info.json)
+
+          echo "RELEASE_VERSION=${RELEASE_VERSION}"
+
+          echo "RELEASE_VERSION=${RELEASE_VERSION}" >> $GITHUB_OUTPUT
+
+      - 
         name: Docker meta
         id: meta
         uses: docker/metadata-action@v4
         with:
           images: ${{ secrets.DOCKER_USERNAME }}/bgmi-all-in-one
           tags: |
-            type=semver,pattern={{raw}}-aria2
+            type=raw,value=${{ steps.set-version.outputs.RELEASE_VERSION }}-aria2
             type=raw,value=aria2
 
       - 
@@ -155,6 +196,6 @@ jobs:
             linux/arm/v6
           push: true
           build-args: |
-            BGMI_TAG=${{ steps.meta.outputs.version }}
+            RELEASE_VERSION=${{ steps.set-version.outputs.RELEASE_VERSION }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}

@@ -4,7 +4,7 @@ FROM alpine:3.18
 
 LABEL maintainer="ddstomo@gmail.com"
 
-ARG BGMI_TAG=v4.4.6
+ARG BGMI_VERSION
 
 ENV LANG=C.UTF-8 \
     PS1="\[\e[32m\][\[\e[m\]\[\e[36m\]\u \[\e[m\]\[\e[37m\]@ \[\e[m\]\[\e[34m\]\h\[\e[m\]\[\e[32m\]]\[\e[m\] \[\e[37;35m\]in\[\e[m\] \[\e[33m\]\w\[\e[m\] \[\e[32m\][\[\e[m\]\[\e[37m\]\d\[\e[m\] \[\e[m\]\[\e[37m\]\t\[\e[m\]\[\e[32m\]]\[\e[m\] \n\[\e[1;31m\]$ \[\e[0m\]" \
@@ -53,10 +53,10 @@ RUN set -ex && \
     addgroup -S bgmi -g 911 && \
     adduser -S bgmi -G bgmi -h ${BGMI_HOME} -u 911 -s /bin/bash bgmi && \
     # BGmi install
-    echo ${BGMI_TAG} > /versions/BGMI_VERSION.txt && \
+    echo ${BGMI_VERSION} > /versions/BGMI_VERSION.txt && \
     mkdir -p ${BGMI_HOME}/BGmi && \
     curl \
-        -sL https://github.com/BGmi/BGmi/archive/refs/tags/${BGMI_TAG}.tar.gz | \
+        -sL https://github.com/BGmi/BGmi/archive/refs/tags/${BGMI_VERSION}.tar.gz | \
         tar -zxvf - --strip-components 1 -C ${BGMI_HOME}/BGmi && \
     pip install ${BGMI_HOME}/BGmi && \
     bgmi --help && \

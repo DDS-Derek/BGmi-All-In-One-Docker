@@ -1,0 +1,11 @@
+{
+    "Release_Version": "v4.4.14",
+    "BGmi": {
+        "version": "v4.4.6"
+    },
+    "Transmission": {
+        "alpine_version": "edge",
+        "web_home": "/usr/share/transmission/public_html"
+    },
+    "Aria2": {}
+}

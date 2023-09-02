@@ -1,8 +1,8 @@
 # syntax=docker/dockerfile:1
 
-ARG BGMI_TAG
+ARG RELEASE_VERSION
 
-FROM ddsderek/bgmi-all-in-one:${BGMI_TAG}
+FROM ddsderek/bgmi-all-in-one:${RELEASE_VERSION}
 
 ENV BGMI_VERSION=aria2 \
     ARIA2_UPDATE_TRACKERS=true \

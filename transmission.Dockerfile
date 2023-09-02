@@ -1,8 +1,8 @@
 # syntax=docker/dockerfile:1
 
-ARG BGMI_TAG
+ARG RELEASE_VERSION
 
-FROM ddsderek/bgmi-all-in-one:${BGMI_TAG}
+FROM ddsderek/bgmi-all-in-one:${RELEASE_VERSION}
 
 ARG ALPINE_VERSION
 ARG TRANSMISSION_WEB_HOME

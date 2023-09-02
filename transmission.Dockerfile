@@ -19,9 +19,7 @@ RUN set -ex && \
     TRANSMISSION_VERSION=$(awk '/^P:transmission$/,/V:/' /tmp/version/APKINDEX | sed -n 2p | sed 's/^V://') && \
     apk add --update --no-cache \
         transmission-cli==${TRANSMISSION_VERSION} \
-        transmission-daemon==${TRANSMISSION_VERSION} \
-        transmission-extra==${TRANSMISSION_VERSION} \
-        transmission-remote==${TRANSMISSION_VERSION} && \
+        transmission-daemon==${TRANSMISSION_VERSION} && \
     transmission-daemon --version && \
     # Transmission Web Control install
     mv ${TRANSMISSION_WEB_HOME}/index.html ${TRANSMISSION_WEB_HOME}/index.original.html && \

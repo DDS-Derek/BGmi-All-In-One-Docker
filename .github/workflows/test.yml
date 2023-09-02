@@ -18,6 +18,8 @@ jobs:
         uses: docker/metadata-action@v4
         with:
           images: ${{ secrets.DOCKER_USERNAME }}/bgmi-all-in-one
+          tags: |
+            type=raw,value=test
 
       - 
         name: Set Up QEMU
@@ -36,8 +38,5 @@ jobs:
           platforms: |
             linux/amd64
           push: false
-          tags: |
-            ${{ secrets.DOCKER_USERNAME }}/bgmi-all-in-one:test
+          tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=gha, scope=${{ github.workflow }}
-          cache-to: type=gha, scope=${{ github.workflow }}

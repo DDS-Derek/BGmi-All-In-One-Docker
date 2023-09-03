@@ -13,7 +13,7 @@ fi
 
 sed -i "/\"rpc-url\"/c\    \"rpc-url\": \"/tr/\"," ${transmission_config_file}
 
-if [[ -n "$TR_USER" ]] && [[ -n "$TR_PASS" ]]; then
+if [[ -n "${TR_USER}" ]] && [[ -n "${TR_PASS}" ]]; then
     sed -i '/rpc-authentication-required/c\    "rpc-authentication-required": true,' ${transmission_config_file}
     sed -i "/rpc-username/c\    \"rpc-username\": \"$TR_USER\"," ${transmission_config_file}
     sed -i "/rpc-password/c\    \"rpc-password\": \"$TR_PASS\"," ${transmission_config_file}

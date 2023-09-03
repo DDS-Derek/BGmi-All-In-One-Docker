@@ -3,7 +3,7 @@
 
 . /home/bgmi-docker/init_base
 
-cat /home/bgmi-docker/utils/BGmi-Docker.logo
+cat /home/bgmi-docker/BGmi-Docker.logo
 echo "Current crontab is:"
 crontab -l
 

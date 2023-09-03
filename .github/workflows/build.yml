@@ -116,15 +116,12 @@ jobs:
         name: Set Version
         id: set-version
         run: |
-          ALPINE_VERSION=$(jq -r '.Transmission.alpine_version' info.json)
           TRANSMISSION_WEB_HOME=$(jq -r '.Transmission.web_home' info.json)
           RELEASE_VERSION=$(jq -r '.Release_Version' info.json)
 
-          echo "ALPINE_VERSION=${ALPINE_VERSION}"
           echo "TRANSMISSION_WEB_HOME=${TRANSMISSION_WEB_HOME}"
           echo "RELEASE_VERSION=${RELEASE_VERSION}"
 
-          echo "ALPINE_VERSION=${ALPINE_VERSION}" >> $GITHUB_OUTPUT
           echo "TRANSMISSION_WEB_HOME=${TRANSMISSION_WEB_HOME}" >> $GITHUB_OUTPUT
           echo "RELEASE_VERSION=${RELEASE_VERSION}" >> $GITHUB_OUTPUT
 
@@ -168,7 +165,6 @@ jobs:
           push: true
           build-args: |
             RELEASE_VERSION=${{ steps.set-version.outputs.RELEASE_VERSION }}
-            ALPINE_VERSION=${{ steps.set-version.outputs.ALPINE_VERSION }}
             TRANSMISSION_WEB_HOME=${{ steps.set-version.outputs.TRANSMISSION_WEB_HOME }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}

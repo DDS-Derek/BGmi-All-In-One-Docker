@@ -17,10 +17,13 @@ jobs:
         id: set-version
         run: |
           BGMI_VERSION=$(jq -r '.BGmi.version' info.json)
+          TRANSMISSION_WEB_HOME=$(jq -r '.Transmission.web_home' info.json)
 
           echo "BGMI_VERSION=${BGMI_VERSION}"
-
+          echo "TRANSMISSION_WEB_HOME=${TRANSMISSION_WEB_HOME}"
+          
           echo "BGMI_VERSION=${BGMI_VERSION}" >> $GITHUB_OUTPUT
+          echo "TRANSMISSION_WEB_HOME=${TRANSMISSION_WEB_HOME}" >> $GITHUB_OUTPUT
 
       - 
         name: Docker meta
@@ -44,11 +47,12 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: .
-          file: Dockerfile
+          file: test.Dockerfile
           platforms: |
             linux/amd64
           push: false
           build-args: |
             BGMI_VERSION=${{ steps.set-version.outputs.BGMI_VERSION }}
+            TRANSMISSION_WEB_HOME=${{ steps.set-version.outputs.TRANSMISSION_WEB_HOME }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}

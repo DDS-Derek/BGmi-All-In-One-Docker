@@ -107,6 +107,8 @@ RUN set -ex && \
 
 # Test Transmission
 
+ARG TRANSMISSION_WEB_HOME
+
 ENV BGMI_VERSION=transmission
 
 RUN set -ex && \

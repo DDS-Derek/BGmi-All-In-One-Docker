@@ -1,7 +1,7 @@
 {
     "Release_Version": "v4.4.19",
     "BGmi": {
-        "version": "v4.4.6"
+        "version": "v4.4.7"
     },
     "Transmission": {
         "web_home": "/usr/share/transmission/public_html"

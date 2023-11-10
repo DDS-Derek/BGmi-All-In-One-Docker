@@ -22,5 +22,6 @@ echo -e "${Time} ${WARN}    | ${1}"
 first_lock="${BGMI_HOME}/bgmi_install.lock"
 
 BGMI_HARDLINK_USE=${BGMI_HARDLINK_USE:-true}
+FILEBROWSER_USE=${FILEBROWSER_USE:-true}
 
 umask ${UMASK}

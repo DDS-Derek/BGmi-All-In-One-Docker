@@ -24,8 +24,10 @@ if [ ! -f "${first_lock}" ]; then
 		mkdir -p ${bgmi_nginx}
 	fi
 
-	if [ ! -d ${filebrowser_conf} ]; then
-		mkdir -p ${filebrowser_conf}
+	if [ "${FILEBROWSER_USE}" == "true" ]; then
+		if [ ! -d ${filebrowser_conf} ]; then
+			mkdir -p ${filebrowser_conf}
+		fi
 	fi
 
 	if [ ! -d ${media_cartoon} ]; then

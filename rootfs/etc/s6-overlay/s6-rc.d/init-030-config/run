@@ -127,8 +127,10 @@ if [ ! -f "${first_lock}" ]; then
 
     __config_nginx
 
-    if [ ! -f /bgmi/conf/filebrowser/settings.json ]; then
-        cp ${BGMI_HOME}/config/filebrowser.json /bgmi/conf/filebrowser/settings.json
+    if [ "${FILEBROWSER_USE}" == "true" ]; then
+        if [ ! -f /bgmi/conf/filebrowser/settings.json ]; then
+            cp ${BGMI_HOME}/config/filebrowser.json /bgmi/conf/filebrowser/settings.json
+        fi
     fi
 
     __set_downloader

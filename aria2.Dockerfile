@@ -11,8 +11,7 @@ ENV BGMI_VERSION=aria2 \
     ARIA2_RPC_PORT=6800 \
     ARIA2_RPC_SECRET=password \
     ARIA2_DISK_CACHE= \
-    ARIA2_IPV6_MODE= \
-    ARIA2_SPECIAL_MODE=
+    ARIA2_IPV6_MODE=
 
 RUN set -ex && \
     # Aria2-Pro install

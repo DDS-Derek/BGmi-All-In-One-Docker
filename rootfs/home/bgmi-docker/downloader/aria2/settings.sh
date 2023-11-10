@@ -117,16 +117,6 @@ if ! [[ "${ARIA2_UPDATE_TRACKERS}" = "false" || "${ARIA2_UPDATE_TRACKERS}" = "di
     export CUSTOM_TRACKER_URL=${ARIA2_CUSTOM_TRACKER_URL}; bash ${SCRIPT_DIR}/tracker.sh ${ARIA2_CONF}
 fi
 
-if [[ "${ARIA2_SPECIAL_MODE}" = "rclone" ]]; then
-    PROFILES="upload.sh rclone.env"
-elif [[ "${ARIA2_SPECIAL_MODE}" = "move" ]]; then
-    PROFILES="move.sh"
-else
-    PROFILES="clean.sh"
-fi
-
-DOWNLOAD_PROFILE
-
 [[ -e ${ARIA2_CONF_DIR}/delete.sh ]] && {
     rm -f ${ARIA2_CONF_DIR}/*.sh
     sed -i "s@^\(on-download-stop=\).*@\1${SCRIPT_DIR}/delete.sh@" ${ARIA2_CONF}

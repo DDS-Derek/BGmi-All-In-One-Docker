@@ -17,4 +17,6 @@ services:
             - DOWNLOAD_DIR=/media/downloads
             - BGMI_DATA_SOURCE=mikan_project
             - BGMI_HTTP_ADMIN_TOKEN=password
+            - BGMI_HARDLINK_USE=true
+            - FILEBROWSER_USE=true
         image: 'ddsderek/bgmi-all-in-one:latest'

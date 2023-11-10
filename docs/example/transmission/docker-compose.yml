@@ -19,6 +19,8 @@ services:
             - DOWNLOAD_DIR=/media/downloads
             - BGMI_DATA_SOURCE=mikan_project
             - BGMI_HTTP_ADMIN_TOKEN=password
+            - BGMI_HARDLINK_USE=true
+            - FILEBROWSER_USE=true
             - TR_USER=bgmi
             - TR_PASS=password
             - TR_PEERPORT=51413

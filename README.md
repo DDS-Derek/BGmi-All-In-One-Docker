@@ -47,6 +47,7 @@ docker run -itd \
   -e BGMI_DATA_SOURCE=mikan_project \
   -e BGMI_HTTP_ADMIN_TOKEN=password \
   -e BGMI_HARDLINK_USE=true \
+  -e FILEBROWSER_USE=true \
   -e TR_USER=bgmi \
   -e TR_PASS=password \
   -e TR_PEERPORT=51413 \
@@ -77,6 +78,7 @@ docker run -itd \
   -e BGMI_DATA_SOURCE=mikan_project \
   -e BGMI_HTTP_ADMIN_TOKEN=password \
   -e BGMI_HARDLINK_USE=true \
+  -e FILEBROWSER_USE=true \
   -e ARIA2_UPDATE_TRACKERS=true \
   -e ARIA2_CUSTOM_TRACKER_URL= \
   -e ARIA2_LISTEN_PORT=6888 \
@@ -84,7 +86,6 @@ docker run -itd \
   -e ARIA2_RPC_SECRET= \
   -e ARIA2_DISK_CACHE= \
   -e ARIA2_IPV6_MODE= \
-  -e ARIA2_SPECIAL_MODE= \
   ddsderek/bgmi-all-in-one:aria2
 ```
 
@@ -106,6 +107,7 @@ docker run -itd \
   -e BGMI_DATA_SOURCE=mikan_project \
   -e BGMI_HTTP_ADMIN_TOKEN=password \
   -e BGMI_HARDLINK_USE=false \
+  -e FILEBROWSER_USE=true \
   ddsderek/bgmi-all-in-one:latest
 ```
 
@@ -146,6 +148,7 @@ docker run -itd \
 |   `-e BGMI_DATA_SOURCE`    | 设置 BGMI 默认数据源（bangumi_moe、mikan_project 或 DMHY） |
 | `-e BGMI_HTTP_ADMIN_TOKEN` |               设置 BGMI Web 界面身份验证令牌               |
 | `-e BGMI_HARDLINK_USE` |               是否启用镜像内置的硬链接脚本（默认开启）               |
+| `-e FILEBROWSER_USE` |               是否启用镜像内置的FileBrowser               |
 |        `-p 80`        |                       BGmi Web 端口                        |
 |      `-v /bgmi`       |                          配置文件                          |
 |      `-v /media`      |            媒体文件夹，包含下载文件和硬链接文件            |

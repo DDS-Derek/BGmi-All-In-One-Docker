@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 
-FROM alpine:3.18
+FROM python:3.11.7-alpine3.19
 
 LABEL maintainer="ddstomo@gmail.com"
 
@@ -29,8 +29,6 @@ COPY --from=powerman/dockerize:0.19.0 /usr/local/bin/dockerize /usr/local/bin
 RUN set -ex && \
     dockerize --version && \
     apk add --no-cache \
-        python3 \
-        py3-pip \
         nginx \
         bash \
         curl \
@@ -45,7 +43,6 @@ RUN set -ex && \
         findutils \
         s6-overlay && \
     pip install --upgrade pip && \
-    python3 -V && \
     nginx -v && \
     crond --help && \
     # Adduser

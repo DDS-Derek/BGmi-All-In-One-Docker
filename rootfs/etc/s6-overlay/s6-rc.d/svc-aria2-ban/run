@@ -2,13 +2,13 @@
 # shellcheck shell=bash
 
 if [ "${BGMI_VERSION}" == "aria2" ]; then
-    if capsh --print | grep -q 'cap_net_admin'; then
-        exec \
-            aria2b -u "http://127.0.0.1:${ARIA2_RPC_PORT}/jsonrpc" -s "${ARIA2_RPC_SECRET}"
-    else
+    if capsh --print | grep -q '!cap_net_admin'; then
         INFO "Aria2-ban does not start"
         exec \
             tail -f /dev/null
+    else
+        exec \
+            aria2b -u "http://127.0.0.1:${ARIA2_RPC_PORT}/jsonrpc" -s "${ARIA2_RPC_SECRET}"
     fi
 else
     exec \

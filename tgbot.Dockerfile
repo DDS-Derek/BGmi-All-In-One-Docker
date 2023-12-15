@@ -1,10 +1,10 @@
-FROM python:3.11.7-alpine3.19
+FROM python:3.8-alpine
 
 ENV TZ=Asia/Shanghai \
     DATA_PATH=/data
 
 WORKDIR /app
-COPY ./tgbot /app
+
 RUN set -ex && \
     apk add --no-cache \
         bash \
@@ -14,7 +14,9 @@ RUN set -ex && \
         build-base \
         gcc \
         g++ \
-        make && \
+        make \
+        git && \
+    git clone -b master https://github.com/codysk/bgmi-tgbot.git /app && \
     pip install --upgrade pip && \
     pip install -r requirements.txt && \
     apk del --purge build-dependencies && \

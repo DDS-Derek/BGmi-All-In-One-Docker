@@ -10,8 +10,14 @@ RUN set -ex && \
         bash \
         tzdata \
         tini && \
+    apk add --no-cache --virtual=build-dependencies \
+        build-base \
+        gcc \
+        g++ \
+        make && \
     pip install --upgrade pip && \
     pip install -r requirements.txt && \
+    apk del --purge build-dependencies && \
     rm -rf \
         /var/cache/apk/* \
         /root/.cache \

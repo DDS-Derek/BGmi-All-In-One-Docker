@@ -22,10 +22,12 @@ services:
             - BGMI_HARDLINK_USE=true
             - FILEBROWSER_USE=true
             - ARIA2_UPDATE_TRACKERS=true
-            - ARIA2_CUSTOM_TRACKER_URL=
+            - ARIA2_CUSTOM_TRACKER_URL=https://raw.githubusercontent.com/DDS-Derek/Aria2-Pro-Docker/main/tracker/all.list
             - ARIA2_LISTEN_PORT=6888
             - ARIA2_RPC_PORT=6800
             - ARIA2_RPC_SECRET=
             - ARIA2_DISK_CACHE=
             - ARIA2_IPV6_MODE=
+        cap_add:
+            - NET_ADMIN
         image: 'ddsderek/bgmi-all-in-one:aria2'

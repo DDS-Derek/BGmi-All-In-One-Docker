@@ -13,10 +13,12 @@
 3. Umask设置。
 4. 内部aria2-pro，transmission下载器。
 5. Transmission增强版UI。
-6. Ariang管理界面。
-7. 常用脚本 `bgmi_download` `bgmi_hardlink`。
-8. 镜像体积小，层数少。
-9. 内置FileBrowser，管理文件更方便（通过```IP:PORT/file```访问）。
+6. Aria2 下载器内置 Ariang 管理界面。
+7. Aria2 下载器自动 ban 掉迅雷等不受欢迎客户端。
+8. Aria2 下载器内置 Anime trackers。
+9. 常用脚本 `bgmi_download` `bgmi_hardlink`。
+10. 镜像体积小，层数少。
+11. 内置FileBrowser，管理文件更方便（通过```IP:PORT/file```访问）。
 
 ## BGmi介绍
 
@@ -80,12 +82,13 @@ docker run -itd \
   -e BGMI_HARDLINK_USE=true \
   -e FILEBROWSER_USE=true \
   -e ARIA2_UPDATE_TRACKERS=true \
-  -e ARIA2_CUSTOM_TRACKER_URL= \
+  -e ARIA2_CUSTOM_TRACKER_URL=https://raw.githubusercontent.com/DDS-Derek/Aria2-Pro-Docker/main/tracker/all.list \
   -e ARIA2_LISTEN_PORT=6888 \
   -e ARIA2_RPC_PORT=6800 \
   -e ARIA2_RPC_SECRET= \
   -e ARIA2_DISK_CACHE= \
   -e ARIA2_IPV6_MODE= \
+  --cap-add=NET_ADMIN \
   ddsderek/bgmi-all-in-one:aria2
 ```
 

@@ -1,6 +1,26 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": [
-    "config:base"
-  ]
+  "extends": ["config:base"],
+  "docker": {
+    "enabled": true
+  },
+  "pathRules": [
+    {
+      "matchPaths": ["Dockerfile"],
+      "docker": {
+        "platform": "alpine"
+      },
+      "python": {
+        "pinVersions": ["^3.8"]
+      }
+    },
+    {
+      "matchPaths": ["tgbot.Dockerfile"],
+      "docker": {
+        "platform": "alpine"
+      },
+      "python": {
+        "pinVersions": ["^3.11.7"]
+      }
+    }
 }

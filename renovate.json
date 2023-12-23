@@ -11,7 +11,16 @@
         "platform": "alpine"
       },
       "python": {
-        "pinVersions": ["^3.8"]
+        "pinVersions": ["^3.11.7"]
+      }
+    },
+    {
+      "matchPaths": ["test.Dockerfile"],
+      "docker": {
+        "platform": "alpine"
+      },
+      "python": {
+        "pinVersions": ["^3.11.7"]
       }
     },
     {
@@ -20,7 +29,8 @@
         "platform": "alpine"
       },
       "python": {
-        "pinVersions": ["^3.11.7"]
+        "pinVersions": ["^3.8"]
       }
     }
+  ]
 }

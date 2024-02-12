@@ -1,5 +1,6 @@
 #!/usr/bin/with-contenv bash
 # shellcheck shell=bash
+# shellcheck disable=SC2086
 
 transmission_config_file="/bgmi/conf/transmission/settings.json"
 

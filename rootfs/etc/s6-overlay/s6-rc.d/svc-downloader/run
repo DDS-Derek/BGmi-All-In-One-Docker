@@ -1,9 +1,10 @@
 #!/usr/bin/with-contenv bash
 # shellcheck shell=bash
+# shellcheck disable=SC1091
 
 . /home/bgmi-docker/init_base
 
-if [ -z ${BGMI_VERSION} ]; then
+if [ -z "${BGMI_VERSION}" ]; then
     INFO "No downloader start"
     exec \
         tail -f /dev/null

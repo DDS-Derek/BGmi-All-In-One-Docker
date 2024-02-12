@@ -1,5 +1,6 @@
 #!/usr/bin/with-contenv bash
 # shellcheck shell=bash
+# shellcheck disable=SC2086
 #     _         _       ____    ____
 #    / \   _ __(_) __ _|___ \  |  _ \ _ __ ___
 #   / _ \ | '__| |/ _` | __) | | |_) | '__/ _ \
@@ -15,12 +16,9 @@
 
 Green_font_prefix="\033[32m"
 Red_font_prefix="\033[31m"
-Green_background_prefix="\033[42;37m"
-Red_background_prefix="\033[41;37m"
 Font_color_suffix="\033[0m"
 INFO="[${Green_font_prefix}INFO${Font_color_suffix}]"
 ERROR="[${Red_font_prefix}ERROR${Font_color_suffix}]"
-WARN="[${Yellow_font_prefix}WARN${Font_color_suffix}]"
 ARIA2_CONF_DIR="/bgmi/conf/aria2"
 ARIA2_CONF="${ARIA2_CONF_DIR}/aria2.conf"
 SCRIPT_CONF="${ARIA2_CONF_DIR}/script.conf"
@@ -67,7 +65,7 @@ CONVERSION_CORE() {
 
 DOWNLOAD_PROFILE() {
     for PROFILE in ${PROFILES}; do
-        [[ ${PROFILE} = *.sh || ${PROFILE} = core ]] && cd "${SCRIPT_DIR}" || cd "${ARIA2_CONF_DIR}"
+        [[ ${PROFILE} = *.sh || ${PROFILE} = core ]] && cd "${SCRIPT_DIR}" || cd "${ARIA2_CONF_DIR}" || exit
         while [[ ! -f ${PROFILE} ]]; do
             rm -rf ${PROFILE}
             echo
@@ -111,6 +109,9 @@ DOWNLOAD_PROFILE
 
 if ! [[ "${ARIA2_UPDATE_TRACKERS}" = "false" || "${ARIA2_UPDATE_TRACKERS}" = "disable" ]]; then
     (crontab -l ; echo "0 7 * * * umask 022; export CUSTOM_TRACKER_URL=${ARIA2_CUSTOM_TRACKER_URL}; sleep $((RANDOM % 1800)); su-exec bgmi bash /bgmi/conf/aria2/script/tracker.sh /bgmi/conf/aria2/aria2.conf RPC 2>&1 | tee /bgmi/log/tracker.log") | crontab -
+    if [ ! -d /bgmi/log ]; then
+        mkdir /bgmi/log
+    fi
     touch /bgmi/log/tracker.log
     PROFILES="tracker.sh"
     DOWNLOAD_PROFILE
@@ -157,7 +158,7 @@ sed -i "s@^\(dht-file-path6=\).*@\1${ARIA2_CONF_DIR}/dht6.dat@" ${ARIA2_CONF}
     sed -i "s@^\(on-download-complete=\).*@\1${SCRIPT_DIR}/move.sh@" ${ARIA2_CONF}
 
 # set ariang
-sed -i 's|6800|${ARIA2_RPC_PORT}|g' /home/bgmi-docker/downloader/aria2/ariang/js/aria-ng*.min.js
+sed -i "s|6800|${ARIA2_RPC_PORT}|g" /home/bgmi-docker/downloader/aria2/ariang/js/aria-ng*.min.js
 
 cat /home/bgmi-docker/downloader/aria2/Aria2-Pro
 

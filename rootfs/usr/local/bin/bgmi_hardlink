@@ -1,5 +1,7 @@
 #!/usr/bin/with-contenv bash
 # shellcheck shell=bash
+PATH=/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+export PATH
 
 Green="\033[32m"
 Red="\033[31m"
@@ -20,5 +22,5 @@ echo -e "${Time} ${WARN}    | ${1}"
 }
 
 INFO "Hardlink start"
-umask ${UMASK}; LC_ALL=zh_CN.UTF-8 s6-setuidgid bgmi $(which python3) /home/bgmi-docker/hardlink/hardlink.py run
+umask "${UMASK}"; LC_ALL=zh_CN.UTF-8 s6-setuidgid bgmi python3 /home/bgmi-docker/hardlink/hardlink.py run
 INFO "done"

@@ -1,5 +1,6 @@
 #!/usr/bin/with-contenv bash
 # shellcheck shell=bash
+# shellcheck disable=SC1091
 
 . /home/bgmi-docker/init_base
 
@@ -14,11 +15,11 @@ if [[ "$(stat -c '%U' /media)" != "bgmi" ]] || [[ "$(stat -c '%G' /media)" != "b
     chown bgmi:bgmi \
         /media
 fi
-if [[ "$(stat -c '%U' ${MEDIA_DIR})" != "bgmi" ]] || [[ "$(stat -c '%G' ${MEDIA_DIR})" != "bgmi" ]]; then
+if [[ "$(stat -c '%U' "${MEDIA_DIR}")" != "bgmi" ]] || [[ "$(stat -c '%G' "${MEDIA_DIR}")" != "bgmi" ]]; then
     chown bgmi:bgmi \
-        ${MEDIA_DIR}
+        "${MEDIA_DIR}"
 fi
-if [[ "$(stat -c '%U' ${DOWNLOAD_DIR})" != "bgmi" ]] || [[ "$(stat -c '%G' ${DOWNLOAD_DIR})" != "bgmi" ]]; then
+if [[ "$(stat -c '%U' "${DOWNLOAD_DIR}")" != "bgmi" ]] || [[ "$(stat -c '%G' "${DOWNLOAD_DIR}")" != "bgmi" ]]; then
     chown bgmi:bgmi \
-        ${DOWNLOAD_DIR}
+        "${DOWNLOAD_DIR}"
 fi

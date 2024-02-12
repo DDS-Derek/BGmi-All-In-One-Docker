@@ -1,5 +1,6 @@
 #!/usr/bin/with-contenv bash
 # shellcheck shell=bash
+# shellcheck disable=SC2034
 
 Green="\033[32m"
 Red="\033[31m"
@@ -24,4 +25,4 @@ first_lock="${BGMI_HOME}/bgmi_install.lock"
 BGMI_HARDLINK_USE=${BGMI_HARDLINK_USE:-true}
 FILEBROWSER_USE=${FILEBROWSER_USE:-true}
 
-umask ${UMASK}
+umask "${UMASK}"

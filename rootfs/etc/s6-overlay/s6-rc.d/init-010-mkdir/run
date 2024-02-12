@@ -1,5 +1,7 @@
 #!/usr/bin/with-contenv bash
 # shellcheck shell=bash
+# shellcheck disable=SC1091
+# shellcheck disable=SC2154
 
 . /home/bgmi-docker/init_base
 
@@ -30,12 +32,12 @@ if [ ! -f "${first_lock}" ]; then
 		fi
 	fi
 
-	if [ ! -d ${media_cartoon} ]; then
-		mkdir -p ${media_cartoon}
+	if [ ! -d "${media_cartoon}" ]; then
+		mkdir -p "${media_cartoon}"
 	fi
 
-	if [ ! -d ${meida_downloads} ]; then
-		mkdir -p ${meida_downloads}
+	if [ ! -d "${meida_downloads}" ]; then
+		mkdir -p "${meida_downloads}"
 	fi
 
 fi

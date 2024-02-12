@@ -1,5 +1,7 @@
 #!/usr/bin/with-contenv bash
 # shellcheck shell=bash
+# shellcheck disable=SC1091
+# shellcheck disable=SC2154
 
 . /home/bgmi-docker/init_base
 

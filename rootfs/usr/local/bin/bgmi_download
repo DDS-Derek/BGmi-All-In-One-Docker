@@ -1,5 +1,7 @@
 #!/usr/bin/with-contenv bash
 # shellcheck shell=bash
+PATH=/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+export PATH
 
 Green="\033[32m"
 Red="\033[31m"
@@ -20,6 +22,6 @@ echo -e "${Time} ${WARN}    | ${1}"
 }
 
 INFO "Download start"
-umask ${UMASK}; LC_ALL=zh_CN.UTF-8 TRAVIS_CI=1 s6-setuidgid bgmi $(which bgmi) cal --force-update --download-cover
-umask ${UMASK}; LC_ALL=zh_CN.UTF-8 s6-setuidgid bgmi $(which bgmi) update --download
+umask "${UMASK}"; LC_ALL=zh_CN.UTF-8 TRAVIS_CI=1 s6-setuidgid bgmi bgmi cal --force-update --download-cover
+umask "${UMASK}"; LC_ALL=zh_CN.UTF-8 s6-setuidgid bgmi bgmi update --download
 INFO "done"

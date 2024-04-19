@@ -20,10 +20,10 @@ RUN set -ex && \
     # Transmission Web Control install
     mv ${TRANSMISSION_WEB_HOME}/index.html ${TRANSMISSION_WEB_HOME}/index.original.html && \
     mkdir /tmp/web && \
-    TRANSMISSION_WEB_CONTROL_VERSION=$(curl -s https://api.github.com/repos/transmission-web-control/transmission-web-control/releases/latest | jq -r '.tag_name') && \
-    curl -sL https://github.com/transmission-web-control/transmission-web-control/releases/download/${TRANSMISSION_WEB_CONTROL_VERSION}/dist.tar.gz | \
-    tar xzpf - --strip-components=1 -C /tmp/web && \
-    cp -r /tmp/web/dist/* ${TRANSMISSION_WEB_HOME} && \
+    TRANSMISSION_WEB_CONTROL_VERSION=$(curl -s "https://api.github.com/repos/ronggang/transmission-web-control/releases/latest" | jq -r .tag_name) && \
+    curl -sL "https://github.com/ronggang/transmission-web-control/archive/${TRANSMISSION_WEB_CONTROL_VERSION}.tar.gz" | \
+    tar xzvpf - --strip-components=1 -C /tmp/web && \
+    cp -r /tmp/web/src/* ${TRANSMISSION_WEB_HOME} && \
     # Write version
     echo ${TRANSMISSION_VERSION} > /versions/TRANSMISSION_VERSION.txt && \
     echo ${TRANSMISSION_WEB_CONTROL_VERSION} > /versions/TRANSMISSION_WEB_CONTROL_VERSION.txt && \

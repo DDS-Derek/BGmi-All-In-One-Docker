@@ -151,6 +151,8 @@ sed -i "s@^\(dht-file-path6=\).*@\1${ARIA2_CONF_DIR}/dht6.dat@" ${ARIA2_CONF}
     sed -i "s@^\(enable-dht6=\).*@\1false@" ${ARIA2_CONF}
 }
 
+sed -i "s@^\(on-download-complete=\).*@\1finish-dl@" ${ARIA2_CONF}
+
 [[ "${ARIA2_SPECIAL_MODE}" = "rclone" ]] &&
     sed -i "s@^\(on-download-complete=\).*@\1${SCRIPT_DIR}/upload.sh@" ${ARIA2_CONF}
 

@@ -14,6 +14,9 @@ fi
 
 sed -i "/\"rpc-url\"/c\    \"rpc-url\": \"/tr/\"," ${transmission_config_file}
 
+sed -i '/script-torrent-done-enabled/c\    "script-torrent-done-enabled": true,' ${transmission_config_file}
+sed -i '/script-torrent-done-filename/c\    "script-torrent-done-filename": "finish-dl",' ${transmission_config_file}
+
 if [[ -n "${TR_USER}" ]] && [[ -n "${TR_PASS}" ]]; then
     sed -i '/rpc-authentication-required/c\    "rpc-authentication-required": true,' ${transmission_config_file}
     sed -i "/rpc-username/c\    \"rpc-username\": \"$TR_USER\"," ${transmission_config_file}

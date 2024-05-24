@@ -125,7 +125,7 @@ ENV BGMI_VERSION=transmission
 RUN set -ex && \
     # Transmission install
     mkdir /tmp/version && \
-    curl -sL "http://dl-cdn.alpinelinux.org/alpine/v3.20/community/x86_64/APKINDEX.tar.gz" | tar -xz -C /tmp/version && \
+    curl -sL "http://dl-cdn.alpinelinux.org/alpine/v3.19/community/x86_64/APKINDEX.tar.gz" | tar -xz -C /tmp/version && \
     TRANSMISSION_VERSION=$(awk '/^P:transmission$/,/V:/' /tmp/version/APKINDEX | sed -n 2p | sed 's/^V://') && \
     apk add --update --no-cache \
         transmission-cli==${TRANSMISSION_VERSION} \

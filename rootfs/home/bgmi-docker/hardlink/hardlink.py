@@ -1,4 +1,4 @@
-from bgmi.lib.models import STATUS_DELETED, STATUS_END, STATUS_UPDATING, Followed
+from bgmi.lib.models import STATUS_DELETED, STATUS_UPDATING, Followed
 from bgmi.front.index import get_player
 from bgmi import config as bgmi_config
 import os
@@ -8,6 +8,7 @@ if config_path:
     sys.path.append(config_path)
 from config import *
 import argparse as arg
+import re
 
 if hasattr(bgmi_config, 'SAVE_PATH'):
     save_path = bgmi_config.SAVE_PATH
@@ -16,6 +17,44 @@ elif hasattr(bgmi_config, 'cfg'):
 else:
     print("不支持此 BGmi 版本！")
     exit(1)
+
+_CHINESE_NUMBERS = '一二三四五六七八九十'
+
+
+def extract_season_from_bgmi(bgmi_data: dict):
+    """从 BGmi 的番剧信息中获得剧集的季信息"""
+    info = {
+        'name': bgmi_data['bangumi_name'],
+        'season': 1,
+    }
+
+    # 特殊规则
+    rule = MAP_RULE.get(info['name'], None)
+    if rule is not None:
+        info['name'] = rule['name']
+        info['season'] = rule['season']
+        return info
+
+    # 检查番剧名中的季
+    r = re.search(r'^(.*?) ?第(.)季$', info['name'])
+    if r is not None:
+        season = r.group(2)
+
+        # 解析季数
+        if season in _CHINESE_NUMBERS:
+            season = _CHINESE_NUMBERS.index(season) + 1
+        else:
+            try:
+                season = int(season)
+            except ValueError:
+                season = None
+
+        if season is not None:
+            info['name'] = r.group(1)
+            info['season'] = season
+
+    return info
+
 
 def run_hardlink(preview=False):
     """
@@ -32,15 +71,12 @@ def run_hardlink(preview=False):
     for bangumi in data:
         # 获得信息
         info = {
-            'name': bangumi['bangumi_name'],
+            'name': '',
             'season': 1,
             'episode': None,
             'format': None,
         }
-        if info['name'] in MAP_RULE:
-            oname = bangumi['bangumi_name']
-            info['name'] = MAP_RULE[oname]['name']
-            info['season'] = MAP_RULE[oname]['season']
+        info.update(extract_season_from_bgmi(bangumi))
         # 获得播放数据
         player_data = get_player(bangumi['bangumi_name'])
         for episode, ep in player_data.items():

@@ -1,3 +1,5 @@
+# syntax=docker/dockerfile:1.9
+
 FROM python:3.8-alpine
 
 ENV TZ=Asia/Shanghai \

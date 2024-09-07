@@ -9,16 +9,15 @@
 
 ## 功能
 1. 硬链接，硬链接通过内置硬链接脚本实现。
-2. PUID和PGID设置。
-3. Umask设置。
-4. 内部aria2-pro，transmission下载器。
-5. Transmission增强版UI。
-6. Aria2 下载器内置 Ariang 管理界面。
-7. Aria2 下载器自动 ban 掉迅雷等不受欢迎客户端。
-8. Aria2 下载器内置 Anime trackers。
-9. 常用脚本 `bgmi_download` `bgmi_hardlink`。
-10. 镜像体积小，层数少。
-11. 内置FileBrowser，管理文件更方便（通过```IP:PORT/file```访问）。
+2. `PUID`，`PGID`和`Umask`配置。
+3. 内置 aria2-pro，transmission 下载器。
+4. Transmission 下载器内置 `Transmission Web Control` UI。
+5. Aria2 下载器内置 Ariang 管理界面。
+6. Aria2 下载器自动 ban 掉迅雷等不受欢迎客户端。
+7. Aria2 下载器内置 Anime trackers。
+8. 常用脚本 `bgmi_download` `bgmi_hardlink`。
+9. 镜像体积小，层数少。
+10. 内置FileBrowser，管理文件更方便（通过```IP:PORT/file```访问）。
 
 ## BGmi介绍
 

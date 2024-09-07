@@ -1,4 +1,4 @@
-# syntax=docker/dockerfile:1
+# syntax=docker/dockerfile:1.9
 
 FROM python:3.11.9-alpine3.20
 
@@ -24,7 +24,7 @@ ENV LANG=C.UTF-8 \
     BGMI_HTTP_ADMIN_TOKEN=password \
     BGMI_DATA_SOURCE=mikan_project
 
-COPY --from=powerman/dockerize:0.19.0 /usr/local/bin/dockerize /usr/local/bin
+COPY --from=powerman/dockerize:0.20.0 /usr/local/bin/dockerize /usr/local/bin
 
 RUN set -ex && \
     dockerize --version && \

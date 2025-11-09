@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1.9
 
-FROM python:3.11.9-alpine3.20
+FROM python:3.13.9-alpine3.22
 
 LABEL maintainer="ddstomo@gmail.com"
 
